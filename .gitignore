@@ -1,0 +1,8 @@
+__pycache__
+*.pt
+*.json
+runs/
+weights/
+
+.ipynb_checkpoints/
+
