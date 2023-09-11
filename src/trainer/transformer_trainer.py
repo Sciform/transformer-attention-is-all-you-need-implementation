@@ -8,43 +8,12 @@ import torch.nn as nn
 from torch.utils.tensorboard import SummaryWriter
 
 from src.config.model_config import get_weights_file_path
-from src.data.two_language_data_set import causal_mask
-from src.data.data_loader import create_language_datasets
+from src.data.data_loader import create_tokenizers_dataloaders
 from src.model.transformer_model import get_model
 from trainer.transformer_validator import TransformerValidator
 
 
 class TransformerTrainer:
-
-    def __greedy_decode(self, model, source, source_mask, tokenizer_src, tokenizer_tgt, max_len, device):
-        sos_idx = tokenizer_tgt.token_to_id('[SOS]')
-        eos_idx = tokenizer_tgt.token_to_id('[EOS]')
-
-        # Precompute the encoder output and reuse it for every step
-        encoder_output = model.encode(source, source_mask)
-        # Initialize the decoder input with the sos token
-        decoder_input = torch.empty(1, 1).fill_(sos_idx).type_as(source).to(device)
-        while True:
-            if decoder_input.size(1) == max_len:
-                break
-
-            # build mask for target
-            decoder_mask = causal_mask(decoder_input.size(1)).type_as(source_mask).to(device)
-
-            # calculate output
-            out = model.decode(encoder_output, source_mask, decoder_input, decoder_mask)
-
-            # get next token
-            prob = model.project(out[:, -1])
-            _, next_word = torch.max(prob, dim=1)
-            decoder_input = torch.cat(
-                [decoder_input, torch.empty(1, 1).type_as(source).fill_(next_word.item()).to(device)], dim=1
-            )
-
-            if next_word == eos_idx:
-                break
-
-        return decoder_input.squeeze(0)
 
     def perform_training(self, config):
 
@@ -58,7 +27,7 @@ class TransformerTrainer:
         Path(config['model_folder']).mkdir(parents=True, exist_ok=True)
 
         # get data loaders and tokenizers
-        train_dataloader, val_dataloader, tokenizer_src, tokenizer_tgt = create_language_datasets(config)
+        train_dataloader, val_dataloader, tokenizer_src, tokenizer_tgt = create_tokenizers_dataloaders(config)
 
         model = get_model(config, tokenizer_src.get_vocab_size(), tokenizer_tgt.get_vocab_size()).to(device)
 
@@ -67,6 +36,8 @@ class TransformerTrainer:
 
         # specify Adom optimizer
         optimizer = torch.optim.Adam(model.parameters(), lr=config['lr'], eps=1e-9)
+
+        trans_val = TransformerValidator()
 
         print("Configure model")
         # If the user specified a model to preload before training, load it
@@ -83,9 +54,12 @@ class TransformerTrainer:
 
         loss_fn = nn.CrossEntropyLoss(ignore_index=tokenizer_src.token_to_id('[PAD]'), label_smoothing=0.1).to(device)
 
+        print("Perform training")
         for epoch in range(initial_epoch, config['num_epochs']):
             model.train()
+
             batch_iterator = tqdm(train_dataloader, desc=f"Processing Epoch {epoch:02d}")
+
             for batch in batch_iterator:
                 encoder_input = batch['encoder_input'].to(device)  # (b, seq_len)
                 decoder_input = batch['decoder_input'].to(device)  # (B, seq_len)
@@ -109,21 +83,20 @@ class TransformerTrainer:
                 writer.add_scalar('train loss', loss.item(), global_step)
                 writer.flush()
 
-                # Backpropagate the loss
+                # backpropagate the loss
                 loss.backward()
 
-                # Update the weights
+                # update the weights
                 optimizer.step()
                 optimizer.zero_grad(set_to_none=True)
 
                 global_step += 1
 
-            # Run validation at the end of every epoch
-            trans_val = TransformerValidator()
-            trans_val.run_validation(model, val_dataloader, tokenizer_src, tokenizer_tgt, config['seq_len'], device,
-                                lambda msg: batch_iterator.write(msg), global_step, writer)
+            # perform validation at the end of every epoch
+            trans_val.perform_validation(model, val_dataloader, tokenizer_src, tokenizer_tgt, config['seq_len'], device,
+                                        lambda msg: batch_iterator.write(msg), global_step, writer)
 
-            # Save the model at the end of every epoch
+            # save the model at the end of every epoch
             model_filename = get_weights_file_path(config, f"{epoch:02d}")
             torch.save({
                 'epoch': epoch,

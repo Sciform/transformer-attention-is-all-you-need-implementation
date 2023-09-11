@@ -9,7 +9,7 @@ from src.data.data_tokenizer import get_or_build_tokenizer
 from src.data.two_language_data_set import TwoLanguagesDataset
 
 
-def create_language_datasets(config):
+def create_tokenizers_dataloaders(config):
 
     # load opus_books data set (it has only a train split)
     ds_raw = load_dataset('opus_books', f"{config['lang_src']}-{config['lang_tgt']}", split='train')
