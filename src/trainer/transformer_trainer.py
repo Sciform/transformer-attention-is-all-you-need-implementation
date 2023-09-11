@@ -75,8 +75,7 @@ class TransformerTrainer:
                     0) == 1, "Batch size must be 1 for validation"
 
                 model_out = self.__greedy_decode(model, encoder_input, encoder_mask, tokenizer_src, tokenizer_tgt,
-                                               max_len,
-                                               device)
+                                               max_len, device)
 
                 source_text = batch["src_text"][0]
                 target_text = batch["tgt_text"][0]
