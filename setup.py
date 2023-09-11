@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
     name='transformer-attention-is-all-you-need-implementation',
     version='0.0.1',
-    packages=['src', 'src.data', 'src.model', 'src.config'],
+    packages=['src', 'src.config', 'src.data', 'src.model', 'src.trainer'],
     url='',
     license='MIT',
     author='Ursula Maria Mayer, Sciform GmbH',

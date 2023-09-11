@@ -1,11 +1,10 @@
 
 from pathlib import Path
 
-from tqdm import tqdm
-
 import torch
 import torch.nn as nn
 from torch.utils.tensorboard import SummaryWriter
+from tqdm import tqdm
 
 from src.config.model_config import get_weights_file_path
 from src.data.data_loader import create_tokenizers_dataloaders

@@ -3,8 +3,8 @@ from pathlib import Path
 # from HuggingFace
 from tokenizers import Tokenizer
 from tokenizers.models import WordLevel
-from tokenizers.trainers import WordLevelTrainer
 from tokenizers.pre_tokenizers import Whitespace
+from tokenizers.trainers import WordLevelTrainer
 
 
 def get_all_text_sequences_form_dataset_in_language(lang_data_set, language):

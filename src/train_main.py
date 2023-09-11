@@ -3,7 +3,6 @@ import warnings
 from src.config.model_config import get_model_config
 from src.trainer.transformer_trainer import TransformerTrainer
 
-
 if __name__ == '__main__':
     warnings.filterwarnings("ignore")
 
