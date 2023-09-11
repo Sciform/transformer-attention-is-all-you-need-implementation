@@ -5,26 +5,28 @@ from datasets import load_dataset
 # pytorch
 from torch.utils.data import DataLoader, random_split
 
-from data_tokenizer import get_or_build_tokenizer
-from data_set import BilingualDataset
+from src.data.data_tokenizer import get_or_build_tokenizer
+from src.data.two_language_data_set import TwoLanguagesDataset
 
 
-def create_dataset(config):
+def create_language_datasets(config):
 
-    # It only has the train split, so we divide it ourselves
+    # load opus_books data set (it has only a train split)
     ds_raw = load_dataset('opus_books', f"{config['lang_src']}-{config['lang_tgt']}", split='train')
 
-    # Build tokenizers
+    # build tokenizers
     tokenizer_src = get_or_build_tokenizer(config, ds_raw, config['lang_src'])
     tokenizer_tgt = get_or_build_tokenizer(config, ds_raw, config['lang_tgt'])
 
-    # Keep 90% for training, 10% for validation
+    # Split into 90% for training and 10% for validation
     train_ds_size = int(0.9 * len(ds_raw))
     val_ds_size = len(ds_raw) - train_ds_size
     train_ds_raw, val_ds_raw = random_split(ds_raw, [train_ds_size, val_ds_size])
 
-    train_ds = BilingualDataset(train_ds_raw, tokenizer_src, tokenizer_tgt, config['lang_src'], config['lang_tgt'], config['seq_len'])
-    val_ds = BilingualDataset(val_ds_raw, tokenizer_src, tokenizer_tgt, config['lang_src'], config['lang_tgt'], config['seq_len'])
+    train_ds = TwoLanguagesDataset(train_ds_raw, tokenizer_src, tokenizer_tgt, config['lang_src'], config['lang_tgt'],
+                                   config['seq_len'])
+    val_ds = TwoLanguagesDataset(val_ds_raw, tokenizer_src, tokenizer_tgt, config['lang_src'], config['lang_tgt'],
+                                 config['seq_len'])
 
     # Find the maximum length of each sentence in the source and target sentence
     max_len_src = 0

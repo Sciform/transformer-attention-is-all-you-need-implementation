@@ -13,7 +13,6 @@ class TextEmbeddings(nn.Module):
     index in the dictionary.
 
     """
-
     def __init__(self, d_model: int, dictionary_size: int) -> None:
         super().__init__()
         self.__d_model = d_model
@@ -391,3 +390,6 @@ def build_transformer(src_vocab_size: int,
 
     return transformer
 
+def get_model(config, vocab_src_len, vocab_tgt_len):
+    model = build_transformer(vocab_src_len, vocab_tgt_len, config["seq_len"], config['seq_len'], d_model=config['d_model'])
+    return model
