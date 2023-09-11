@@ -55,6 +55,8 @@ class TransformerTrainer:
 
         print("Perform training")
         for epoch in range(initial_epoch, config['num_epochs']):
+
+            torch.cuda.empty_cache()
             model.train()
 
             batch_iterator = tqdm(train_dataloader, desc=f"Processing Epoch {epoch:02d}")

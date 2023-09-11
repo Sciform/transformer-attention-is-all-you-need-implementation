@@ -85,6 +85,7 @@ class MultiHeadAttention(nn.Module):
         assert d_model % num_heads == 0, "d_model is not divisible by num_heads"
 
         self.d_k = d_model // num_heads  # Dimension of vector seen by each head
+        #TODO consider to add bias=False
         self.w_q = nn.Linear(d_model, d_model)  # Wq
         self.w_k = nn.Linear(d_model, d_model)  # Wk
         self.w_v = nn.Linear(d_model, d_model)  # Wv

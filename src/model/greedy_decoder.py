@@ -3,6 +3,8 @@ __copyright__ = 'Copyright {2023}, {Sciform GmbH}'
 
 import torch
 
+from src.data.masks import causal_mask
+
 
 class GreedyDecoder:
 
@@ -19,7 +21,7 @@ class GreedyDecoder:
                 break
 
             # build mask for target
-            decoder_mask = self.__causal_mask(decoder_input.size(1)).type_as(source_mask).to(device)
+            decoder_mask = causal_mask(decoder_input.size(1)).type_as(source_mask).to(device)
 
             # calculate output
             out = model.decode(encoder_output, source_mask, decoder_input, decoder_mask)
@@ -36,6 +38,3 @@ class GreedyDecoder:
 
         return decoder_input.squeeze(0)
 
-    def __causal_mask(self, size):
-        mask = torch.triu(torch.ones((1, size, size)), diagonal=1).type(torch.int)
-        return mask == 0

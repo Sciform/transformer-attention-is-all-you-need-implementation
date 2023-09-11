@@ -2,6 +2,8 @@ import torch
 
 from torch.utils.data import Dataset
 
+from src.data.masks import causal_mask
+
 
 class TwoLanguagesDataset(Dataset):
 
