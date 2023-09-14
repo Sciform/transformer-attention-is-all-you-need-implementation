@@ -1,8 +1,9 @@
 __pycache__
 *.pt
 *.json
-runs/
-weights/
+
+experiments/
+saved_model/
 
 .ipynb_checkpoints/
 .idea/*

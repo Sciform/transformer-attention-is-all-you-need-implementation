@@ -10,7 +10,7 @@ def get_model_config():
         "lr": 10**-4,
         "seq_len": 500,
         "d_model": 512,
-        "vocabulary_file": "vocabulary_{0}.json",
+        "dictionary_file": "dictionary_{0}.json",
         "experiment_name": "experiments/transf_model",
         "saved_model_folder": "saved_model",
         "model_basename": "transf_model_",

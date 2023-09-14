@@ -6,7 +6,7 @@ import torch.nn as nn
 
 class TextEmbeddings(nn.Module):
     """
-    The text embeddings modul is a tensor that stores
+    The text embeddings modul is a tensor that stores "d_model"
     embeddings of a fixed size dictionary.
 
     This embedding module is used to store word embeddings for every token
@@ -16,7 +16,6 @@ class TextEmbeddings(nn.Module):
     def __init__(self, d_model: int, dictionary_size: int) -> None:
         super().__init__()
         self.__d_model = d_model
-        self.__dictionary_size = dictionary_size
         self.__embedding = nn.Embedding(dictionary_size, d_model)
 
     def forward(self, x):
@@ -335,15 +334,15 @@ class Transformer(nn.Module):
         return self.projection_layer(x)
 
 
-def build_transformer(src_vocab_size: int,
-                      tgt_vocab_size: int,
-                      src_seq_len: int,
-                      tgt_seq_len: int,
-                      d_model: int = 512,
-                      num_stacks: int = 6,
-                      h: int = 8,
-                      dropout: float = 0.1,
-                      d_ff: int = 2048) -> Transformer:
+def create_transformer(src_vocab_size: int,
+                       tgt_vocab_size: int,
+                       src_seq_len: int,
+                       tgt_seq_len: int,
+                       d_model: int = 512,
+                       num_stacks: int = 6,
+                       h: int = 8,
+                       dropout: float = 0.1,
+                       d_ff: int = 2048) -> Transformer:
 
     # Create the embedding layers
     src_embed = TextEmbeddings(d_model, src_vocab_size)
@@ -393,6 +392,6 @@ def build_transformer(src_vocab_size: int,
 
 
 def get_model(config, vocab_src_len, vocab_tgt_len):
-    model = build_transformer(vocab_src_len, vocab_tgt_len, config["seq_len"], config['seq_len'],
-                              d_model=config['d_model'])
+    model = create_transformer(vocab_src_len, vocab_tgt_len, config["seq_len"], config['seq_len'],
+                               d_model=config['d_model'])
     return model
