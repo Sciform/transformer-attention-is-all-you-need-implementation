@@ -6,7 +6,7 @@ import torch.nn as nn
 from torch.utils.tensorboard import SummaryWriter
 from tqdm import tqdm
 
-from src.config.model_config import get_weights_file_path
+from src.config.model_config import get_saved_model_file_path
 from src.data.data_loader import create_tokenizers_dataloaders
 from src.model.transformer_model import get_model
 from trainer.transformer_validator import TransformerValidator
@@ -23,7 +23,7 @@ class TransformerTrainer:
         print("Using device:", device)
 
         # generate folder for weights folder if it does not exist yet
-        Path(config['model_folder']).mkdir(parents=True, exist_ok=True)
+        Path(config['saved_model_folder']).mkdir(parents=True, exist_ok=True)
 
         # get data loaders and tokenizers
         train_dataloader, val_dataloader, tokenizer_src, tokenizer_tgt = create_tokenizers_dataloaders(config)
@@ -42,8 +42,8 @@ class TransformerTrainer:
         # If the user specified a model to preload before training, load it
         initial_epoch = 0
         global_step = 0
-        if config['preload']:
-            model_filename = get_weights_file_path(config, config['preload'])
+        if config['preload'] is not None:
+            model_filename = get_saved_model_file_path(config, config['preload'])
             print(f'Preloading model {model_filename}')
             state = torch.load(model_filename)
             model.load_state_dict(state['model_state_dict'])
@@ -98,7 +98,7 @@ class TransformerTrainer:
                                         lambda msg: batch_iterator.write(msg), global_step, writer)
 
             # save the model at the end of every epoch
-            model_filename = get_weights_file_path(config, f"{epoch:02d}")
+            model_filename = get_saved_model_file_path(config, f"{epoch:03d}")
             torch.save({
                 'epoch': epoch,
                 'model_state_dict': model.state_dict(),

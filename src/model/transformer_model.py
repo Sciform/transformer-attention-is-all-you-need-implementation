@@ -85,11 +85,11 @@ class MultiHeadAttention(nn.Module):
         assert d_model % num_heads == 0, "d_model is not divisible by num_heads"
 
         self.d_k = d_model // num_heads  # Dimension of vector seen by each head
-        #TODO consider to add bias=False
-        self.w_q = nn.Linear(d_model, d_model)  # Wq
-        self.w_k = nn.Linear(d_model, d_model)  # Wk
-        self.w_v = nn.Linear(d_model, d_model)  # Wv
-        self.w_o = nn.Linear(d_model, d_model)  # Wo
+        #TODO why no bias ???
+        self.w_q = nn.Linear(d_model, d_model, bias=False)  # Wq
+        self.w_k = nn.Linear(d_model, d_model, bias=False)  # Wk
+        self.w_v = nn.Linear(d_model, d_model, bias=False)  # Wv
+        self.w_o = nn.Linear(d_model, d_model, bias=False)  # Wo
         self.dropout = nn.Dropout(dropout)
 
     @staticmethod
@@ -393,5 +393,6 @@ def build_transformer(src_vocab_size: int,
 
 
 def get_model(config, vocab_src_len, vocab_tgt_len):
-    model = build_transformer(vocab_src_len, vocab_tgt_len, config["seq_len"], config['seq_len'], d_model=config['d_model'])
+    model = build_transformer(vocab_src_len, vocab_tgt_len, config["seq_len"], config['seq_len'],
+                              d_model=config['d_model'])
     return model

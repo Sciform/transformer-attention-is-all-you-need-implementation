@@ -13,7 +13,7 @@ def get_all_text_sequences_form_dataset_in_language(lang_data_set, language):
 
 
 def get_or_build_tokenizer(config, lang_data_set, language):
-    tokenizer_path = Path(config['tokenizer_file'].format(language))
+    tokenizer_path = Path(config['vocabulary_file'].format(language))
     if not Path.exists(tokenizer_path):
         # Most code taken from: https://huggingface.co/docs/tokenizers/quicktour
         tokenizer = Tokenizer(WordLevel(unk_token="[UNK]"))
