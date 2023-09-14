@@ -8,7 +8,7 @@ def get_model_config():
         "batch_size": 2,        # adjust if too large for GPU
         "num_epochs": 3,
         "lr": 10**-4,
-        "seq_len": 500,
+        "seq_len": 480,
         "d_model": 512,
         "dictionary_file": "dictionary_{0}.json",
         "experiment_name": "experiments/transf_model",
