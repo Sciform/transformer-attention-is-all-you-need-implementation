@@ -8,7 +8,15 @@ from src.data.masks import causal_mask
 
 class GreedyDecoder:
 
-    def greedy_decode(self, model, source, source_mask, tokenizer_src, tokenizer_tgt, max_len, device):
+    def greedy_decode(self,
+                      model,
+                      source,
+                      source_mask,
+                      tokenizer_src,
+                      tokenizer_tgt,
+                      max_len,
+                      device):
+
         sos_idx = tokenizer_tgt.token_to_id('[SOS]')
         eos_idx = tokenizer_tgt.token_to_id('[EOS]')
 
