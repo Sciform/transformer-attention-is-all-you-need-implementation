@@ -12,7 +12,7 @@ def get_model_config():
         "d_model": 512,
         "dictionary_file": "dictionary_{0}.json",
         "experiment_name": "experiments/transf_model",
-        "saved_model_folder": "saved_model",
+        "saved_model_folder": "../saved_model",
         "model_basename": "transf_model_",
         "preload": None
     }

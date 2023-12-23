@@ -6,3 +6,4 @@ tokenizers
 tqdm
 torchmetrics
 setuptools
+packaging

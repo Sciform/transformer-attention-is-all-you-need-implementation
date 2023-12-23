@@ -2,8 +2,7 @@
 import torch
 import torch.nn as nn
 
-from model.layers import MultiHeadAttention, ResidualConnection, LayerNormalization, FeedForwardBlock, TextEmbeddings, \
-    PositionalEncoding, ProjectionLayer
+from src.model.layers import MultiHeadAttention, ResidualConnection, LayerNormalization, FeedForwardBlock, TextEmbeddings, PositionalEncoding, ProjectionLayer
 
 
 class EncoderStack(nn.Module):
@@ -193,6 +192,7 @@ def create_transformer(src_vocab_size: int,
 
 
 def get_model(config, vocab_src_len, vocab_tgt_len):
+    
     model = create_transformer(vocab_src_len, vocab_tgt_len, config["seq_len"], config['seq_len'],
                                d_model=config['d_model'])
     return model

@@ -6,7 +6,7 @@ import os
 import torch
 import torchmetrics
 
-from model.greedy_decoder import GreedyDecoder
+from src.model.greedy_decoder import GreedyDecoder
 
 
 class TransformerValidator:
