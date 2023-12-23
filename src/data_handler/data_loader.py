@@ -5,8 +5,8 @@ from datasets import load_dataset
 # pytorch
 from torch.utils.data import DataLoader, random_split
 
-from src.data.data_tokenizer import get_or_create_tokenizer
-from src.data.two_language_data_set import TwoLanguagesDataset
+from src.data_handler.data_tokenizer import get_or_create_tokenizer
+from src.data_handler.two_language_data_set import TwoLanguagesDataset
 
 
 def get_raw_data_opus_books(config):

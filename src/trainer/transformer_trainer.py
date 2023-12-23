@@ -7,7 +7,7 @@ from torch.utils.tensorboard import SummaryWriter
 from tqdm import tqdm
 
 from src.config.model_config import get_saved_model_file_path
-from src.data.data_loader import create_tokenizers_dataloaders
+from src.data_handler.data_loader import create_tokenizers_dataloaders
 from src.model.transformer_model import get_model
 from trainer.transformer_validator import TransformerValidator
 

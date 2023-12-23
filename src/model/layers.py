@@ -13,8 +13,10 @@ class TextEmbeddings(nn.Module):
     index in the dictionary.
 
     """
-    def __init__(self, d_model: int, dictionary_size: int) -> None:
-        super().__init__()
+    def __init__(self,
+                 d_model: int,
+                 dictionary_size: int) -> None:
+        super(TextEmbeddings, self).__init__()
         self.__d_model = d_model
         self.__embedding = nn.Embedding(dictionary_size, d_model)
 
@@ -37,26 +39,32 @@ class PositionalEncoding(nn.Module):
                  d_model: int,
                  seq_len: int,
                  drop_out: float) -> None:
-        super().__init__()
+        super(PositionalEncoding, self).__init__()
 
         self.__drop_out_layer = nn.Dropout(drop_out)
 
-        # Create a tensor of shape (seq_len, d_model) filled with zeros
+        # create a tensor of shape (seq_len, d_model) filled with zeros
         positional_encoding = torch.zeros(seq_len, d_model)
-        # Create a tensor of shape (seq_len)
-        position = torch.arange(0, seq_len, dtype=torch.float).unsqueeze(1)  # (seq_len, 1)
-        # Create a tensor of shape (d_model) for every embedding
-        # the using exp and log leads to the same result but makes the computation numerically
-        # more stable
-        div_term = torch.exp(torch.arange(0, d_model, 2).float() * (-math.log(10000.0) / d_model))  # (d_model / 2)
 
-        # Compute sine-function for even indices
-        positional_encoding[:, 0::2] = torch.sin(position * div_term)  # sin(position * (10000 ** (2i / d_model))
+        # create a tensor of shape (seq_len)
+        position = torch.arange(0, seq_len, dtype=torch.float).unsqueeze(1)  # (seq_len, 1)
+
+        # create a tensor of shape (d_model) for every embedding
+        # the using exp and log leads to the same result but makes the computation numerically (better stability
+        # https://kazemnejad.com/blog/transformer_architecture_positional_encoding/ and
+        # https://ai.stackexchange.com/questions/41670/why-use-exponential-and-log-in-positional-encoding-of-transformer
+        denominator = torch.exp(torch.arange(0, d_model, 2).float() * (-math.log(10000.0) / d_model))  # (d_model / 2)
+
+        # compute sine-function for even indices
+        positional_encoding[:, 0::2] = torch.sin(position * denominator)  # sin(position / (10000 ** (2i / d_model))
         # Compute cosine-function for odd indices
-        positional_encoding[:, 1::2] = torch.cos(position * div_term)  # cos(position * (10000 ** (2i / d_model))
+        positional_encoding[:, 1::2] = torch.cos(position * denominator)  # cos(position / (10000 ** (2i / d_model))
+
         # Add a batch dimension to the positional encoding
         positional_encoding = positional_encoding.unsqueeze(0)  # (1, seq_len, d_model)
-        # Register the positional encoding as a buffer
+
+        # register the positional encoding as a buffer - registering store the positional encoding with the model during
+        # model save
         self.register_buffer('positional_encoding', positional_encoding)
 
     def forward(self, x):
