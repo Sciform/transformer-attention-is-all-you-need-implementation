@@ -5,5 +5,7 @@ datasets
 tokenizers
 tqdm
 torchmetrics
+altair
+ipykernel
 setuptools
 packaging

@@ -191,8 +191,43 @@ def create_transformer(src_vocab_size: int,
     return transformer
 
 
-def get_model(config, vocab_src_len, vocab_tgt_len):
+def get_transformer_model(config, vocab_src_len, vocab_tgt_len):
     
     model = create_transformer(vocab_src_len, vocab_tgt_len, config["seq_len"], config['seq_len'],
                                d_model=config['d_model'])
     return model
+
+
+
+class TransformerModel(nn.Module):
+    
+    def __init__(self, 
+                 config,
+                 num_stacks: int = 6,
+                 h: int = 8,
+                 dropout: float = 0.1,
+                 d_ff: int = 2048) -> None:
+        super().__init__()
+        self.__src_seq_length = config["seq_len"]
+        self.__tgt_seq_length = config["seq_len"]
+        self.__d_model = config['d_model']
+        self.__num_stacks = num_stacks
+        self.__h = h
+        self.__dropout = dropout
+        self.__d_ff = d_ff
+        self.__transformer_model = None
+        
+        
+    def create_transformer(self):
+        
+        
+        self.__init_parameters()
+    
+    
+    def __init_parameters(self):
+        
+        # Initialize the parameters of the transformer
+        for p in self.parameters():
+            if p.dim() > 1:
+                nn.init.xavier_uniform_(p)
+        

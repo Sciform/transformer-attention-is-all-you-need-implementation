@@ -16,7 +16,7 @@ class TextEmbeddings(nn.Module):
     def __init__(self,
                  d_model: int,
                  dictionary_size: int) -> None:
-        super(TextEmbeddings, self).__init__()
+        super().__init__()
         self.__d_model = d_model
         self.__embedding = nn.Embedding(dictionary_size, d_model)
 
@@ -39,7 +39,7 @@ class PositionalEncoding(nn.Module):
                  d_model: int,
                  seq_len: int,
                  drop_out: float) -> None:
-        super(PositionalEncoding, self).__init__()
+        super().__init__()
 
         self.__drop_out_layer = nn.Dropout(drop_out)
 
@@ -88,7 +88,10 @@ class PositionalEncoding(nn.Module):
 
 class MultiHeadAttention(nn.Module):
 
-    def __init__(self, d_model: int, num_heads: int, dropout: float) -> None:
+    def __init__(self, 
+                 d_model: int, 
+                 num_heads: int, 
+                 dropout: float) -> None:
         super().__init__()
         self.__d_model = d_model  # num of embeddings
         self.__num_heads = num_heads  # number of heads
@@ -155,7 +158,8 @@ class LayerNormalization(nn.Module):
 
     """
 
-    def __init__(self, eps: float = 10 ** -6) -> None:
+    def __init__(self, 
+                 eps: float = 10 ** -6) -> None:
         super().__init__()
         self.__eps = eps # to avoid division by zero
         # to provide a scaling option for the model (check this)
@@ -181,7 +185,8 @@ class ResidualConnection(nn.Module):
 
     """
 
-    def __init__(self, dropout: float) -> None:
+    def __init__(self, 
+                 dropout: float) -> None:
         super().__init__()
         self.dropout = nn.Dropout(dropout)
         self.norm = LayerNormalization()
@@ -195,7 +200,10 @@ class ResidualConnection(nn.Module):
 
 class FeedForwardBlock(nn.Module):
 
-    def __init__(self, d_model: int, d_ff: int, dropout: float) -> None:
+    def __init__(self, 
+                 d_model: int, 
+                 d_ff: int, 
+                 dropout: float) -> None:
         super().__init__()
         self.__linear_layer_1 = nn.Linear(d_model, d_ff)  # w1 and b1
         self.__dropout = nn.Dropout(dropout)
@@ -208,7 +216,9 @@ class FeedForwardBlock(nn.Module):
 
 class ProjectionLayer(nn.Module):
 
-    def __init__(self, d_model, vocab_size) -> None:
+    def __init__(self, 
+                 d_model, 
+                 vocab_size) -> None:
         super().__init__()
         self.__projection = nn.Linear(d_model, vocab_size)
 

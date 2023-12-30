@@ -5,7 +5,7 @@ def get_model_config():
     return {
         "lang_src": "en",
         "lang_tgt": "it",
-        "batch_size": 2,        # adjust if too large for GPU
+        "batch_size": 8,        # adjust if too large for GPU
         "num_epochs": 3,
         "lr": 10**-4,
         "seq_len": 480,

@@ -8,7 +8,7 @@ from tqdm import tqdm
 
 from src.config.model_config import get_saved_model_file_path
 from src.data_handler.data_loader import create_tokenizers_dataloaders
-from src.model.transformer_model import get_model
+from src.model.transformer_model import get_transformer_model
 from src.trainer.transformer_validator import TransformerValidator
 
 
@@ -28,17 +28,17 @@ class TransformerTrainer:
         # get data loaders and tokenizers
         train_dataloader, val_dataloader, tokenizer_src, tokenizer_tgt = create_tokenizers_dataloaders(config)
 
-        model = get_model(config, tokenizer_src.get_vocab_size(), tokenizer_tgt.get_vocab_size()).to(device)
+        transformer_model = get_transformer_model(config, tokenizer_src.get_vocab_size(), tokenizer_tgt.get_vocab_size()).to(device)
 
         # get tensorboard writer
         writer = SummaryWriter(config['experiment_name'])
 
         # specify Adom optimizer
-        optimizer = torch.optim.Adam(model.parameters(), lr=config['lr'], eps=1e-9)
+        optimizer = torch.optim.Adam(transformer_model.parameters(), lr=config['lr'], eps=1e-9)
 
         trans_val = TransformerValidator()
 
-        print("Configure model")
+        print("Configure transformer_model")
         # If the user specified a model to preload before training, load it
         initial_epoch = 0
         global_step = 0
@@ -46,7 +46,7 @@ class TransformerTrainer:
             model_filename = get_saved_model_file_path(config, config['preload'])
             print(f'Preloading model {model_filename}')
             state = torch.load(model_filename)
-            model.load_state_dict(state['model_state_dict'])
+            transformer_model.load_state_dict(state['model_state_dict'])
             initial_epoch = state['epoch'] + 1
             optimizer.load_state_dict(state['optimizer_state_dict'])
             global_step = state['global_step']
@@ -57,7 +57,7 @@ class TransformerTrainer:
         for epoch in range(initial_epoch, config['num_epochs']):
 
             torch.cuda.empty_cache()
-            model.train()
+            transformer_model.train()
 
             batch_iterator = tqdm(train_dataloader, desc=f"Processing Epoch {epoch:02d}")
 
@@ -68,10 +68,10 @@ class TransformerTrainer:
                 decoder_mask = batch['decoder_mask'].to(device)  # (B, 1, seq_len, seq_len)
 
                 # Run the tensors through the encoder, decoder and the projection layer
-                encoder_output = model.encode(encoder_input, encoder_mask)  # (B, seq_len, d_model)
-                decoder_output = model.decode(encoder_output, encoder_mask, decoder_input,
+                encoder_output = transformer_model.encode(encoder_input, encoder_mask)  # (B, seq_len, d_model)
+                decoder_output = transformer_model.decode(encoder_output, encoder_mask, decoder_input,
                                               decoder_mask)  # (B, seq_len, d_model)
-                proj_output = model.project(decoder_output)  # (B, seq_len, vocab_size)
+                proj_output = transformer_model.project(decoder_output)  # (B, seq_len, vocab_size)
 
                 # Compare the output with the label
                 label = batch['label'].to(device)  # (B, seq_len)
@@ -94,14 +94,14 @@ class TransformerTrainer:
                 global_step += 1
 
             # perform validation at the end of every epoch
-            trans_val.perform_validation(model, val_dataloader, tokenizer_src, tokenizer_tgt, config['seq_len'], device,
+            trans_val.perform_validation(transformer_model, val_dataloader, tokenizer_src, tokenizer_tgt, config['seq_len'], device,
                                         lambda msg: batch_iterator.write(msg), global_step, writer)
 
             # save the model at the end of every epoch
             model_filename = get_saved_model_file_path(config, f"{epoch:03d}")
             torch.save({
                 'epoch': epoch,
-                'model_state_dict': model.state_dict(),
+                'model_state_dict': transformer_model.state_dict(),
                 'optimizer_state_dict': optimizer.state_dict(),
                 'global_step': global_step
             }, model_filename)
