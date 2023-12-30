@@ -3,8 +3,8 @@ from pathlib import Path
 
 def get_model_config():
     return {
-        "lang_src": "de",
-        "lang_tgt": "en",
+        "lang_src": "en",
+        "lang_tgt": "it",
         "batch_size": 2,        # adjust if too large for GPU
         "num_epochs": 3,
         "lr": 10**-4,
