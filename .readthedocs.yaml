@@ -5,5 +5,5 @@ build:
   tools:
     python: "3.11"
 
-sphinx:
+doxygen:
   configuration: docs/source/conf.py

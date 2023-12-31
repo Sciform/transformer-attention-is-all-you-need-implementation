@@ -6,7 +6,7 @@ import torch.nn as nn
 
 class TokenEmbeddings(nn.Module):
     """
-    The token embeddings modul is a tensor that learns "d_model"
+    The token embeddings layer refers to a tensor that learns "d_model"
     embeddings (= features) for every token in a fixed size dictionary.
 
     """
@@ -26,6 +26,8 @@ class TokenEmbeddings(nn.Module):
         dim(num_batch, sequence_length, d_model) is
         performed
         The embedding tensor is multiply by sqrt(d_model) to scale the embeddings.
+        The original paper does not explain why the scaling is applied.
+        https://datascience.stackexchange.com/questions/87906/transformer-model-why-are-word-embeddings-scaled-before-adding-positional-encod
 
         :param x: source or target token sequences in a batch to be embedded
         :return: learned "d_model" embeddings for every token in the dictionary

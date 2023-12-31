@@ -21,7 +21,7 @@ class EncoderStackOld(nn.Module):
         """
 
         :param x:
-        :param src_mask: the source mask avoids that actual tokens interact with padding token <PAD>
+        :param src_mask: the source mask avoids that actual tokens interact with padding token \<PAD\>
         :return:
         """
         # multi head self attention, add & norm
