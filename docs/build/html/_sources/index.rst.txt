@@ -7,13 +7,14 @@ Welcome to Transformer - Attention is all you need's documentation!
 ===================================================================
 
 .. note::
-   This project is still under active development. We will let you know as soon as it is completed
+   This project is still under active development. 
+   We will let you know as soon as it is completed.
+   Stay tuned!
 
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
-
 
 
 Indices and tables
