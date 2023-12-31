@@ -6,6 +6,10 @@
 Welcome to Transformer - Attention is all you need's documentation!
 ===================================================================
 
+.. note::
+   This project is still under active development. We will let you know as soon as it is completed
+
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
