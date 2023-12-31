@@ -20,8 +20,10 @@ class TokenEmbeddings(nn.Module):
 
     def forward(self, x):
         """
-        For every token in a token sequence of a batch of token sequences x "d_model" embeddings are learned.
-        A map x with dim(num_batch, sequence_length) to embeddings tensor with dim(num_batch, sequence_length, d_model) is
+        For every token in a token sequence of a batch of token sequences x "d_model" 
+        embeddings are learned.
+        A map x with dim(num_batch, sequence_length) to embeddings tensor with 
+        dim(num_batch, sequence_length, d_model) is
         performed
         The embedding tensor is multiply by sqrt(d_model) to scale the embeddings.
 
