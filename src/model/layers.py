@@ -4,31 +4,29 @@ import torch
 import torch.nn as nn
 
 
-class TextEmbeddings(nn.Module):
+class TokenEmbeddings(nn.Module):
     """
-    The text embeddings modul is a tensor that stores "d_model"
-    embeddings of a fixed size dictionary.
-
-    This embedding module is used to store word embeddings for every token
-    index in the dictionary.
+    The token embeddings modul is a tensor that learns "d_model"
+    embeddings (= features) for every token in a fixed size dictionary.
 
     """
     def __init__(self,
                  d_model: int,
                  dictionary_size: int) -> None:
         super().__init__()
-        self.__d_model = d_model
-        self.__embedding = nn.Embedding(dictionary_size, d_model)
+        
+        self.__d_model = d_model                                        # number of features
+        self.__embedding = nn.Embedding(dictionary_size, d_model)       # embedding layer
 
     def forward(self, x):
         """
-        What is x - map between token and dictionary index ?
-        Num_batch contains a number of token sequences.
-        (num_batch, sequence_length) --> (num_batch, sequence_length, d_model)
-        Multiply by sqrt(d_model) to scale the embeddings according to the paper
+        For every token in a token sequence of a batch of token sequences x "d_model" embeddings are learned.
+        A map x with dim(num_batch, sequence_length) to embeddings tensor with dim(num_batch, sequence_length, d_model) is
+        performed
+        The embedding tensor is multiply by sqrt(d_model) to scale the embeddings.
 
-        :param x:
-        :return:
+        :param x: source or target token sequences in a batch to be embedded
+        :return: learned "d_model" embeddings for every token in the dictionary
         """
         return self.__embedding(x) * math.sqrt(self.__d_model)
 

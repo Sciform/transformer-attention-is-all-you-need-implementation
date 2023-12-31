@@ -2,10 +2,10 @@
 import torch
 import torch.nn as nn
 
-from src.model.layers import MultiHeadAttention, ResidualConnection, LayerNormalization, FeedForwardBlock, TextEmbeddings, PositionalEncoding, ProjectionLayer
+from src.model.layers import MultiHeadAttention, ResidualConnection, LayerNormalization, FeedForwardBlock, TokenEmbeddings, PositionalEncoding, ProjectionLayer
 
 
-class EncoderStack(nn.Module):
+class EncoderStackOld(nn.Module):
 
     def __init__(self,
                  self_attention_block: MultiHeadAttention,
@@ -95,8 +95,8 @@ class Transformer(nn.Module):
     def __init__(self,
                  encoder: Encoder,
                  decoder: Decoder,
-                 src_embed: TextEmbeddings,
-                 tgt_embed: TextEmbeddings,
+                 src_embed: TokenEmbeddings,
+                 tgt_embed: TokenEmbeddings,
                  src_pos: PositionalEncoding,
                  tgt_pos: PositionalEncoding,
                  projection_layer: ProjectionLayer) -> None:
@@ -145,8 +145,8 @@ def create_transformer(src_vocab_size: int,
                        d_ff: int = 2048) -> Transformer:
 
     # Create the embedding layers
-    src_embed = TextEmbeddings(d_model, src_vocab_size)
-    tgt_embed = TextEmbeddings(d_model, tgt_vocab_size)
+    src_embed = TokenEmbeddings(d_model, src_vocab_size)
+    tgt_embed = TokenEmbeddings(d_model, tgt_vocab_size)
 
     # Create the positional encoding layers
     src_pos = PositionalEncoding(d_model, src_seq_len, dropout)
@@ -157,7 +157,7 @@ def create_transformer(src_vocab_size: int,
     for _ in range(num_stacks):
         encoder_self_attention_block = MultiHeadAttention(d_model, h, dropout)
         feed_forward_block = FeedForwardBlock(d_model, d_ff, dropout)
-        encoder_block = EncoderStack(encoder_self_attention_block, feed_forward_block, dropout)
+        encoder_block = EncoderStackOld(encoder_self_attention_block, feed_forward_block, dropout)
         encoder_blocks.append(encoder_block)
 
     # Create decoder stacks

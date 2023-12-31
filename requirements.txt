@@ -9,3 +9,4 @@ altair
 ipykernel
 setuptools
 packaging
+sphinx
