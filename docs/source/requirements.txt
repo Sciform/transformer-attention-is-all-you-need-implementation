@@ -1,3 +1,11 @@
+torch
+tensorboard
+torch-tb-profiler
+datasets
+tokenizers
+tqdm
+torchmetrics
+altair
 sphinx
 sphinx-autodoc-typehints 
 sphinx_rtd_theme
