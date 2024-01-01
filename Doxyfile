@@ -74,7 +74,7 @@ PROJECT_ICON           =
 # entered, it will be relative to the location where doxygen was started. If
 # left blank the current directory will be used.
 
-OUTPUT_DIRECTORY       = docs
+OUTPUT_DIRECTORY       = docs-doxy
 
 # If the CREATE_SUBDIRS tag is set to YES then doxygen will create up to 4096
 # sub-directories (in 2 levels) under the output directory of each output format
@@ -1365,7 +1365,7 @@ HTML_FILE_EXTENSION    = .html
 # of the possible markers and block names see the documentation.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_HEADER            = docs/awesome-theme/header.html
+HTML_HEADER            = docs-doxy/awesome-theme/header.html
 
 # The HTML_FOOTER tag can be used to specify a user-defined HTML footer for each
 # generated HTML page. If the tag is left blank doxygen will generate a standard
@@ -1405,10 +1405,10 @@ HTML_STYLESHEET        =
 # documentation.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_EXTRA_STYLESHEET  = docs/awesome-theme/doxygen-awesome.css \
-                         docs/awesome-theme/doxygen-custom/custom.css \
-                         docs/awesome-theme/doxygen-awesome-sidebar-only.css \
-                         docs/awesome-theme/doxygen-awesome-sidebar-only-darkmode-toggle.css
+HTML_EXTRA_STYLESHEET  = docs-doxy/awesome-theme/doxygen-awesome.css \
+                         docs-doxy/awesome-theme/doxygen-custom/custom.css \
+                         docs-doxy/awesome-theme/doxygen-awesome-sidebar-only.css \
+                         docs-doxy/awesome-theme/doxygen-awesome-sidebar-only-darkmode-toggle.css
 
 # The HTML_EXTRA_FILES tag can be used to specify one or more extra images or
 # other source files which should be copied to the HTML output directory. Note
@@ -1418,7 +1418,7 @@ HTML_EXTRA_STYLESHEET  = docs/awesome-theme/doxygen-awesome.css \
 # files will be copied as-is; there are no commands or markers available.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_EXTRA_FILES       = docs/awesome-theme/doxygen-awesome-darkmode-toggle.js
+HTML_EXTRA_FILES       = docs-doxy/awesome-theme/doxygen-awesome-darkmode-toggle.js
 
 # The HTML_COLORSTYLE tag can be used to specify if the generated HTML output
 # should be rendered with a dark or light theme.

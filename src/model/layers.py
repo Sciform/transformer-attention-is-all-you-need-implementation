@@ -71,9 +71,8 @@ class PositionalEncoding(nn.Module):
         # register the positional encoding as a buffer - registering store the positional encoding with the model during
         # model save
         self.register_buffer('positional_encoding', positional_encoding)
-
+        
     def forward(self, x):
-
         """
         Adds the positional encoding to the previous encoding tensor, which usually contains
         the input encoding. The shape of the positional encoding tensor is
@@ -89,7 +88,7 @@ class PositionalEncoding(nn.Module):
         x = x + (self.positional_encoding[:, :x.shape[1], :]).requires_grad_(False)
 
         return self.__drop_out_layer(x)
-
+    
 
 class MultiHeadAttention(nn.Module):
 
