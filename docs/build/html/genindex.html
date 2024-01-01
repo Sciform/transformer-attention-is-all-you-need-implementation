@@ -1,0 +1,1989 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Index &#8212; Transformer Implementation 0.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/pydata-custom.css?v=c27e38e3" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script src="_static/documentation_options.js?v=2709fde1"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'genindex';</script>
+    <link rel="index" title="Index" href="#" />
+    <link rel="search" title="Search" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/LogoCantarell64_PlainCompanyName.png" class="logo__image only-light" alt="Transformer Implementation 0.1 documentation - Home"/>
+    <script>document.write(`<img src="_static/LogoCantarell64_PlainCompanyName.png" class="logo__image only-dark" alt="Transformer Implementation 0.1 documentation - Home"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Home page
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="_autosummary/src.html">
+                        Code Doc
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Home page
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="_autosummary/src.html">
+                        Code Doc
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article"></div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+
+<h1 id="index">Index</h1>
+
+<div class="genindex-jumpbox">
+ <a href="#A"><strong>A</strong></a>
+ | <a href="#B"><strong>B</strong></a>
+ | <a href="#C"><strong>C</strong></a>
+ | <a href="#D"><strong>D</strong></a>
+ | <a href="#E"><strong>E</strong></a>
+ | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
+ | <a href="#H"><strong>H</strong></a>
+ | <a href="#I"><strong>I</strong></a>
+ | <a href="#L"><strong>L</strong></a>
+ | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
+ | <a href="#P"><strong>P</strong></a>
+ | <a href="#R"><strong>R</strong></a>
+ | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
+ | <a href="#X"><strong>X</strong></a>
+ | <a href="#Z"><strong>Z</strong></a>
+ 
+</div>
+<h2 id="A">A</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.add_module">add_module() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.add_module">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.add_module">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.add_module">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.add_module">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.add_module">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.add_module">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.add_module">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.add_module">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.add_module">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.add_module">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.add_module">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.add_module">(TransformerModel method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.apply">apply() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.apply">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.apply">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.apply">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.apply">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.apply">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.apply">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.apply">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.apply">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.apply">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.apply">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.apply">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.apply">(TransformerModel method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="B">B</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.bfloat16">bfloat16() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.bfloat16">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.bfloat16">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.bfloat16">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.bfloat16">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.bfloat16">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.bfloat16">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.bfloat16">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.bfloat16">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.bfloat16">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.bfloat16">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.bfloat16">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.bfloat16">(TransformerModel method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.buffers">buffers() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.buffers">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.buffers">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.buffers">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.buffers">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.buffers">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.buffers">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.buffers">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.buffers">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.buffers">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.buffers">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.buffers">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.buffers">(TransformerModel method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="C">C</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/src.data_handler.masks.causal_mask.html#src.data_handler.masks.causal_mask">causal_mask() (in module src.data_handler.masks)</a>
+</li>
+      <li><a href="_autosummary/src.data_handler.data_tokenizer.check_max_seq_length.html#src.data_handler.data_tokenizer.check_max_seq_length">check_max_seq_length() (in module src.data_handler.data_tokenizer)</a>
+</li>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.children">children() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.children">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.children">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.children">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.children">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.children">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.children">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.children">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.children">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.children">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.children">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.children">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.children">(TransformerModel method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.compile">compile() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.compile">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.compile">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.compile">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.compile">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.compile">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.compile">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.compile">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.compile">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.compile">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.compile">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.compile">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.compile">(TransformerModel method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.cpu">cpu() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.cpu">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.cpu">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.cpu">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.cpu">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.cpu">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.cpu">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.cpu">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.cpu">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.cpu">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.cpu">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.cpu">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.cpu">(TransformerModel method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/src.data_handler.data_loader.create_tokenizers_dataloaders.html#src.data_handler.data_loader.create_tokenizers_dataloaders">create_tokenizers_dataloaders() (in module src.data_handler.data_loader)</a>
+</li>
+      <li><a href="_autosummary/src.model.transformer_model.create_transformer.html#src.model.transformer_model.create_transformer">create_transformer() (in module src.model.transformer_model)</a>
+</li>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.cuda">cuda() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.cuda">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.cuda">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.cuda">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.cuda">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.cuda">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.cuda">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.cuda">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.cuda">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.cuda">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.cuda">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.cuda">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.cuda">(TransformerModel method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder">Decoder (class in src.model.transformer_model)</a>
+</li>
+      <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack">DecoderStack (class in src.model.transformer_model)</a>
+</li>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.double">double() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.double">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.double">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.double">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.double">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.double">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.double">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.double">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.double">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.double">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.double">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.double">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.double">(TransformerModel method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder">Encoder (class in src.model.transformer_model)</a>
+</li>
+      <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld">EncoderStackOld (class in src.model.transformer_model)</a>
+</li>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.eval">eval() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.eval">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.eval">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.eval">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.eval">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.eval">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.eval">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.eval">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.eval">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.eval">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.eval">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.eval">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.eval">(TransformerModel method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.extra_repr">extra_repr() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.extra_repr">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.extra_repr">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.extra_repr">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.extra_repr">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.extra_repr">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.extra_repr">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.extra_repr">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.extra_repr">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.extra_repr">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.extra_repr">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.extra_repr">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.extra_repr">(TransformerModel method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock">FeedForwardBlock (class in src.model.layers)</a>
+</li>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.float">float() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.float">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.float">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.float">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.float">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.float">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.float">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.float">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.float">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.float">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.float">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.float">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.float">(TransformerModel method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.forward">forward() (DecoderStack method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.forward">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.forward">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.forward">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.forward">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.forward">(TransformerModel method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/src.data_handler.data_tokenizer.get_all_text_sequences_form_dataset_in_language.html#src.data_handler.data_tokenizer.get_all_text_sequences_form_dataset_in_language">get_all_text_sequences_form_dataset_in_language() (in module src.data_handler.data_tokenizer)</a>
+</li>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.get_buffer">get_buffer() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.get_buffer">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.get_buffer">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.get_buffer">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.get_buffer">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.get_buffer">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.get_buffer">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.get_buffer">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.get_buffer">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.get_buffer">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.get_buffer">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.get_buffer">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.get_buffer">(TransformerModel method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.get_extra_state">get_extra_state() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.get_extra_state">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.get_extra_state">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.get_extra_state">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.get_extra_state">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.get_extra_state">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.get_extra_state">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.get_extra_state">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.get_extra_state">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.get_extra_state">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.get_extra_state">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.get_extra_state">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.get_extra_state">(TransformerModel method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/src.config.model_config.get_model_config.html#src.config.model_config.get_model_config">get_model_config() (in module src.config.model_config)</a>
+</li>
+      <li><a href="_autosummary/src.data_handler.data_tokenizer.get_or_create_tokenizer.html#src.data_handler.data_tokenizer.get_or_create_tokenizer">get_or_create_tokenizer() (in module src.data_handler.data_tokenizer)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.get_parameter">get_parameter() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.get_parameter">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.get_parameter">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.get_parameter">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.get_parameter">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.get_parameter">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.get_parameter">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.get_parameter">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.get_parameter">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.get_parameter">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.get_parameter">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.get_parameter">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.get_parameter">(TransformerModel method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/src.data_handler.data_loader.get_raw_data_opus_books.html#src.data_handler.data_loader.get_raw_data_opus_books">get_raw_data_opus_books() (in module src.data_handler.data_loader)</a>
+</li>
+      <li><a href="_autosummary/src.config.model_config.get_saved_model_file_path.html#src.config.model_config.get_saved_model_file_path">get_saved_model_file_path() (in module src.config.model_config)</a>
+</li>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.get_submodule">get_submodule() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.get_submodule">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.get_submodule">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.get_submodule">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.get_submodule">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.get_submodule">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.get_submodule">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.get_submodule">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.get_submodule">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.get_submodule">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.get_submodule">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.get_submodule">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.get_submodule">(TransformerModel method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/src.model.transformer_model.get_transformer_model.html#src.model.transformer_model.get_transformer_model">get_transformer_model() (in module src.model.transformer_model)</a>
+</li>
+      <li><a href="_autosummary/src.model.greedy_decoder.GreedyDecoder.html#src.model.greedy_decoder.GreedyDecoder">GreedyDecoder (class in src.model.greedy_decoder)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="H">H</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.half">half() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.half">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.half">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.half">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.half">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.half">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.half">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.half">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.half">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.half">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.half">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.half">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.half">(TransformerModel method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.ipu">ipu() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.ipu">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.ipu">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.ipu">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.ipu">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.ipu">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.ipu">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.ipu">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.ipu">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.ipu">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.ipu">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.ipu">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.ipu">(TransformerModel method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization">LayerNormalization (class in src.model.layers)</a>
+</li>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.load_state_dict">load_state_dict() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.load_state_dict">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.load_state_dict">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.load_state_dict">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.load_state_dict">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.load_state_dict">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.load_state_dict">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.load_state_dict">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.load_state_dict">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.load_state_dict">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.load_state_dict">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.load_state_dict">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.load_state_dict">(TransformerModel method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="M">M</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    module
+
+      <ul>
+        <li><a href="_autosummary/src.html#module-src">src</a>
+</li>
+        <li><a href="_autosummary/src.config.html#module-src.config">src.config</a>
+</li>
+        <li><a href="_autosummary/src.config.model_config.html#module-src.config.model_config">src.config.model_config</a>
+</li>
+        <li><a href="_autosummary/src.data_handler.html#module-src.data_handler">src.data_handler</a>
+</li>
+        <li><a href="_autosummary/src.data_handler.data_loader.html#module-src.data_handler.data_loader">src.data_handler.data_loader</a>
+</li>
+        <li><a href="_autosummary/src.data_handler.data_tokenizer.html#module-src.data_handler.data_tokenizer">src.data_handler.data_tokenizer</a>
+</li>
+        <li><a href="_autosummary/src.data_handler.masks.html#module-src.data_handler.masks">src.data_handler.masks</a>
+</li>
+        <li><a href="_autosummary/src.data_handler.two_language_data_set.html#module-src.data_handler.two_language_data_set">src.data_handler.two_language_data_set</a>
+</li>
+        <li><a href="_autosummary/src.model.html#module-src.model">src.model</a>
+</li>
+        <li><a href="_autosummary/src.model.greedy_decoder.html#module-src.model.greedy_decoder">src.model.greedy_decoder</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.html#module-src.model.layers">src.model.layers</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.html#module-src.model.transformer_model">src.model.transformer_model</a>
+</li>
+        <li><a href="_autosummary/src.trainer.html#module-src.trainer">src.trainer</a>
+</li>
+        <li><a href="_autosummary/src.trainer.transformer_trainer.html#module-src.trainer.transformer_trainer">src.trainer.transformer_trainer</a>
+</li>
+        <li><a href="_autosummary/src.trainer.transformer_validator.html#module-src.trainer.transformer_validator">src.trainer.transformer_validator</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.modules">modules() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.modules">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.modules">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.modules">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.modules">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.modules">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.modules">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.modules">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.modules">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.modules">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.modules">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.modules">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.modules">(TransformerModel method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention">MultiHeadAttention (class in src.model.layers)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.named_buffers">named_buffers() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.named_buffers">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.named_buffers">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.named_buffers">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.named_buffers">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.named_buffers">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.named_buffers">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.named_buffers">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.named_buffers">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.named_buffers">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.named_buffers">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.named_buffers">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.named_buffers">(TransformerModel method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.named_children">named_children() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.named_children">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.named_children">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.named_children">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.named_children">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.named_children">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.named_children">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.named_children">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.named_children">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.named_children">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.named_children">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.named_children">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.named_children">(TransformerModel method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.named_modules">named_modules() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.named_modules">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.named_modules">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.named_modules">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.named_modules">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.named_modules">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.named_modules">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.named_modules">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.named_modules">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.named_modules">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.named_modules">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.named_modules">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.named_modules">(TransformerModel method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.named_parameters">named_parameters() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.named_parameters">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.named_parameters">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.named_parameters">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.named_parameters">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.named_parameters">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.named_parameters">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.named_parameters">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.named_parameters">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.named_parameters">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.named_parameters">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.named_parameters">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.named_parameters">(TransformerModel method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.parameters">parameters() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.parameters">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.parameters">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.parameters">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.parameters">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.parameters">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.parameters">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.parameters">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.parameters">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.parameters">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.parameters">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.parameters">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.parameters">(TransformerModel method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding">PositionalEncoding (class in src.model.layers)</a>
+</li>
+      <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer">ProjectionLayer (class in src.model.layers)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.register_backward_hook">register_backward_hook() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.register_backward_hook">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.register_backward_hook">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.register_backward_hook">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.register_backward_hook">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.register_backward_hook">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.register_backward_hook">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.register_backward_hook">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.register_backward_hook">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.register_backward_hook">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.register_backward_hook">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.register_backward_hook">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.register_backward_hook">(TransformerModel method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.register_buffer">register_buffer() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.register_buffer">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.register_buffer">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.register_buffer">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.register_buffer">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.register_buffer">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.register_buffer">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.register_buffer">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.register_buffer">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.register_buffer">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.register_buffer">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.register_buffer">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.register_buffer">(TransformerModel method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.register_forward_hook">register_forward_hook() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.register_forward_hook">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.register_forward_hook">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.register_forward_hook">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.register_forward_hook">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.register_forward_hook">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.register_forward_hook">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.register_forward_hook">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.register_forward_hook">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.register_forward_hook">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.register_forward_hook">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.register_forward_hook">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.register_forward_hook">(TransformerModel method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.register_forward_pre_hook">register_forward_pre_hook() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.register_forward_pre_hook">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.register_forward_pre_hook">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.register_forward_pre_hook">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.register_forward_pre_hook">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.register_forward_pre_hook">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.register_forward_pre_hook">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.register_forward_pre_hook">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.register_forward_pre_hook">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.register_forward_pre_hook">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.register_forward_pre_hook">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.register_forward_pre_hook">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.register_forward_pre_hook">(TransformerModel method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.register_full_backward_hook">register_full_backward_hook() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.register_full_backward_hook">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.register_full_backward_hook">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.register_full_backward_hook">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.register_full_backward_hook">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.register_full_backward_hook">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.register_full_backward_hook">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.register_full_backward_hook">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.register_full_backward_hook">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.register_full_backward_hook">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.register_full_backward_hook">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.register_full_backward_hook">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.register_full_backward_hook">(TransformerModel method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.register_full_backward_pre_hook">register_full_backward_pre_hook() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.register_full_backward_pre_hook">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.register_full_backward_pre_hook">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.register_full_backward_pre_hook">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.register_full_backward_pre_hook">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.register_full_backward_pre_hook">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.register_full_backward_pre_hook">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.register_full_backward_pre_hook">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.register_full_backward_pre_hook">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.register_full_backward_pre_hook">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.register_full_backward_pre_hook">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.register_full_backward_pre_hook">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.register_full_backward_pre_hook">(TransformerModel method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.register_load_state_dict_post_hook">register_load_state_dict_post_hook() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.register_load_state_dict_post_hook">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.register_load_state_dict_post_hook">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.register_load_state_dict_post_hook">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.register_load_state_dict_post_hook">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.register_load_state_dict_post_hook">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.register_load_state_dict_post_hook">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.register_load_state_dict_post_hook">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.register_load_state_dict_post_hook">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.register_load_state_dict_post_hook">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.register_load_state_dict_post_hook">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.register_load_state_dict_post_hook">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.register_load_state_dict_post_hook">(TransformerModel method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.register_module">register_module() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.register_module">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.register_module">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.register_module">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.register_module">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.register_module">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.register_module">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.register_module">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.register_module">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.register_module">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.register_module">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.register_module">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.register_module">(TransformerModel method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.register_parameter">register_parameter() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.register_parameter">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.register_parameter">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.register_parameter">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.register_parameter">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.register_parameter">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.register_parameter">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.register_parameter">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.register_parameter">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.register_parameter">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.register_parameter">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.register_parameter">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.register_parameter">(TransformerModel method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.register_state_dict_pre_hook">register_state_dict_pre_hook() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.register_state_dict_pre_hook">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.register_state_dict_pre_hook">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.register_state_dict_pre_hook">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.register_state_dict_pre_hook">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.register_state_dict_pre_hook">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.register_state_dict_pre_hook">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.register_state_dict_pre_hook">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.register_state_dict_pre_hook">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.register_state_dict_pre_hook">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.register_state_dict_pre_hook">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.register_state_dict_pre_hook">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.register_state_dict_pre_hook">(TransformerModel method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.requires_grad_">requires_grad_() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.requires_grad_">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.requires_grad_">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.requires_grad_">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.requires_grad_">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.requires_grad_">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.requires_grad_">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.requires_grad_">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.requires_grad_">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.requires_grad_">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.requires_grad_">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.requires_grad_">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.requires_grad_">(TransformerModel method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection">ResidualConnection (class in src.model.layers)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="S">S</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.set_extra_state">set_extra_state() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.set_extra_state">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.set_extra_state">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.set_extra_state">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.set_extra_state">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.set_extra_state">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.set_extra_state">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.set_extra_state">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.set_extra_state">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.set_extra_state">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.set_extra_state">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.set_extra_state">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.set_extra_state">(TransformerModel method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.share_memory">share_memory() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.share_memory">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.share_memory">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.share_memory">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.share_memory">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.share_memory">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.share_memory">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.share_memory">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.share_memory">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.share_memory">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.share_memory">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.share_memory">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.share_memory">(TransformerModel method)</a>
+</li>
+      </ul></li>
+      <li>
+    src
+
+      <ul>
+        <li><a href="_autosummary/src.html#module-src">module</a>
+</li>
+      </ul></li>
+      <li>
+    src.config
+
+      <ul>
+        <li><a href="_autosummary/src.config.html#module-src.config">module</a>
+</li>
+      </ul></li>
+      <li>
+    src.config.model_config
+
+      <ul>
+        <li><a href="_autosummary/src.config.model_config.html#module-src.config.model_config">module</a>
+</li>
+      </ul></li>
+      <li>
+    src.data_handler
+
+      <ul>
+        <li><a href="_autosummary/src.data_handler.html#module-src.data_handler">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    src.data_handler.data_loader
+
+      <ul>
+        <li><a href="_autosummary/src.data_handler.data_loader.html#module-src.data_handler.data_loader">module</a>
+</li>
+      </ul></li>
+      <li>
+    src.data_handler.data_tokenizer
+
+      <ul>
+        <li><a href="_autosummary/src.data_handler.data_tokenizer.html#module-src.data_handler.data_tokenizer">module</a>
+</li>
+      </ul></li>
+      <li>
+    src.data_handler.masks
+
+      <ul>
+        <li><a href="_autosummary/src.data_handler.masks.html#module-src.data_handler.masks">module</a>
+</li>
+      </ul></li>
+      <li>
+    src.data_handler.two_language_data_set
+
+      <ul>
+        <li><a href="_autosummary/src.data_handler.two_language_data_set.html#module-src.data_handler.two_language_data_set">module</a>
+</li>
+      </ul></li>
+      <li>
+    src.model
+
+      <ul>
+        <li><a href="_autosummary/src.model.html#module-src.model">module</a>
+</li>
+      </ul></li>
+      <li>
+    src.model.greedy_decoder
+
+      <ul>
+        <li><a href="_autosummary/src.model.greedy_decoder.html#module-src.model.greedy_decoder">module</a>
+</li>
+      </ul></li>
+      <li>
+    src.model.layers
+
+      <ul>
+        <li><a href="_autosummary/src.model.layers.html#module-src.model.layers">module</a>
+</li>
+      </ul></li>
+      <li>
+    src.model.transformer_model
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.html#module-src.model.transformer_model">module</a>
+</li>
+      </ul></li>
+      <li>
+    src.trainer
+
+      <ul>
+        <li><a href="_autosummary/src.trainer.html#module-src.trainer">module</a>
+</li>
+      </ul></li>
+      <li>
+    src.trainer.transformer_trainer
+
+      <ul>
+        <li><a href="_autosummary/src.trainer.transformer_trainer.html#module-src.trainer.transformer_trainer">module</a>
+</li>
+      </ul></li>
+      <li>
+    src.trainer.transformer_validator
+
+      <ul>
+        <li><a href="_autosummary/src.trainer.transformer_validator.html#module-src.trainer.transformer_validator">module</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.state_dict">state_dict() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.state_dict">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.state_dict">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.state_dict">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.state_dict">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.state_dict">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.state_dict">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.state_dict">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.state_dict">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.state_dict">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.state_dict">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.state_dict">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.state_dict">(TransformerModel method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.to">to() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.to">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.to">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.to">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.to">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.to">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.to">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.to">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.to">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.to">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.to">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.to">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.to">(TransformerModel method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.to_empty">to_empty() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.to_empty">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.to_empty">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.to_empty">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.to_empty">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.to_empty">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.to_empty">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.to_empty">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.to_empty">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.to_empty">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.to_empty">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.to_empty">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.to_empty">(TransformerModel method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings">TokenEmbeddings (class in src.model.layers)</a>
+</li>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.train">train() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.train">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.train">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.train">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.train">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.train">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.train">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.train">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.train">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.train">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.train">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.train">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.train">(TransformerModel method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer">Transformer (class in src.model.transformer_model)</a>
+</li>
+      <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel">TransformerModel (class in src.model.transformer_model)</a>
+</li>
+      <li><a href="_autosummary/src.trainer.transformer_trainer.TransformerTrainer.html#src.trainer.transformer_trainer.TransformerTrainer">TransformerTrainer (class in src.trainer.transformer_trainer)</a>
+</li>
+      <li><a href="_autosummary/src.trainer.transformer_validator.TransformerValidator.html#src.trainer.transformer_validator.TransformerValidator">TransformerValidator (class in src.trainer.transformer_validator)</a>
+</li>
+      <li><a href="_autosummary/src.data_handler.two_language_data_set.TwoLanguagesDataset.html#src.data_handler.two_language_data_set.TwoLanguagesDataset">TwoLanguagesDataset (class in src.data_handler.two_language_data_set)</a>
+</li>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.type">type() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.type">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.type">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.type">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.type">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.type">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.type">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.type">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.type">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.type">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.type">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.type">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.type">(TransformerModel method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="X">X</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.xpu">xpu() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.xpu">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.xpu">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.xpu">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.xpu">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.xpu">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.xpu">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.xpu">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.xpu">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.xpu">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.xpu">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.xpu">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.xpu">(TransformerModel method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Z">Z</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/src.model.transformer_model.Decoder.html#src.model.transformer_model.Decoder.zero_grad">zero_grad() (Decoder method)</a>
+
+      <ul>
+        <li><a href="_autosummary/src.model.transformer_model.DecoderStack.html#src.model.transformer_model.DecoderStack.zero_grad">(DecoderStack method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Encoder.html#src.model.transformer_model.Encoder.zero_grad">(Encoder method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.EncoderStackOld.html#src.model.transformer_model.EncoderStackOld.zero_grad">(EncoderStackOld method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.FeedForwardBlock.html#src.model.layers.FeedForwardBlock.zero_grad">(FeedForwardBlock method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.LayerNormalization.html#src.model.layers.LayerNormalization.zero_grad">(LayerNormalization method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.MultiHeadAttention.html#src.model.layers.MultiHeadAttention.zero_grad">(MultiHeadAttention method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.zero_grad">(PositionalEncoding method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ProjectionLayer.html#src.model.layers.ProjectionLayer.zero_grad">(ProjectionLayer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.ResidualConnection.html#src.model.layers.ResidualConnection.zero_grad">(ResidualConnection method)</a>
+</li>
+        <li><a href="_autosummary/src.model.layers.TokenEmbeddings.html#src.model.layers.TokenEmbeddings.zero_grad">(TokenEmbeddings method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.Transformer.html#src.model.transformer_model.Transformer.zero_grad">(Transformer method)</a>
+</li>
+        <li><a href="_autosummary/src.model.transformer_model.TransformerModel.html#src.model.transformer_model.TransformerModel.zero_grad">(TransformerModel method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, Ursula Maria Mayer, Sciform GmbH.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
