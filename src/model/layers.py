@@ -29,8 +29,11 @@ class TokenEmbeddings(nn.Module):
         The original paper does not explain why the scaling is applied.
         https://datascience.stackexchange.com/questions/87906/transformer-model-why-are-word-embeddings-scaled-before-adding-positional-encod
 
-        :param x: source or target token sequences in a batch to be embedded
-        :return: learned "d_model" embeddings for every token in the dictionary
+    
+        @param x : batch o token sequences (tensor with dim(num_batch, sequence_length))
+        
+        @return
+            learned "d_model" embeddings for every token in the dictionary
         """
         return self.__embedding(x) * math.sqrt(self.__d_model)
 
