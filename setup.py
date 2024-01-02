@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='transformer-attention-is-all-you-need-implementation',
-    version='0.0.1',
+    version='0.1.0',
     packages=['src', 'src.config', 'src.data_handler', 'src.model', 'src.trainer'],
     url='',
     license='MIT',
