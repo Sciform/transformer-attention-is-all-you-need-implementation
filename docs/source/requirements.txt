@@ -9,8 +9,8 @@ altair
 sphinx
 sphinx-autodoc-typehints 
 sphinx-copybutton
-nbsphinx
-pydata-sphinx-
 sphinx-design
 sphinx-favicon
+nbsphinx
+pydata-sphinx-theme
 ipykernel 
