@@ -10,5 +10,7 @@ sphinx
 sphinx-autodoc-typehints 
 sphinx-copybutton
 nbsphinx
-pydata-sphinx-theme
+pydata-sphinx-
+sphinx-design
+sphinx-favicon
 ipykernel 
