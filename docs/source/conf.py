@@ -62,7 +62,26 @@ html_css_files = ["readthedocs-custom.css"] # Override some CSS settings
 # Pydata theme
 html_theme = "pydata_sphinx_theme"
 html_logo = "_static/LogoCantarell64_PlainCompanyName.png"
-html_theme_options = { "show_prev_next": False}
+html_theme_options = { 
+    "show_prev_next": False,
+    # "announcement": "Here's a Announcement!</a>",
+    "external_links": [
+      {"name": "Sciform", "url": "https://sciform.com"}
+    ],
+    "icon_links": [
+        {
+            # Label for this link
+            "name": "GitHub",
+            # URL where the link will redirect
+            "url": "https://github.com/Sciform/transformer-attention-is-all-you-need-implementation",  # required
+            # Icon class (if "type": "fontawesome"), or path to local image (if "type": "local")
+            "icon": "fa-brands fa-square-github",
+            # The type of image to be used (see below for details)
+            "type": "fontawesome",
+        }
+   ]
+}
+                                
 html_css_files = ['pydata-custom.css']
 
 html_static_path = ['_static']

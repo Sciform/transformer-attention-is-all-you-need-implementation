@@ -28,7 +28,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/pydata-custom.css?v=c27e38e3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pydata-custom.css?v=3f612d79" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
@@ -142,10 +142,24 @@
   <ul class="bd-navbar-elements navbar-nav">
     
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../../api.html">
-                        <no title>
+                      <a class="nav-link nav-internal" href="../../../index.html">
+                        Introduction
                       </a>
                     </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../_autosummary/src.html">
+                        Code Reference
+                      </a>
+                    </li>
+                
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://sciform.com">
+                    Sciform
+                  </a>
+                </li>
                 
   </ul>
 </nav></div>
@@ -181,6 +195,22 @@ document.write(`
   </button>
 `);
 </script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Sciform/transformer-attention-is-all-you-need-implementation" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
       
     </div>
     
@@ -229,10 +259,24 @@ document.write(`
   <ul class="bd-navbar-elements navbar-nav">
     
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../../api.html">
-                        <no title>
+                      <a class="nav-link nav-internal" href="../../../index.html">
+                        Introduction
                       </a>
                     </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../_autosummary/src.html">
+                        Code Reference
+                      </a>
+                    </li>
+                
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://sciform.com">
+                    Sciform
+                  </a>
+                </li>
                 
   </ul>
 </nav></div>
@@ -254,6 +298,22 @@ document.write(`
   </button>
 `);
 </script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Sciform/transformer-attention-is-all-you-need-implementation" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
         
       </div>
     
@@ -348,9 +408,8 @@ document.write(`
 <span class="sd">        https://datascience.stackexchange.com/questions/87906/transformer-model-why-are-word-embeddings-scaled-before-adding-positional-encod</span>
 
 <span class="sd">    </span>
-<span class="sd">        @param x : batch o token sequences (tensor with dim(num_batch, sequence_length))</span>
-<span class="sd">        </span>
-<span class="sd">        @return</span>
+<span class="sd">        :param x : batch o token sequences (tensor with dim(num_batch, sequence_length))</span>
+<span class="sd">        :return</span>
 <span class="sd">            learned &quot;d_model&quot; embeddings for every token in the dictionary</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__embedding</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__d_model</span><span class="p">)</span></div>
@@ -393,7 +452,7 @@ document.write(`
         <span class="c1"># register the positional encoding as a buffer - registering store the positional encoding with the model during</span>
         <span class="c1"># model save</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s1">&#39;positional_encoding&#39;</span><span class="p">,</span> <span class="n">positional_encoding</span><span class="p">)</span>
-        
+    
 <div class="viewcode-block" id="PositionalEncoding.forward">
 <a class="viewcode-back" href="../../../_autosummary/src.model.layers.PositionalEncoding.html#src.model.layers.PositionalEncoding.forward">[docs]</a>
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>

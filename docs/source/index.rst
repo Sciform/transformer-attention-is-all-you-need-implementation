@@ -3,12 +3,18 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Sciform-transformer's documentation
+How to implement a transformer from scratch ?
 ===============================================
+
+
 
 .. toctree::
    :hidden:
 
-   Home page <self>
-   Code Doc <_autosummary/src>
+   Introduction <self>
+   Code Reference <_autosummary/src>
+
+
+..
+   https://github.com/pydata/pydata-sphinx-theme/blob/main/docs/user_guide/theme-elements.
 

@@ -29,7 +29,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../_static/pydata-custom.css?v=c27e38e3" />
+    <link rel="stylesheet" type="text/css" href="../_static/pydata-custom.css?v=3f612d79" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
@@ -146,16 +146,23 @@
     
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../index.html">
-                        Home page
+                        Introduction
                       </a>
                     </li>
                 
 
                     <li class="nav-item current active">
                       <a class="nav-link nav-internal" href="src.html">
-                        API reference
+                        Code Reference
                       </a>
                     </li>
+                
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://sciform.com">
+                    Sciform
+                  </a>
+                </li>
                 
   </ul>
 </nav></div>
@@ -191,6 +198,22 @@ document.write(`
   </button>
 `);
 </script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Sciform/transformer-attention-is-all-you-need-implementation" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
       
     </div>
     
@@ -244,16 +267,23 @@ document.write(`
     
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../index.html">
-                        Home page
+                        Introduction
                       </a>
                     </li>
                 
 
                     <li class="nav-item current active">
                       <a class="nav-link nav-internal" href="src.html">
-                        API reference
+                        Code Reference
                       </a>
                     </li>
+                
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://sciform.com">
+                    Sciform
+                  </a>
+                </li>
                 
   </ul>
 </nav></div>
@@ -275,6 +305,22 @@ document.write(`
   </button>
 `);
 </script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Sciform/transformer-attention-is-all-you-need-implementation" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
         
       </div>
     
@@ -833,11 +879,11 @@ performed
 The embedding tensor is multiply by sqrt(d_model) to scale the embeddings.
 The original paper does not explain why the scaling is applied.
 <a class="reference external" href="https://datascience.stackexchange.com/questions/87906/transformer-model-why-are-word-embeddings-scaled-before-adding-positional-encod">https://datascience.stackexchange.com/questions/87906/transformer-model-why-are-word-embeddings-scaled-before-adding-positional-encod</a></p>
-<p>&#64;param x : batch o token sequences (tensor with dim(num_batch, sequence_length))</p>
-<dl class="simple">
-<dt>&#64;return</dt><dd><p>learned “d_model” embeddings for every token in the dictionary</p>
-</dd>
-</dl>
+<p>:param x : batch o token sequences (tensor with dim(num_batch, sequence_length))
+:return</p>
+<blockquote>
+<div><p>learned “d_model” embeddings for every token in the dictionary</p>
+</div></blockquote>
 </dd></dl>
 
 <dl class="py method">

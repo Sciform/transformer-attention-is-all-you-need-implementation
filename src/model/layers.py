@@ -30,9 +30,8 @@ class TokenEmbeddings(nn.Module):
         https://datascience.stackexchange.com/questions/87906/transformer-model-why-are-word-embeddings-scaled-before-adding-positional-encod
 
     
-        @param x : batch o token sequences (tensor with dim(num_batch, sequence_length))
-        
-        @return
+        :param x : batch o token sequences (tensor with dim(num_batch, sequence_length))
+        :return
             learned "d_model" embeddings for every token in the dictionary
         """
         return self.__embedding(x) * math.sqrt(self.__d_model)
@@ -71,7 +70,7 @@ class PositionalEncoding(nn.Module):
         # register the positional encoding as a buffer - registering store the positional encoding with the model during
         # model save
         self.register_buffer('positional_encoding', positional_encoding)
-        
+    
     def forward(self, x):
         """
         Adds the positional encoding to the previous encoding tensor, which usually contains
