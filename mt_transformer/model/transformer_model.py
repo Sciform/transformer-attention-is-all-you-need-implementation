@@ -2,7 +2,7 @@
 import torch
 import torch.nn as nn
 
-from src.model.layers import MultiHeadAttention, ResidualConnection, LayerNormalization, FeedForwardBlock, TokenEmbeddings, PositionalEncoding, ProjectionLayer
+from mt_transformer.model.layers import MultiHeadAttention, ResidualConnection, LayerNormalization, FeedForwardBlock, TokenEmbeddings, PositionalEncoding, ProjectionLayer
 
 
 class EncoderStackOld(nn.Module):

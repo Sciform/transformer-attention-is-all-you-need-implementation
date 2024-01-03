@@ -6,10 +6,10 @@ import torch.nn as nn
 from torch.utils.tensorboard import SummaryWriter
 from tqdm import tqdm
 
-from src.config.model_config import get_saved_model_file_path
-from src.data_handler.data_loader import create_tokenizers_dataloaders
-from src.model.transformer_model import get_transformer_model
-from src.trainer.transformer_validator import TransformerValidator
+from mt_transformer.config.model_config import get_saved_model_file_path
+from mt_transformer.data_handler.data_loader import create_tokenizers_dataloaders
+from mt_transformer.model.transformer_model import get_transformer_model
+from mt_transformer.trainer.transformer_validator import TransformerValidator
 
 
 class TransformerTrainer:

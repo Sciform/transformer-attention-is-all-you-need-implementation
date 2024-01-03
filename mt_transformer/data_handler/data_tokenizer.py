@@ -25,7 +25,7 @@ def check_max_seq_length(ds_raw, tokenizer, language):
 
 
 def get_or_create_tokenizer(config, ds_raw, language):
-    tokenizer_path = Path(config['dictionary_file'].format(language))
+    tokenizer_path = Path("data \ "+ config['dictionary_file'].format(language))
     if not Path.exists(tokenizer_path):
         # Most code taken from: https://huggingface.co/docs/tokenizers/quicktour
         tokenizer = Tokenizer(WordLevel(unk_token="[UNK]"))

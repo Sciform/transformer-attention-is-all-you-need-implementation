@@ -1,12 +1,12 @@
 __author__ = '{Ursula Maria Mayer}'
-__copyright__ = 'Copyright {2023}, {Sciform GmbH}'
+__copyright__ = 'Copyright {2024}, {Sciform GmbH}'
 
 import os
 
 import torch
 import torchmetrics
 
-from src.model.greedy_decoder import GreedyDecoder
+from mt_transformer.model.greedy_decoder import GreedyDecoder
 
 
 class TransformerValidator:

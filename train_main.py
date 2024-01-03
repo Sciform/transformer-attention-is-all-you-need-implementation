@@ -2,8 +2,8 @@ import warnings
 import logging
 logging.basicConfig(level=logging.INFO)
 
-from src.config.model_config import get_model_config
-from src.trainer.transformer_trainer import TransformerTrainer
+from mt_transformer.config.model_config import get_model_config
+from mt_transformer.trainer.transformer_trainer import TransformerTrainer
 
 if __name__ == '__main__':
     warnings.filterwarnings("ignore")
