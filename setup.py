@@ -1,9 +1,9 @@
 from setuptools import setup
 
 setup(
-    name='transformer-attention-is-all-you-need-implementation',
+    name='mt_transformer',
     version='0.1.0',
-    packages=['src', 'src.config', 'src.data_handler', 'src.model', 'src.trainer'],
+    packages=['mt_transformer'],
     url='',
     license='MIT',
     author='Ursula Maria Mayer, Sciform GmbH',

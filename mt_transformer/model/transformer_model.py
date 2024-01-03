@@ -193,8 +193,8 @@ def create_transformer(src_vocab_size: int,
 
 def get_transformer_model(config, vocab_src_len, vocab_tgt_len):
     
-    model = create_transformer(vocab_src_len, vocab_tgt_len, config["seq_len"], config['seq_len'],
-                               d_model=config['d_model'])
+    model = create_transformer(vocab_src_len, vocab_tgt_len, config.DATA["seq_len"], config.DATA['seq_len'],
+                               d_model=config.MODEL['d_model'])
     return model
 
 
