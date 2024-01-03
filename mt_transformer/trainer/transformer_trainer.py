@@ -19,7 +19,7 @@ class TransformerTrainer:
 
         # get GPU if available otherwise CPU
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        print("Processor unit = :", device)
+        print("Processor unit = ", device)
 
         # get data loaders and tokenizers
         train_dataloader, val_dataloader, tokenizer_src, tokenizer_tgt = create_tokenizers_dataloaders(config)

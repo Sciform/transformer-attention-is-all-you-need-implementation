@@ -26,5 +26,5 @@ mt\_transformer.config
    :template: custom-module-template.rst
    :recursive:
 
-   mt_transformer.config.model_config
+   mt_transformer.config.project_config
 

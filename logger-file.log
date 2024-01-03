@@ -1,0 +1,4 @@
+INFO:datasets:PyTorch version 2.1.2 available.
+INFO:root:Main: build a transformer model and perform training
+INFO:root:Max length of a sentence in language en is: 309
+INFO:root:Max length of a sentence in language it is: 274
