@@ -3,7 +3,7 @@ __copyright__ = 'Copyright {2023}, {Sciform GmbH}'
 
 import torch
 
-from src.data_handler.masks import causal_mask
+from mt_transformer.data_handler.masks import causal_mask
 
 
 class GreedyDecoder:

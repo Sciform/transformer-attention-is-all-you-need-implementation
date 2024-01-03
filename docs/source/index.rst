@@ -5,7 +5,7 @@
 
 
 How to implement a transformer architecture from scratch ?
-===============================================
+==========================================================
 
 .. note::
 
@@ -26,4 +26,4 @@ Here, we provide an implementation of the transformer architecture originally pu
    :hidden:
 
    Introduction <self>
-   Code Reference <_autosummary/src>
+   Code Reference <_autosummary/mt_transformer>

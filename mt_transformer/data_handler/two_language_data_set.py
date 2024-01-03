@@ -2,7 +2,7 @@ import torch
 
 from torch.utils.data import Dataset
 
-from src.data_handler.masks import causal_mask
+from mt_transformer.data_handler.masks import causal_mask
 
 
 class TwoLanguagesDataset(Dataset):

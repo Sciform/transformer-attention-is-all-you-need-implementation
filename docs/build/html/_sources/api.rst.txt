@@ -9,4 +9,4 @@
    :template: custom-module-template.rst
    :recursive:
 
-   src
+   mt_transformer
