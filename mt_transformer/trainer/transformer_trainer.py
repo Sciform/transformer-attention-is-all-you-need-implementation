@@ -12,6 +12,27 @@ from mt_transformer.trainer.transformer_validator import TransformerValidator
 
 
 class TransformerTrainer:
+    
+    def __init__(self) -> None:
+        pass
+    
+    def __get_initial_model_setup(self, config, transformer_model, optimizer):
+        
+        initial_epoch = 0
+        global_step = 0
+        
+        if config.MODEL['preload'] is not None: 
+
+            model_filename = config.get_saved_model_file_path(config.MODEL['preload'])
+            print(f'Preloading model {model_filename}')
+            state = torch.load(model_filename)
+            transformer_model.load_state_dict(state['model_state_dict'])
+            initial_epoch = state['epoch'] + 1
+            optimizer.load_state_dict(state['optimizer_state_dict'])
+            global_step = state['global_step']
+            
+        return initial_epoch, global_step
+            
 
     def perform_training(self, config):
 
@@ -20,36 +41,40 @@ class TransformerTrainer:
         # get GPU if available otherwise CPU
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         print("Processor unit = ", device)
+        
+        ###
+        ### Data
+        ###
 
         # get data loaders and tokenizers
         train_dataloader, val_dataloader, tokenizer_src, tokenizer_tgt = create_tokenizers_dataloaders(config)
 
+        ###
+        ### Model
+        ###
+        
+        # create transformer model
         transformer_model = get_transformer_model(config, tokenizer_src.get_vocab_size(), 
-                                                  tokenizer_tgt.get_vocab_size()).to(device)
+            tokenizer_tgt.get_vocab_size()).to(device)
+        
+        # create Adam optimizer
+        optimizer = torch.optim.Adam(transformer_model.parameters(), lr=config.MODEL['lr'], eps=1e-9)
+        
+        # create loss function
+        loss_fn = nn.CrossEntropyLoss(ignore_index=tokenizer_src.token_to_id('[PAD]'), label_smoothing=0.1).to(device)
+        
+        # load saved model if available
+        initial_epoch, global_step = self.__get_initial_model_setup(config, transformer_model, optimizer)
+
+        # get validator
+        trans_val = TransformerValidator()
 
         # get tensorboard writer
         writer = SummaryWriter(config.get_experiments_file_path())
-
-        # specify Adom optimizer
-        optimizer = torch.optim.Adam(transformer_model.parameters(), lr=config.MODEL['lr'], eps=1e-9)
-
-        trans_val = TransformerValidator()
-
-        print("Configure transformer_model")
-        # If the user specified a model to preload before training, load it
-        initial_epoch = 0
-        global_step = 0
-        if config.MODEL['preload'] is not None:
-            
-            model_filename = config.get_saved_model_file_path(config.MODEL['preload'])
-            print(f'Preloading model {model_filename}')
-            state = torch.load(model_filename)
-            transformer_model.load_state_dict(state['model_state_dict'])
-            initial_epoch = state['epoch'] + 1
-            optimizer.load_state_dict(state['optimizer_state_dict'])
-            global_step = state['global_step']
-
-        loss_fn = nn.CrossEntropyLoss(ignore_index=tokenizer_src.token_to_id('[PAD]'), label_smoothing=0.1).to(device)
+        
+        ###
+        ### Perform training
+        ###
 
         print("Perform training")
         for epoch in range(initial_epoch, config.MODEL['num_epochs']):
@@ -102,6 +127,5 @@ class TransformerTrainer:
                 'epoch': epoch,
                 'model_state_dict': transformer_model.state_dict(),
                 'optimizer_state_dict': optimizer.state_dict(),
-                'global_step': global_step
-            }, saved_model_filepath)
+                'global_step': global_step }, saved_model_filepath)
             
