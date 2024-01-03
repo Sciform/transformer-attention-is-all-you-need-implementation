@@ -12,6 +12,8 @@ src/*/__pycache__
 
 *.egg-info
 
+logger-file.log
+
 
 
 

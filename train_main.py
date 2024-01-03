@@ -16,9 +16,9 @@ if __name__ == '__main__':
     # get project config
     config = Config()
     
-    config.MODEL['batch_size'] = 6
+    config.MODEL['batch_size'] = 8
     config.MODEL['preload'] = None
-    config.MODEL['num_epochs'] = 30
+    config.MODEL['num_epochs'] = 1
     
     logging.info('Main: build a transformer model and perform training')
 

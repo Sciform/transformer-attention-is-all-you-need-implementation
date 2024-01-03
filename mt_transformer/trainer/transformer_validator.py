@@ -10,9 +10,22 @@ from mt_transformer.model.greedy_decoder import GreedyDecoder
 
 
 class TransformerValidator:
+    
+    def __init__(self) -> None:
+        pass
 
-    def perform_validation(self, model, validation_ds, tokenizer_src, tokenizer_tgt, max_len, device, print_msg,
-                           global_step, writer, num_examples=2):
+
+    def perform_validation(self, 
+                           model, 
+                           validation_ds, 
+                           tokenizer_src, 
+                           tokenizer_tgt, 
+                           max_len, 
+                           device, 
+                           print_msg,
+                           global_step, 
+                           writer, 
+                           num_examples=2) -> None:
 
         model.eval()
         count = 0
