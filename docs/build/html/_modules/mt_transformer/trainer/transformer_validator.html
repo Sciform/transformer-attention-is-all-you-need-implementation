@@ -431,7 +431,7 @@ document.write(`
                 <span class="n">encoder_mask</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s2">&quot;encoder_mask&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>  <span class="c1"># (b, 1, 1, seq_len)</span>
 
                 <span class="c1"># check that the batch size is 1</span>
-                <span class="k">assert</span> <span class="n">encoder_input</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Batch size must be 1 for validation&quot;</span>
+                <span class="k">assert</span> <span class="n">encoder_input</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Batch size must be &gt;= 1 for validation&quot;</span>
 
                 <span class="n">greedy_decoder</span> <span class="o">=</span> <span class="n">GreedyDecoder</span><span class="p">()</span>
                 <span class="n">model_out</span> <span class="o">=</span> <span class="n">greedy_decoder</span><span class="o">.</span><span class="n">greedy_decode</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">encoder_input</span><span class="p">,</span> <span class="n">encoder_mask</span><span class="p">,</span> <span class="n">tokenizer_src</span><span class="p">,</span>

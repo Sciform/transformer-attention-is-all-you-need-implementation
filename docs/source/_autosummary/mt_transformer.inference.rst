@@ -1,4 +1,4 @@
-mt\_transformer.inference
+﻿mt\_transformer.inference
 =========================
 
 .. automodule:: mt_transformer.inference
@@ -27,4 +27,5 @@ mt\_transformer.inference
    :recursive:
 
    mt_transformer.inference.tf_inference
+   mt_transformer.inference.tf_visualizer
 

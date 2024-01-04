@@ -25,7 +25,8 @@ class TransformerTrainer:
         
         if self.__config.MODEL['preload'] is not None: 
 
-            model_filename = self.__config.get_saved_model_file_path(self.__config.MODEL['preload'])
+            epoch = self.__config.MODEL['preload']
+            model_filename = self.__config.get_saved_model_file_path(f"{epoch:03d}")
             print(f'Preloading model {model_filename}')
             state = torch.load(model_filename)
             transformer_model.load_state_dict(state['model_state_dict'])
