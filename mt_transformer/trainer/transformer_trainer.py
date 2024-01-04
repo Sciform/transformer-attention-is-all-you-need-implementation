@@ -1,4 +1,5 @@
 
+import logging
 from pathlib import Path
 
 import torch
@@ -9,21 +10,22 @@ from tqdm import tqdm
 from mt_transformer.data_handler.data_loader import create_tokenizers_dataloaders
 from mt_transformer.model.transformer_model import get_transformer_model
 from mt_transformer.trainer.transformer_validator import TransformerValidator
+from mt_transformer.utils.tf_utils import get_proc_device
 
 
 class TransformerTrainer:
     
-    def __init__(self) -> None:
-        pass
+    def __init__(self, config) -> None:
+        self.__config = config
     
-    def __get_initial_model_setup(self, config, transformer_model, optimizer):
+    def __get_preload_model_setup(self, transformer_model, optimizer):
         
         initial_epoch = 0
         global_step = 0
         
-        if config.MODEL['preload'] is not None: 
+        if self.__config.MODEL['preload'] is not None: 
 
-            model_filename = config.get_saved_model_file_path(config.MODEL['preload'])
+            model_filename = self.__config.get_saved_model_file_path(self.__config.MODEL['preload'])
             print(f'Preloading model {model_filename}')
             state = torch.load(model_filename)
             transformer_model.load_state_dict(state['model_state_dict'])
@@ -34,50 +36,49 @@ class TransformerTrainer:
         return initial_epoch, global_step
             
 
-    def perform_training(self, config):
+    def perform_training(self):
 
         print("Start transformer!")
 
-        # get GPU if available otherwise CPU
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        print("Processor unit = ", device)
+        # get Cuda-GPU if available otherwise CPU
+        device = get_proc_device()
         
         ###
         ### Data
         ###
 
         # get data loaders and tokenizers
-        train_dataloader, val_dataloader, tokenizer_src, tokenizer_tgt = create_tokenizers_dataloaders(config)
+        train_dataloader, val_dataloader, tokenizer_src, tokenizer_tgt = create_tokenizers_dataloaders(self.__config)
 
         ###
         ### Model
         ###
         
         # create transformer model
-        transformer_model = get_transformer_model(config, tokenizer_src.get_vocab_size(), 
+        transformer_model = get_transformer_model(self.__config, tokenizer_src.get_vocab_size(), 
             tokenizer_tgt.get_vocab_size()).to(device)
         
         # create Adam optimizer
-        optimizer = torch.optim.Adam(transformer_model.parameters(), lr=config.MODEL['lr'], eps=1e-9)
+        optimizer = torch.optim.Adam(transformer_model.parameters(), lr=self.__config.MODEL['lr'], eps=1e-9)
         
         # create loss function
         loss_fn = nn.CrossEntropyLoss(ignore_index=tokenizer_src.token_to_id('[PAD]'), label_smoothing=0.1).to(device)
         
         # load saved model if available
-        initial_epoch, global_step = self.__get_initial_model_setup(config, transformer_model, optimizer)
+        initial_epoch, global_step = self.__get_initial_model_setup(self.__config, transformer_model, optimizer)
 
         # get validator
         trans_val = TransformerValidator()
 
         # get tensorboard writer
-        writer = SummaryWriter(config.get_experiments_file_path())
+        writer = SummaryWriter(self.__config.get_experiments_file_path())
         
         ###
         ### Perform training
         ###
 
         print("Perform training")
-        for epoch in range(initial_epoch, config.MODEL['num_epochs']):
+        for epoch in range(initial_epoch, self.__config.MODEL['num_epochs']):
 
             torch.cuda.empty_cache()
             transformer_model.train()
@@ -118,11 +119,11 @@ class TransformerTrainer:
 
             # perform validation at the end of every epoch
             trans_val.perform_validation(transformer_model, val_dataloader, tokenizer_src, tokenizer_tgt, 
-                                         config.DATA['seq_len'], device, lambda msg: batch_iterator.write(msg), 
+                                         self.__config.DATA['seq_len'], device, lambda msg: batch_iterator.write(msg), 
                                          global_step, writer)
 
             # save the model at the end of every epoch
-            saved_model_filepath = config.get_saved_model_file_path(f"{epoch:03d}")
+            saved_model_filepath = self.__config.get_saved_model_file_path(f"{epoch:03d}")
             torch.save({
                 'epoch': epoch,
                 'model_state_dict': transformer_model.state_dict(),

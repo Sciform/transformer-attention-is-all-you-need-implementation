@@ -23,5 +23,5 @@ if __name__ == '__main__':
     logging.info('Main: build a transformer model and perform training')
 
     # create trainer and perform training
-    transformer_trainer = TransformerTrainer()
-    transformer_trainer.perform_training(config)
+    transformer_trainer = TransformerTrainer(config)
+    transformer_trainer.perform_training()

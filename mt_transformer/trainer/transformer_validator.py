@@ -4,7 +4,7 @@ __copyright__ = 'Copyright {2024}, {Sciform GmbH}'
 import os
 
 import torch
-import torchmetrics
+import torchmetrics.text as tmtext
 
 from mt_transformer.model.greedy_decoder import GreedyDecoder
 
@@ -75,21 +75,20 @@ class TransformerValidator:
                     break
 
         if writer is not None:
-            # Evaluate the character error rate
-            # Compute the char error rate
-            metric = torchmetrics.CharErrorRate()
-            cer = metric(predicted, expected)
-            writer.add_scalar('validation cer', cer, global_step)
+            # Evaluate character error rate
+            cer_metric = tmtext.CharErrorRate()
+            cer = cer_metric(predicted, expected)
+            writer.add_scalar('validation CER', cer, global_step)
             writer.flush()
 
-            # Compute the word error rate
-            metric = torchmetrics.WordErrorRate()
-            wer = metric(predicted, expected)
-            writer.add_scalar('validation wer', wer, global_step)
+            # Evaluate word error rate
+            wer_metric = tmtext.WordErrorRate()
+            wer = wer_metric(predicted, expected)
+            writer.add_scalar('validation WER', wer, global_step)
             writer.flush()
 
-            # Compute the BLEU metric
-            metric = torchmetrics.BLEUScore()
-            bleu = metric(predicted, expected)
+            # Evaluate the BLEU metric
+            bleu_metric = tmtext.BLEUScore()
+            bleu = bleu_metric(predicted, expected)
             writer.add_scalar('validation BLEU', bleu, global_step)
             writer.flush()
