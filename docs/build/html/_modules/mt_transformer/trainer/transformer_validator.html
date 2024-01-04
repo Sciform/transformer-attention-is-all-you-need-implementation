@@ -383,7 +383,7 @@ document.write(`
 <span class="kn">import</span> <span class="nn">os</span>
 
 <span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">import</span> <span class="nn">torchmetrics</span>
+<span class="kn">import</span> <span class="nn">torchmetrics.text</span> <span class="k">as</span> <span class="nn">tmtext</span>
 
 <span class="kn">from</span> <span class="nn">mt_transformer.model.greedy_decoder</span> <span class="kn">import</span> <span class="n">GreedyDecoder</span>
 
@@ -391,9 +391,22 @@ document.write(`
 <div class="viewcode-block" id="TransformerValidator">
 <a class="viewcode-back" href="../../../_autosummary/mt_transformer.trainer.transformer_validator.TransformerValidator.html#mt_transformer.trainer.transformer_validator.TransformerValidator">[docs]</a>
 <span class="k">class</span> <span class="nc">TransformerValidator</span><span class="p">:</span>
+    
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">pass</span>
 
-    <span class="k">def</span> <span class="nf">perform_validation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">validation_ds</span><span class="p">,</span> <span class="n">tokenizer_src</span><span class="p">,</span> <span class="n">tokenizer_tgt</span><span class="p">,</span> <span class="n">max_len</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">print_msg</span><span class="p">,</span>
-                           <span class="n">global_step</span><span class="p">,</span> <span class="n">writer</span><span class="p">,</span> <span class="n">num_examples</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">perform_validation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
+                           <span class="n">model</span><span class="p">,</span> 
+                           <span class="n">validation_ds</span><span class="p">,</span> 
+                           <span class="n">tokenizer_src</span><span class="p">,</span> 
+                           <span class="n">tokenizer_tgt</span><span class="p">,</span> 
+                           <span class="n">max_len</span><span class="p">,</span> 
+                           <span class="n">device</span><span class="p">,</span> 
+                           <span class="n">print_msg</span><span class="p">,</span>
+                           <span class="n">global_step</span><span class="p">,</span> 
+                           <span class="n">writer</span><span class="p">,</span> 
+                           <span class="n">num_examples</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 
         <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
         <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
@@ -443,22 +456,21 @@ document.write(`
                     <span class="k">break</span>
 
         <span class="k">if</span> <span class="n">writer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="c1"># Evaluate the character error rate</span>
-            <span class="c1"># Compute the char error rate</span>
-            <span class="n">metric</span> <span class="o">=</span> <span class="n">torchmetrics</span><span class="o">.</span><span class="n">CharErrorRate</span><span class="p">()</span>
-            <span class="n">cer</span> <span class="o">=</span> <span class="n">metric</span><span class="p">(</span><span class="n">predicted</span><span class="p">,</span> <span class="n">expected</span><span class="p">)</span>
-            <span class="n">writer</span><span class="o">.</span><span class="n">add_scalar</span><span class="p">(</span><span class="s1">&#39;validation cer&#39;</span><span class="p">,</span> <span class="n">cer</span><span class="p">,</span> <span class="n">global_step</span><span class="p">)</span>
+            <span class="c1"># Evaluate character error rate</span>
+            <span class="n">cer_metric</span> <span class="o">=</span> <span class="n">tmtext</span><span class="o">.</span><span class="n">CharErrorRate</span><span class="p">()</span>
+            <span class="n">cer</span> <span class="o">=</span> <span class="n">cer_metric</span><span class="p">(</span><span class="n">predicted</span><span class="p">,</span> <span class="n">expected</span><span class="p">)</span>
+            <span class="n">writer</span><span class="o">.</span><span class="n">add_scalar</span><span class="p">(</span><span class="s1">&#39;validation CER&#39;</span><span class="p">,</span> <span class="n">cer</span><span class="p">,</span> <span class="n">global_step</span><span class="p">)</span>
             <span class="n">writer</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
 
-            <span class="c1"># Compute the word error rate</span>
-            <span class="n">metric</span> <span class="o">=</span> <span class="n">torchmetrics</span><span class="o">.</span><span class="n">WordErrorRate</span><span class="p">()</span>
-            <span class="n">wer</span> <span class="o">=</span> <span class="n">metric</span><span class="p">(</span><span class="n">predicted</span><span class="p">,</span> <span class="n">expected</span><span class="p">)</span>
-            <span class="n">writer</span><span class="o">.</span><span class="n">add_scalar</span><span class="p">(</span><span class="s1">&#39;validation wer&#39;</span><span class="p">,</span> <span class="n">wer</span><span class="p">,</span> <span class="n">global_step</span><span class="p">)</span>
+            <span class="c1"># Evaluate word error rate</span>
+            <span class="n">wer_metric</span> <span class="o">=</span> <span class="n">tmtext</span><span class="o">.</span><span class="n">WordErrorRate</span><span class="p">()</span>
+            <span class="n">wer</span> <span class="o">=</span> <span class="n">wer_metric</span><span class="p">(</span><span class="n">predicted</span><span class="p">,</span> <span class="n">expected</span><span class="p">)</span>
+            <span class="n">writer</span><span class="o">.</span><span class="n">add_scalar</span><span class="p">(</span><span class="s1">&#39;validation WER&#39;</span><span class="p">,</span> <span class="n">wer</span><span class="p">,</span> <span class="n">global_step</span><span class="p">)</span>
             <span class="n">writer</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
 
-            <span class="c1"># Compute the BLEU metric</span>
-            <span class="n">metric</span> <span class="o">=</span> <span class="n">torchmetrics</span><span class="o">.</span><span class="n">BLEUScore</span><span class="p">()</span>
-            <span class="n">bleu</span> <span class="o">=</span> <span class="n">metric</span><span class="p">(</span><span class="n">predicted</span><span class="p">,</span> <span class="n">expected</span><span class="p">)</span>
+            <span class="c1"># Evaluate the BLEU metric</span>
+            <span class="n">bleu_metric</span> <span class="o">=</span> <span class="n">tmtext</span><span class="o">.</span><span class="n">BLEUScore</span><span class="p">()</span>
+            <span class="n">bleu</span> <span class="o">=</span> <span class="n">bleu_metric</span><span class="p">(</span><span class="n">predicted</span><span class="p">,</span> <span class="n">expected</span><span class="p">)</span>
             <span class="n">writer</span><span class="o">.</span><span class="n">add_scalar</span><span class="p">(</span><span class="s1">&#39;validation BLEU&#39;</span><span class="p">,</span> <span class="n">bleu</span><span class="p">,</span> <span class="n">global_step</span><span class="p">)</span>
             <span class="n">writer</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span></div>
 

@@ -2,12 +2,11 @@ import logging
 
 import torch
 
-from mt_transformer.config import Config
+from mt_transformer.config.project_config import Config
 from mt_transformer.data_handler.data_loader import create_tokenizers_dataloaders
-from mt_transformer.model.transformer_model import get_model, get_transformer_model
+from mt_transformer.model.transformer_model import get_transformer_model
 from mt_transformer.trainer.transformer_validator import TransformerValidator
 from mt_transformer.utils.tf_utils import get_proc_device
-
 
 
 class TfInference:
