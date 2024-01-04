@@ -65,7 +65,7 @@ class TransformerTrainer:
         loss_fn = nn.CrossEntropyLoss(ignore_index=tokenizer_src.token_to_id('[PAD]'), label_smoothing=0.1).to(device)
         
         # load saved model if available
-        initial_epoch, global_step = self.__get_initial_model_setup(self.__config, transformer_model, optimizer)
+        initial_epoch, global_step = self.__get_initial_model_setup(transformer_model, optimizer)
 
         # get validator
         trans_val = TransformerValidator()
