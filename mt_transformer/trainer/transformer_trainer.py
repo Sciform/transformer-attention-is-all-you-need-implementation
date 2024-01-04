@@ -18,7 +18,7 @@ class TransformerTrainer:
     def __init__(self, config) -> None:
         self.__config = config
     
-    def __get_preload_model_setup(self, transformer_model, optimizer):
+    def __get_initial_model_setup(self, transformer_model, optimizer):
         
         initial_epoch = 0
         global_step = 0
