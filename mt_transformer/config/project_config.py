@@ -30,6 +30,14 @@ class Config():
         self.__saved_model_filename = "mt_transformer_model_"
         
         
+    def set_dictionary_folder_path(self, dictionary_folder_path: str) -> None:
+        self.dictionary_folder = dictionary_folder_path
+        
+        
+    def set_saved_model_folder_path(self, saved_model_folder_path: str) -> None:
+        self.saved_model_folder = saved_model_folder_path
+        
+        
     def get_rel_dictionary_file_path(self, language: str) -> Path:
         
         Path(self.dictionary_folder).mkdir(parents=True, exist_ok=True)
