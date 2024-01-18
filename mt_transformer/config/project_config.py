@@ -32,8 +32,8 @@ class Config():
         
     def get_rel_dictionary_file_path(self, language: str) -> Path:
         
-        Path(self.__dictionary_folder).mkdir(parents=True, exist_ok=True)
-        full_dictionary_file_path = Path('.') / Path(self.__dictionary_folder) / Path(self.__dictionary_filename.format(language))
+        Path(self.dictionary_folder).mkdir(parents=True, exist_ok=True)
+        full_dictionary_file_path = Path('.') / Path(self.dictionary_folder) / Path(self.__dictionary_filename.format(language))
         print(f"full_dictionary_file_path = {full_dictionary_file_path}")
             
         return full_dictionary_file_path
@@ -48,10 +48,10 @@ class Config():
 
     def get_saved_model_file_path(self, epoch: str) -> Path:
         
-        Path(self.__saved_model_folder).mkdir(parents=True, exist_ok=True)
+        Path(self.saved_model_folder).mkdir(parents=True, exist_ok=True)
             
         model_filename = f"{self.__saved_model_filename}{epoch}.pt"
-        full_saved_model_path = Path('.') / Path(self.__saved_model_folder) / Path(model_filename)  
+        full_saved_model_path = Path('.') / Path(self.saved_model_folder) / Path(model_filename)  
         print(f'full_saved_model_path = {full_saved_model_path}')
 
         return full_saved_model_path
