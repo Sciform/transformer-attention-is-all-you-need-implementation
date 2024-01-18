@@ -19,11 +19,14 @@ class Config():
             "preload": None
         }
         
-        self.__dictionary_folder = "data"
+        self.dictionary_folder = "data"
+        self.saved_model_folder = "saved_model"
+        
         self.__dictionary_filename = "dictionary_{0}.json"
+        
         self.__experiment_folder = "experiments"
         self.__experiment_filename = "mt_transformer_exp"
-        self.__saved_model_folder = "saved_model"
+
         self.__saved_model_filename = "mt_transformer_model_"
         
         
