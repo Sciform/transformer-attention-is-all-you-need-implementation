@@ -31,7 +31,7 @@ class Config():
         
         Path(self.__dictionary_folder).mkdir(parents=True, exist_ok=True)
         full_dictionary_file_path = Path('.') / Path(self.__dictionary_folder) / Path(self.__dictionary_filename.format(language))
-        print("full_dictionary_file_path = " + full_dictionary_file_path)
+        print("full_dictionary_file_path = " + str(full_dictionary_file_path))
             
         return full_dictionary_file_path
     
@@ -49,7 +49,7 @@ class Config():
             
         model_filename = f"{self.__saved_model_filename}{epoch}.pt"
         full_saved_model_path = Path('.') / Path(self.__saved_model_folder) / Path(model_filename)  
-        print("full_saved_model_path = " + full_saved_model_path)
+        print(f'full_saved_model_path = {full_saved_model_path}')
 
         return full_saved_model_path
     
