@@ -9,14 +9,6 @@ mt\_transformer.inference.tf\_visualizer
 
    
    
-   .. rubric:: Functions
-
-   .. autosummary::
-      :toctree:
-      :nosignatures:
-   
-      get_all_attention_maps
-   
    
 
    

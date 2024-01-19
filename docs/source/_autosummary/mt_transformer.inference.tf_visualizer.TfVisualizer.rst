@@ -16,6 +16,7 @@ mt\_transformer.inference.tf\_visualizer.TfVisualizer
    .. autosummary::
       :nosignatures:
    
+      ~TfVisualizer.perform
    
    
 

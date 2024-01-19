@@ -1,4 +1,4 @@
-﻿mt\_transformer.inference
+mt\_transformer.inference
 =========================
 
 .. automodule:: mt_transformer.inference
