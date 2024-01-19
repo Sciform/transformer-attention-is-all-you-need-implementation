@@ -45,6 +45,7 @@ class Config():
             
         return full_dictionary_file_path
     
+    
     def get_experiments_file_path(self) -> Path:
         
         Path(self.__experiment_folder).mkdir(parents=True, exist_ok=True)

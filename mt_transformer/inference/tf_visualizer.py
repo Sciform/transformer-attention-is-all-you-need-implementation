@@ -16,6 +16,7 @@ from mt_transformer.utils.tf_utils import get_proc_device
 class TfVisualizer:
 
     def __init__(self, config) -> None:
+        
         self.__config = config
         self.__device = None
         self.__val_dataloader = None
@@ -65,74 +66,94 @@ class TfVisualizer:
         return batch, encoder_input_tokens, decoder_input_tokens
     
     
-def __mtx2df(self, m, max_row, max_col, row_tokens, col_tokens) -> pd.DataFrame:
-    
-    return pd.DataFrame(
-        [
-            (
-                r_id,
-                c_id,
-                float(m[r_id, c_id]),
-                "%.3d %s" % (r_id, row_tokens[r_id] if len(row_tokens) > r_id else "<blank>"),
-                "%.3d %s" % (c_id, col_tokens[c_id] if len(col_tokens) > c_id else "<blank>"),
-            )
-            for r_id in range(m.shape[0])
-            for c_id in range(m.shape[1])
-            if r_id < max_row and c_id < max_col
-        ],
-        columns=["row", "column", "value", "row_token", "col_token"],
-    )
-
-
-def __get_attn_map(self, attn_type: str, layer: int, head: int):
-    
-    if attn_type == "encoder":
-        attn = self.__transformer_model.encoder.layers[layer].self_attention_block.attention_scores
-    elif attn_type == "decoder":
-        attn = self.__transformer_model.decoder.layers[layer].self_attention_block.attention_scores
-    elif attn_type == "encoder-decoder":
-        attn = self.__transformer_model.decoder.layers[layer].cross_attention_block.attention_scores
-    return attn[0, head].data
-
-
-def __attn_map(self, attn_type, layer, head, row_tokens, col_tokens, max_sentence_len):
-    
-    df = self.__mtx2df(
-        self.__get_attn_map(attn_type, layer, head),
-        max_sentence_len,
-        max_sentence_len,
-        row_tokens,
-        col_tokens,
-    )
-    
-    return (
-        altair.Chart(data=df)
-        .mark_rect()
-        .encode(
-            x=altair.X("col_token", axis=altair.Axis(title="")),
-            y=altair.Y("row_token", axis=altair.Axis(title="")),
-            color="value",
-            tooltip=["row", "column", "value", "row_token", "col_token"],
+    def __mtx2df(self, m, max_row, max_col, row_tokens, col_tokens) -> pd.DataFrame:
+        
+        return pd.DataFrame(
+            [
+                (
+                    r_id,
+                    c_id,
+                    float(m[r_id, c_id]),
+                    "%.3d %s" % (r_id, row_tokens[r_id] if len(row_tokens) > r_id else "<blank>"),
+                    "%.3d %s" % (c_id, col_tokens[c_id] if len(col_tokens) > c_id else "<blank>"),
+                )
+                for r_id in range(m.shape[0])
+                for c_id in range(m.shape[1])
+                if r_id < max_row and c_id < max_col
+            ],
+            columns=["row", "column", "value", "row_token", "col_token"],
         )
-        #.title(f"Layer {layer} Head {head}")
-        .properties(height=400, width=400, title=f"Layer {layer} Head {head}")
-        .interactive()
-    )
 
-def get_all_attention_maps(self, 
-                           attn_type: str, 
-                           layers: list[int], 
-                           heads: list[int], 
-                           row_tokens: list, 
-                           col_tokens,    
-                           max_sentence_len: int):
-    
-    charts = []
-    for layer in layers:
-        rowCharts = []
-        for head in heads:
-            rowCharts.append(self.__attn_map(attn_type, layer, head, row_tokens, col_tokens, max_sentence_len))
-        charts.append(altair.hconcat(*rowCharts))
+
+    def __get_attn_map(self, attn_type: str, layer: int, head: int):
         
-    return altair.vconcat(*charts)
+        if attn_type == "encoder":
+            attn = self.__transformer_model.encoder.layers[layer].self_attention_block.attention_scores
+        elif attn_type == "decoder":
+            attn = self.__transformer_model.decoder.layers[layer].self_attention_block.attention_scores
+        elif attn_type == "encoder-decoder":
+            attn = self.__transformer_model.decoder.layers[layer].cross_attention_block.attention_scores
+        return attn[0, head].data
+
+
+    def __attn_map(self, attn_type, layer, head, row_tokens, col_tokens, max_sentence_len):
         
+        df = self.__mtx2df(
+            self.__get_attn_map(attn_type, layer, head),
+            max_sentence_len,
+            max_sentence_len,
+            row_tokens,
+            col_tokens,
+        )
+        
+        return (
+            altair.Chart(data=df)
+            .mark_rect()
+            .encode(
+                x=altair.X("col_token", axis=altair.Axis(title="")),
+                y=altair.Y("row_token", axis=altair.Axis(title="")),
+                color="value",
+                tooltip=["row", "column", "value", "row_token", "col_token"],
+            )
+            #.title(f"Layer {layer} Head {head}")
+            .properties(height=400, width=400, title=f"Layer {layer} Head {head}")
+            .interactive()
+        )
+
+    def __get_all_attention_maps(self, 
+                            attn_type: str, 
+                            layers: list[int], 
+                            heads: list[int], 
+                            row_tokens: list, 
+                            col_tokens,    
+                            max_sentence_len: int):
+        
+        charts = []
+        for layer in layers:
+            rowCharts = []
+            for head in heads:
+                rowCharts.append(self.__attn_map(attn_type, layer, head, row_tokens, col_tokens, max_sentence_len))
+            charts.append(altair.hconcat(*rowCharts))
+            
+        return altair.vconcat(*charts)
+
+
+    def perform(self):
+        
+        batch, encoder_input_tokens, decoder_input_tokens = self.__load_next_batch()
+        print(f'Source: {batch["src_text"][0]}')
+        print(f'Target: {batch["tgt_text"][0]}')
+        sentence_len = encoder_input_tokens.index("[PAD]")
+
+        layers = [0, 1, 2]
+        heads = [0, 1, 2, 3, 4, 5, 6, 7]
+
+        # Encoder Self-Attention
+        self.__get_all_attention_maps("encoder", layers, heads, encoder_input_tokens, encoder_input_tokens, min(20, sentence_len))
+
+        # Encoder Self-Attention
+        self.__get_all_attention_maps("decoder", layers, heads, decoder_input_tokens, decoder_input_tokens, min(20, sentence_len))
+
+        # Encoder Self-Attention
+        self.__get_all_attention_maps("encoder-decoder", layers, heads, encoder_input_tokens, decoder_input_tokens, min(20, sentence_len))
+                    
