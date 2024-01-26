@@ -31,7 +31,8 @@ class TfInference:
         # load trained state into model
         trained_model_epoch = self.__config.INFERENCE["trained_model_epoch"]
         logging.info(f'TfInference: load trained model at epoch = {trained_model_epoch:03d}')
-        state = torch.load(self.__config.get_saved_model_file_path(epoch=f"{trained_model_epoch:03d}"))
+        state = torch.load(self.__config.get_saved_model_file_path(epoch=f"{trained_model_epoch:03d}"),
+                           map_location=torch.device(device))
         transformer_model.load_state_dict(state['model_state_dict'])
         
         # perform validation - translate
