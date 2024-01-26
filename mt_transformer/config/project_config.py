@@ -7,7 +7,7 @@ class Config():
         
         self.DATA = {
             "lang_src": "en",
-            "lang_tgt": "it",
+            "lang_tgt": "de",
             "seq_len": 480,
         }
         
