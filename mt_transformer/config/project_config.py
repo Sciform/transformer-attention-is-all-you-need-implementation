@@ -6,8 +6,8 @@ class Config():
     def __init__(self) -> None:
         
         self.DATA = {
-            "lang_src": "en",
-            "lang_tgt": "de",
+            "lang_src": "de",
+            "lang_tgt": "en",
             "seq_len": 480,
         }
         
