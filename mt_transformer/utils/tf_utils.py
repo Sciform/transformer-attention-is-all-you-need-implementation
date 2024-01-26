@@ -7,5 +7,6 @@ def get_proc_device():
     
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     logging.info(f'Tf_utils: The processing unit is {device}')
+    print(f'Tf_utils: The processing unit is {device}')
     
     return device

@@ -31,7 +31,7 @@ class TfInference:
         # load trained state into model
         trained_model_epoch = self.__config.INFERENCE["trained_model_epoch"]
         state = torch.load(self.__config.get_saved_model_file_path(epoch=f"{trained_model_epoch:03d}"))
-        transformer_model.load_state_dict(state['model_state_dict'])
+        transformer_model.load_state_dict(state['model_state_dict'], map_location=torch.device(device))
 
         # perform validation
         transformer_val = TransformerValidator()

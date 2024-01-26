@@ -91,3 +91,4 @@ class TransformerValidator:
             bleu = bleu_metric(predicted, expected)
             writer.add_scalar('validation BLEU', bleu, global_step)
             writer.flush()
+            

@@ -122,8 +122,9 @@ class TransformerTrainer:
                 global_step += 1
 
             # perform validation at the end of every epoch
-            trans_val.perform_validation(transformer_model, val_dataloader, tokenizer_src, tokenizer_tgt, 
-                                         self.__config.DATA['seq_len'], device, lambda msg: batch_iterator.write(msg), 
+            trans_val.perform_validation(transformer_model, val_dataloader, tokenizer_src, 
+                                         tokenizer_tgt, self.__config.DATA['seq_len'], device, 
+                                         lambda msg: batch_iterator.write(msg), 
                                          global_step, writer)
 
             # save the model at the end of every epoch
