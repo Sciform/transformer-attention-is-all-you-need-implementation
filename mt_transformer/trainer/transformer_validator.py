@@ -65,9 +65,9 @@ class TransformerValidator:
 
                 # Print the source, target and model output
                 print_msg('-' * console_width)
-                print_msg(f"{f'SOURCE: ':>12}{source_text}")
-                print_msg(f"{f'TARGET: ':>12}{target_text}")
-                print_msg(f"{f'PREDICTED: ':>12}{model_out_text}")
+                print_msg(f"{f'Source: ':>12}{source_text}")
+                print_msg(f"{f'Target: ':>12}{target_text}")
+                print_msg(f"{f'Predicted: ':>12}{model_out_text}")
 
                 if count == num_examples:
                     print_msg('-' * console_width)

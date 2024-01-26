@@ -1,10 +1,14 @@
 import logging
+from typing import Any
 
 import torch
 
+# from Huggingface
+from tokenizers import Tokenizer
+
 from mt_transformer.config.project_config import Config
 from mt_transformer.data_handler.data_loader import create_tokenizers_dataloaders
-from mt_transformer.model.transformer_model import get_transformer_model
+from mt_transformer.model.transformer_model import TransformerModel, get_transformer_model
 from mt_transformer.trainer.transformer_validator import TransformerValidator
 from mt_transformer.utils.tf_utils import get_proc_device
 
@@ -36,9 +40,68 @@ class TfInference:
         transformer_model.load_state_dict(state['model_state_dict'])
         
         # perform validation - translate
-        logging.info('TfInference: perform translation')
+        logging.info('TfInference: perform validation')
         transformer_val = TransformerValidator()
         transformer_val.perform_validation(transformer_model, val_dataloader, tokenizer_src, 
                                            tokenizer_tgt, self.__config.DATA['seq_len'], device, 
                                            lambda msg: print(msg), 0, None, num_examples=10)
-             
+        
+        logging.info('TfInference: perform translation')
+        self.__perform_translation(transformer_model, tokenizer_src, tokenizer_tgt, 
+                                 self.__config.DATA['seq_len'], device)
+        
+    def __perform_translation(self, 
+                            transformer_model: TransformerModel, 
+                            tokenizer_src: Tokenizer, 
+                            tokenizer_tgt: Tokenizer, 
+                            seq_len: str, 
+                            device: str, 
+                            sentence: str = "I am a big fan of transformer models") -> Any:
+        
+        transformer_model.eval()
+        with torch.no_grad():
+            # pre compute the encoder output and reuse it for every generation step
+            tokenized_sentence = tokenizer_src.encode(sentence)
+            source = torch.cat([
+                torch.tensor([tokenizer_src.token_to_id('[SOS]')], dtype=torch.int64), 
+                torch.tensor(tokenized_sentence.ids, dtype=torch.int64),
+                torch.tensor([tokenizer_src.token_to_id('[EOS]')], dtype=torch.int64),
+                torch.tensor([tokenizer_src.token_to_id('[PAD]')] * (seq_len - len(tokenized_sentence.ids) - 2), 
+                             dtype=torch.int64)
+                    ], dim=0).to(device)
+            source_mask = (source != tokenizer_src.token_to_id('[PAD]')).unsqueeze(0).unsqueeze(0).int().to(device)
+            encoder_output = transformer_model.encode(source, source_mask)
+
+            # initialize the decoder input with the sos token
+            decoder_input = torch.empty(1, 1).fill_(
+                tokenizer_tgt.token_to_id('[SOS]')).type_as(source).to(device)
+
+            # print the source sentence and the predicted translation
+            print(f"{f'Source: ':>12}{sentence}")
+            print(f"{f'Predicted: ':>12}", end='')
+
+            # generate the translation word by word
+            while decoder_input.size(1) < seq_len:
+                
+                # build decoder mask and decode
+                decoder_mask = torch.triu(torch.ones((1, decoder_input.size(1), decoder_input.size(1))), 
+                                          diagonal=1).type(torch.int).type_as(source_mask).to(device)
+                decoded_output = transformer_model.decode(encoder_output, source_mask, decoder_input, 
+                                                          decoder_mask)
+
+                # project next token
+                prob = transformer_model.project(decoded_output[:, -1])
+                _, next_word = torch.max(prob, dim=1)
+                decoder_input = torch.cat([decoder_input, torch.empty(1, 1).type_as(source).fill_(
+                    next_word.item()).to(device)], dim=1)
+
+                # print the translated word
+                print(f"{tokenizer_tgt.decode([next_word.item()])}", end=' ')
+
+                # stop if the end of sentence token is predicted
+                if next_word == tokenizer_tgt.token_to_id('[EOS]'):
+                    break
+
+        # convert ids to tokens
+        return tokenizer_tgt.decode(decoder_input[0].tolist())
+                 
