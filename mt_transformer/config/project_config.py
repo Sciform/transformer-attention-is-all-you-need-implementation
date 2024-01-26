@@ -14,9 +14,9 @@ class Config():
         self.MODEL = {
             "batch_size": 8,        # adjust if too large for GPU
             "num_epochs": 3,
-            "lr": 10**-4,
+            "learning_rate": 10**-4,
             "d_model": 512,
-            "preload": None
+            "pretrained_model_epoch": None # starting from None, 0, 1,
         }
         
         self.INFERENCE = {

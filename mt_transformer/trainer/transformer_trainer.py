@@ -23,11 +23,11 @@ class TransformerTrainer:
         initial_epoch = 0
         global_step = 0
         
-        if self.__config.MODEL['preload'] is not None: 
+        if self.__config.MODEL['pretrained_model_epoch'] is not None: 
 
-            epoch = self.__config.MODEL['preload']
+            epoch = self.__config.MODEL['pretrained_model_epoch']
             model_filename = self.__config.get_saved_model_file_path(f"{epoch:03d}")
-            print(f'Preloading model {model_filename}')
+            print(f'Pretrained model = {model_filename}')
             state = torch.load(model_filename)
             transformer_model.load_state_dict(state['model_state_dict'])
             initial_epoch = state['epoch'] + 1
@@ -60,10 +60,13 @@ class TransformerTrainer:
             tokenizer_tgt.get_vocab_size()).to(device)
         
         # create Adam optimizer
-        optimizer = torch.optim.Adam(transformer_model.parameters(), lr=self.__config.MODEL['lr'], eps=1e-9)
+        optimizer = torch.optim.Adam(transformer_model.parameters(), 
+                                     lr=self.__config.MODEL['learning_rate'], 
+                                     eps=1e-9)
         
         # create loss function
-        loss_fn = nn.CrossEntropyLoss(ignore_index=tokenizer_src.token_to_id('[PAD]'), label_smoothing=0.1).to(device)
+        loss_fn = nn.CrossEntropyLoss(ignore_index=tokenizer_src.token_to_id('[PAD]'), 
+                                      label_smoothing=0.1).to(device)
         
         # load saved model if available
         initial_epoch, global_step = self.__get_initial_model_setup(transformer_model, optimizer)
