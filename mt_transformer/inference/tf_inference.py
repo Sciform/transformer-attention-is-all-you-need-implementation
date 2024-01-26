@@ -33,9 +33,9 @@ class TfInference:
         state = torch.load(self.__config.get_saved_model_file_path(epoch=f"{trained_model_epoch:03d}"))
         transformer_model.load_state_dict(state['model_state_dict'])
 
-        # perform inference
+        # perform validation
         transformer_val = TransformerValidator()
-        transformer_val.perform_validation(transformer_model, val_dataloader, tokenizer_src, tokenizer_tgt, 
-                                           self.__config.DATA['seq_len'], device, lambda msg: print(msg), 0, 
-                                           None, num_examples=10)
+        transformer_val.perform_validation(transformer_model, val_dataloader, tokenizer_src, 
+                                           tokenizer_tgt, self.__config.DATA['seq_len'], device, 
+                                           lambda msg: print(msg), 0, None, num_examples=10)
              
