@@ -18,7 +18,7 @@ class TransformerTrainer:
     def __init__(self, config) -> None:
         self.__config = config
     
-    def __get_initial_model_setup(self, transformer_model, optimizer):
+    def __get_initial_model_setup(self, transformer_model, optimizer, device):
         
         initial_epoch = 0
         global_step = 0
@@ -27,9 +27,10 @@ class TransformerTrainer:
 
             epoch = self.__config.MODEL['pretrained_model_epoch']
             model_filename = self.__config.get_saved_model_file_path(f"{epoch:03d}")
-            print(f'Pretrained model = {model_filename}')
-            state = torch.load(model_filename)
+            logging.info(f'Load pretrained model = {model_filename}')
+            state = torch.load(model_filename, map_location=torch.device(device))
             transformer_model.load_state_dict(state['model_state_dict'])
+            
             initial_epoch = state['epoch'] + 1
             optimizer.load_state_dict(state['optimizer_state_dict'])
             global_step = state['global_step']
@@ -69,7 +70,7 @@ class TransformerTrainer:
                                       label_smoothing=0.1).to(device)
         
         # load saved model if available
-        initial_epoch, global_step = self.__get_initial_model_setup(transformer_model, optimizer)
+        initial_epoch, global_step = self.__get_initial_model_setup(transformer_model, optimizer, device)
 
         # get validator
         trans_val = TransformerValidator()
