@@ -88,4 +88,3 @@ class TwoLanguagesDataset(Dataset):
             "src_text": src_text,
             "tgt_text": tgt_text,
         }
-

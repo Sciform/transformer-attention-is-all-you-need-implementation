@@ -25,6 +25,8 @@ def create_tokenizers_dataloaders(config):
     # create tokenizers
     tokenizer_src = get_or_create_tokenizer(config, ds_raw, config.DATA['lang_src'])
     tokenizer_tgt = get_or_create_tokenizer(config, ds_raw, config.DATA['lang_tgt'])
+    
+    logging.info('data_loader: tokenizers created')
 
     # split into 90% for training and 10% for validation
     train_ds_size = int(0.9 * len(ds_raw))
@@ -36,10 +38,14 @@ def create_tokenizers_dataloaders(config):
                                    config.DATA['seq_len'])
     val_ds = TwoLanguagesDataset(val_ds_raw, tokenizer_src, tokenizer_tgt, config.DATA['lang_src'], config.DATA['lang_tgt'],
                                  config.DATA['seq_len'])
+    
+    logging.info('data_loader: train and validation data set created')
 
     # create PyTorch train and val dataloaders
     train_dataloader = DataLoader(train_ds, batch_size=config.MODEL['batch_size'], shuffle=True)
     val_dataloader = DataLoader(val_ds, batch_size=1, shuffle=True)
+    
+    logging.info('data_loader: dataloader and tokenizers created')
 
     return train_dataloader, val_dataloader, tokenizer_src, tokenizer_tgt
 
