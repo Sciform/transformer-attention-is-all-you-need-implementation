@@ -28,12 +28,14 @@ class TfInference:
         transformer_model = get_transformer_model(self.__config, tokenizer_src.get_vocab_size(), 
             tokenizer_tgt.get_vocab_size()).to(device)
 
-        # load pretrained state into model
-        state = torch.load(self.__config.get_saved_model_file_path(epoch=f"29"))
+        # load trained state into model
+        trained_model_epoch = self.__config.INFERENCE.trained_model_epoch
+        state = torch.load(self.__config.get_saved_model_file_path(epoch=f"{trained_model_epoch:03d}"))
         transformer_model.load_state_dict(state['model_state_dict'])
 
         # perform inference
         transformer_val = TransformerValidator()
         transformer_val.perform_validation(transformer_model, val_dataloader, tokenizer_src, tokenizer_tgt, 
-                                           self.__config.DATA['seq_len'], device, lambda msg: print(msg), 0, None, num_examples=10)
-        
+                                           self.__config.DATA['seq_len'], device, lambda msg: print(msg), 0, 
+                                           None, num_examples=10)
+             

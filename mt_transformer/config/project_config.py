@@ -19,6 +19,10 @@ class Config():
             "preload": None
         }
         
+        self.INFERENCE = {
+            "trained_model_epoch": 29
+        }
+        
         self.__dictionary_folder = "data"
         self.__dictionary_filename = "dictionary_{0}.json"
         
