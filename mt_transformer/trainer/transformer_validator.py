@@ -14,7 +14,6 @@ class TransformerValidator:
     def __init__(self) -> None:
         pass
 
-
     def perform_validation(self, 
                            model, 
                            validation_ds, 
@@ -53,8 +52,8 @@ class TransformerValidator:
                 assert encoder_input.size(0) == 1, "Batch size must be >= 1 for validation"
 
                 greedy_decoder = GreedyDecoder()
-                model_out = greedy_decoder.greedy_decode(model, encoder_input, encoder_mask, tokenizer_src,
-                                                         tokenizer_tgt, max_len, device)
+                model_out = greedy_decoder.greedy_decode(model, encoder_input, encoder_mask, 
+                                                         tokenizer_src, tokenizer_tgt, max_len, device)
 
                 source_text = batch["src_text"][0]
                 target_text = batch["tgt_text"][0]
