@@ -16,7 +16,7 @@ class Config():
             "num_epochs": 3,
             "learning_rate": 10**-4,
             "d_model": 512,
-            "pretrained_model_epoch": 0 # starting from None, 0, 1,
+            "pretrained_model_epoch": None # starting from None, 0, 1,
         }
         
         self.INFERENCE = {
