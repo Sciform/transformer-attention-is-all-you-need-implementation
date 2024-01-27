@@ -8,7 +8,7 @@ class Config():
         self.DATA = {
             "lang_src": "de",
             "lang_tgt": "en",
-            "seq_len": 480,
+            "seq_len": 485,
         }
         
         self.MODEL = {
