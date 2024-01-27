@@ -17,7 +17,7 @@ if __name__ == '__main__':
     config = Config()
     
     config.MODEL['batch_size'] = 8
-    config.MODEL['preload'] = None
+    config.MODEL['pretrained_model_epoch'] = None
     config.MODEL['num_epochs'] = 1
     
     logging.info('Main: build a transformer model and perform training')
