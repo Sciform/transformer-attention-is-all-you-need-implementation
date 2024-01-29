@@ -1,14 +1,21 @@
-import torch
+from typing import Any
 
-from torch.utils.data import Dataset
+import torch
+from tokenizers import Tokenizer
+from datasets import Dataset as HfDataSet
 
 from mt_transformer.data_handler.masks import causal_mask
 
 
-class TwoLanguagesDataset(Dataset):
+class TwoLanguagesDataset(torch.utils.data.Dataset):
 
-    def __init__(self, ds_raw, tokenizer_src, tokenizer_tgt, src_lang, tgt_lang,
-                 seq_len):
+    def __init__(self,
+                 ds_raw: HfDataSet,
+                 tokenizer_src: Tokenizer,
+                 tokenizer_tgt: Tokenizer,
+                 src_lang: str,
+                 tgt_lang: str,
+                 seq_len: int) -> None:
         super().__init__()
 
         self.__seq_len = seq_len
@@ -25,10 +32,12 @@ class TwoLanguagesDataset(Dataset):
         self.__pad_token = torch.tensor([tokenizer_tgt.token_to_id("[PAD]")],
                                         dtype=torch.int64)
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.__ds)
 
-    def __getitem__(self, idx):
+    def __getitem__(self,
+                    idx: int) -> dict[str, Any]:
+
         src_target_pair = self.__ds[idx]
         src_text = src_target_pair['translation'][self.__src_lang]
         tgt_text = src_target_pair['translation'][self.__tgt_lang]
@@ -43,7 +52,8 @@ class TwoLanguagesDataset(Dataset):
         # We will only add <s>, and </s> only on the label
         dec_num_padding_tokens = self.__seq_len - len(dec_input_tokens) - 1
 
-        # Make sure the number of padding tokens is not negative. If it is, the sentence is too long
+        # Make sure the number of padding tokens is not negative.
+        # If it is, the sentence is too long
         if enc_num_padding_tokens < 0 or dec_num_padding_tokens < 0:
             raise ValueError("Sentence is too long")
 

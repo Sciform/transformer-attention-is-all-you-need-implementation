@@ -1,6 +1,7 @@
 
 import torch
 import torch.nn as nn
+from mt_transformer.config.project_config import Config
 
 from mt_transformer.model.layers import MultiHeadAttention, ResidualConnection, LayerNormalization, FeedForwardBlock, TokenEmbeddings, PositionalEncoding, ProjectionLayer
 
@@ -25,7 +26,8 @@ class EncoderStackOld(nn.Module):
         :return:
         """
         # multi head self attention, add & norm
-        x = self.residual_connections[0](x, lambda x: self.self_attention_block(x, x, x, src_mask))
+        x = self.residual_connections[0](
+            x, lambda x: self.self_attention_block(x, x, x, src_mask))
         # feed forward, add & norm
         x = self.residual_connections[1](x, self.feed_forward_block)
         return x
@@ -70,9 +72,9 @@ class DecoderStack(nn.Module):
         :return:
         """
         x = self.residual_connections[0](x,
-            lambda x: self.self_attention_block(x, x, x, tgt_mask))
+                                         lambda x: self.self_attention_block(x, x, x, tgt_mask))
         x = self.residual_connections[1](x,
-            lambda x: self.cross_attention_block(x, encoder_output, encoder_output, src_mask))
+                                         lambda x: self.cross_attention_block(x, encoder_output, encoder_output, src_mask))
         x = self.residual_connections[2](x, self.feed_forward_block)
         return x
 
@@ -157,7 +159,8 @@ def create_transformer(src_vocab_size: int,
     for _ in range(num_stacks):
         encoder_self_attention_block = MultiHeadAttention(d_model, h, dropout)
         feed_forward_block = FeedForwardBlock(d_model, d_ff, dropout)
-        encoder_block = EncoderStackOld(encoder_self_attention_block, feed_forward_block, dropout)
+        encoder_block = EncoderStackOld(
+            encoder_self_attention_block, feed_forward_block, dropout)
         encoder_blocks.append(encoder_block)
 
     # Create decoder stacks
@@ -192,22 +195,22 @@ def create_transformer(src_vocab_size: int,
 
 
 def get_transformer_model(config, vocab_src_len, vocab_tgt_len):
-    
+
     model = create_transformer(vocab_src_len, vocab_tgt_len, config.DATA["seq_len"], config.DATA['seq_len'],
                                d_model=config.MODEL['d_model'])
     return model
 
 
-
 class TransformerModel(nn.Module):
-    
-    def __init__(self, 
-                 config,
+
+    def __init__(self,
+                 config: Config,
                  num_stacks: int = 6,
                  h: int = 8,
                  dropout: float = 0.1,
                  d_ff: int = 2048) -> None:
         super().__init__()
+
         self.__src_seq_length = config["seq_len"]
         self.__tgt_seq_length = config["seq_len"]
         self.__d_model = config['d_model']
@@ -216,18 +219,14 @@ class TransformerModel(nn.Module):
         self.__dropout = dropout
         self.__d_ff = d_ff
         self.__transformer_model = None
-        
-        
+
     def create_transformer(self):
-        
-        
+
         self.__init_parameters()
-    
-    
+
     def __init_parameters(self):
-        
+
         # Initialize the parameters of the transformer
         for p in self.parameters():
             if p.dim() > 1:
                 nn.init.xavier_uniform_(p)
-        

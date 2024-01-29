@@ -34,8 +34,8 @@ class GreedyDecoder:
                 decoder_input.size(1)).type_as(source_mask).to(device)
 
             # calculate output
-            decoded_output = transformer_model.decode(encoder_output,
-                                                      source_mask, decoder_input, decoder_mask)
+            decoded_output = transformer_model.decode(
+                encoder_output, source_mask, decoder_input, decoder_mask)
 
             # get next token
             prob = transformer_model.project(decoded_output[:, -1])
@@ -44,8 +44,7 @@ class GreedyDecoder:
 
             decoder_input = torch.cat(
                 [decoder_input, torch.empty(1, 1).type_as(
-                    source).fill_(next_word.item()).to(device)],
-                dim=1
+                    source).fill_(next_word.item()).to(device)], dim=1
             )
 
             if next_word == eos_idx:

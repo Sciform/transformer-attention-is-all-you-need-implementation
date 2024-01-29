@@ -31,8 +31,9 @@ class TransformerTrainer:
             model_filename = self.__config.get_saved_model_file_path(
                 f"{epoch:03d}")
             logging.info("Load pretrained model %s", model_filename)
-            state = torch.load(
-                model_filename, map_location=torch.device(device))
+
+            state = torch.load(model_filename,
+                               map_location=torch.device(device))
             transformer_model.load_state_dict(state['model_state_dict'])
 
             initial_epoch = state['epoch'] + 1
@@ -70,7 +71,7 @@ class TransformerTrainer:
                                      eps=self.__config.MODEL['eps'])
 
         # create loss function
-        loss_fn = nn.CrossEntropyLoss(ignore_index=tokenizer_src.token_to_id('[PAD]'),
+        ce_loss = nn.CrossEntropyLoss(ignore_index=tokenizer_src.token_to_id('[PAD]'),
                                       label_smoothing=0.1).to(device)
 
         # load saved model if available
@@ -117,9 +118,10 @@ class TransformerTrainer:
                 # Compare the output with the label
                 label = batch['label'].to(device)  # (B, seq_len)
 
-                # Compute the loss using a simple cross entropy
-                loss = loss_fn(
-                    proj_output.view(-1, tokenizer_tgt.get_vocab_size()), label.view(-1))
+                # Compute the loss using a simple cross entropy (input, target)
+                # pylint: disable=not-callable
+                loss = ce_loss(proj_output.view(-1, tokenizer_tgt.get_vocab_size()),
+                               label.view(-1))
                 batch_iterator.set_postfix({"loss": f"{loss.item():6.3f}"})
 
                 # Log the loss
@@ -144,6 +146,7 @@ class TransformerTrainer:
             # save the model at the end of every epoch
             saved_model_filepath = self.__config.get_saved_model_file_path(
                 f"{epoch:03d}")
+
             torch.save({
                 'epoch': epoch,
                 'model_state_dict': transformer_model.state_dict(),
