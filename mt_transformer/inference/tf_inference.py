@@ -67,15 +67,18 @@ class TfInference:
         with torch.no_grad():
             # pre compute the encoder output and reuse it for every generation step
             tokenized_sentence = tokenizer_src.encode(sentence)
+
             source = torch.cat([
                 torch.tensor([tokenizer_src.token_to_id('[SOS]')],
                              dtype=torch.int64),
                 torch.tensor(tokenized_sentence.ids, dtype=torch.int64),
                 torch.tensor([tokenizer_src.token_to_id('[EOS]')],
                              dtype=torch.int64),
-                torch.tensor([tokenizer_src.token_to_id('[PAD]')] * (seq_len - len(tokenized_sentence.ids) - 2),
+                torch.tensor([tokenizer_src.token_to_id('[PAD]')] *
+                             (seq_len - len(tokenized_sentence.ids) - 2),
                              dtype=torch.int64)
             ], dim=0).to(device)
+
             source_mask = (source != tokenizer_src.token_to_id(
                 '[PAD]')).unsqueeze(0).unsqueeze(0).int().to(device)
             encoder_output = transformer_model.encode(source, source_mask)
@@ -92,16 +95,22 @@ class TfInference:
             while decoder_input.size(1) < seq_len:
 
                 # build decoder mask and decode
-                decoder_mask = torch.triu(torch.ones((1, decoder_input.size(1), decoder_input.size(1))),
-                                          diagonal=1).type(torch.int).type_as(source_mask).to(device)
-                decoded_output = transformer_model.decode(encoder_output, source_mask, decoder_input,
-                                                          decoder_mask)
+                decoder_mask = torch.triu(
+                    torch.ones((1, decoder_input.size(
+                        1), decoder_input.size(1))),
+                    diagonal=1).type(torch.int).type_as(source_mask).to(device)
+
+                decoded_output = transformer_model.decode(
+                    encoder_output, source_mask, decoder_input,
+                    decoder_mask)
 
                 # project next token
                 prob = transformer_model.project(decoded_output[:, -1])
                 _, next_word = torch.max(prob, dim=1)
-                decoder_input = torch.cat([decoder_input, torch.empty(1, 1).type_as(source).fill_(
-                    next_word.item()).to(device)], dim=1)
+
+                decoder_input = torch.cat(
+                    [decoder_input, torch.empty(1, 1).type_as(source).fill_(
+                        next_word.item()).to(device)], dim=1)
 
                 # print the translated word
                 print(f"{tokenizer_tgt.decode([next_word.item()])}", end=' ')
