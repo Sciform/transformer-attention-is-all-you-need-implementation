@@ -6,7 +6,7 @@ import torch.nn as nn
 
 class TokenEmbeddings(nn.Module):
     """
-    The token embeddings layer refers to a tensor that learns "d_model"
+    The token embeddings layer module holds a tensor that learns "d_model"
     embeddings (= features) for every token in a fixed size dictionary.
 
     """
@@ -18,62 +18,67 @@ class TokenEmbeddings(nn.Module):
 
         # number of features
         self.__d_model = d_model
-        self.__embedding = nn.Embedding(
-            dictionary_size, d_model)       # embedding layer
+        # embedding layer (dict_size x d_model)
+        self.__embedding = nn.Embedding(dictionary_size, d_model)
 
     def forward(self, x):
         """
-        For every token in a token sequence of a batch of token sequences x "d_model" 
-        embeddings are learned.
+        For every token in a token sequence of a batch of token sequences x 
+        "d_model" embeddings are learned.
         A map x with dim(num_batch, sequence_length) to embeddings tensor with 
-        dim(num_batch, sequence_length, d_model) is
-        performed
+        dim(num_batch, sequence_length, d_model) is performed.
         The embedding tensor is multiply by sqrt(d_model) to scale the embeddings.
         The original paper does not explain why the scaling is applied.
         https://datascience.stackexchange.com/questions/87906/transformer-model-why-are-word-embeddings-scaled-before-adding-positional-encod
+        Should be sqrt(sqrt(d_model))
 
+        Args:
+            x (Any): batch of token sequences (tensor with dim(num_batch, sequence_length))
 
-        :param x : batch o token sequences (tensor with dim(num_batch, sequence_length))
-        :return
-            learned "d_model" embeddings for every token in the dictionary
+        Returns:
+            Any: embedding layer with learned "d_model" embeddings for every 
+            token in the dictionary
         """
         return self.__embedding(x) * math.sqrt(self.__d_model)
 
 
 class PositionalEncoding(nn.Module):
+    """
+    The positional encoding layer module holds a tensor with precomputed 
+    positional values for every token in a sequence .
+
+    """
 
     def __init__(self,
                  d_model: int,
                  seq_len: int,
-                 drop_out: float) -> None:
+                 drop_out_prob: float) -> None:
         super().__init__()
 
-        self.__drop_out_layer = nn.Dropout(drop_out)
+        self.__drop_out_layer = nn.Dropout(drop_out_prob)
 
         # create a tensor of shape (seq_len, d_model) filled with zeros
         positional_encoding = torch.zeros(seq_len, d_model)
 
-        # create a tensor of shape (seq_len)
-        position = torch.arange(
-            0, seq_len, dtype=torch.float).unsqueeze(1)  # (seq_len, 1)
+        # create a tensor of shape (seq_len, 1)
+        position = torch.arange(0, seq_len, dtype=torch.float).unsqueeze(1)
 
         # create a tensor of shape (d_model) for every embedding
         # the using exp and log leads to the same result but makes the computation numerically (better stability
         # https://kazemnejad.com/blog/transformer_architecture_positional_encoding/ and
         # https://ai.stackexchange.com/questions/41670/why-use-exponential-and-log-in-positional-encoding-of-transformer
-        denominator = torch.exp(torch.arange(0, d_model, 2).float(
-        ) * (-math.log(10000.0) / d_model))  # (d_model / 2)
+        denominator = torch.exp(torch.arange(0, d_model, 2).float() *
+                                (-math.log(10000.0) / d_model))  # (d_model / 2)
 
         # compute sine-function for even indices
-        positional_encoding[:, 0::2] = torch.sin(
-            position * denominator)  # sin(position / (10000 ** (2i / d_model))
+        # sin(position / (10000 ** (2i / d_model))
+        positional_encoding[:, 0::2] = torch.sin(position * denominator)
         # Compute cosine-function for odd indices
-        positional_encoding[:, 1::2] = torch.cos(
-            position * denominator)  # cos(position / (10000 ** (2i / d_model))
+        # cos(position / (10000 ** (2i / d_model))
+        positional_encoding[:, 1::2] = torch.cos(position * denominator)
 
-        # Add a batch dimension to the positional encoding
-        positional_encoding = positional_encoding.unsqueeze(
-            0)  # (1, seq_len, d_model)
+        # Add a batch dimension to the positional encoding (1, seq_len, d_model)
+        positional_encoding = positional_encoding.unsqueeze(0)
 
         # register the positional encoding as a buffer - registering store the positional encoding with the model during
         # model save
