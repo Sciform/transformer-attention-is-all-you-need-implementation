@@ -377,75 +377,112 @@ document.write(`
                 <article class="bd-article">
                   
   <h1>Source code for mt_transformer.config.project_config</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
 
 <div class="viewcode-block" id="Config">
 <a class="viewcode-back" href="../../../_autosummary/mt_transformer.config.project_config.Config.html#mt_transformer.config.project_config.Config">[docs]</a>
-<span class="k">class</span> <span class="nc">Config</span><span class="p">():</span>
-    
+<span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Configuration</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        
+
         <span class="bp">self</span><span class="o">.</span><span class="n">DATA</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;lang_src&quot;</span><span class="p">:</span> <span class="s2">&quot;en&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;lang_tgt&quot;</span><span class="p">:</span> <span class="s2">&quot;it&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;seq_len&quot;</span><span class="p">:</span> <span class="mi">480</span><span class="p">,</span>
+            <span class="s2">&quot;lang_src&quot;</span><span class="p">:</span> <span class="s2">&quot;de&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;lang_tgt&quot;</span><span class="p">:</span> <span class="s2">&quot;en&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;seq_len&quot;</span><span class="p">:</span> <span class="mi">485</span><span class="p">,</span>
         <span class="p">}</span>
-        
+
         <span class="bp">self</span><span class="o">.</span><span class="n">MODEL</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>        <span class="c1"># adjust if too large for GPU</span>
             <span class="s2">&quot;num_epochs&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-            <span class="s2">&quot;lr&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="o">**-</span><span class="mi">4</span><span class="p">,</span>
+            <span class="s2">&quot;learning_rate&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="o">**-</span><span class="mi">4</span><span class="p">,</span>
             <span class="s2">&quot;d_model&quot;</span><span class="p">:</span> <span class="mi">512</span><span class="p">,</span>
-            <span class="s2">&quot;preload&quot;</span><span class="p">:</span> <span class="kc">None</span>
+            <span class="s2">&quot;eps&quot;</span><span class="p">:</span> <span class="mf">1e-9</span><span class="p">,</span>
+            <span class="s2">&quot;pretrained_model_epoch&quot;</span><span class="p">:</span> <span class="kc">None</span>  <span class="c1"># starting from None, 0, 1,</span>
         <span class="p">}</span>
-        
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">INFERENCE</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;trained_model_epoch&quot;</span><span class="p">:</span> <span class="mi">0</span>
+        <span class="p">}</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">__dictionary_folder</span> <span class="o">=</span> <span class="s2">&quot;data&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__dictionary_filename</span> <span class="o">=</span> <span class="s2">&quot;dictionary_</span><span class="si">{0}</span><span class="s2">.json&quot;</span>
-        
+
         <span class="bp">self</span><span class="o">.</span><span class="n">__experiment_folder</span> <span class="o">=</span> <span class="s2">&quot;experiments&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__experiment_filename</span> <span class="o">=</span> <span class="s2">&quot;mt_transformer_exp&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__saved_model_folder</span> <span class="o">=</span> <span class="s2">&quot;saved_model&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__saved_model_filename</span> <span class="o">=</span> <span class="s2">&quot;mt_transformer_model_&quot;</span>
-        
-        
+
     <span class="k">def</span> <span class="nf">set_dictionary_folder_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dictionary_folder_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__dictionary_folder</span> <span class="o">=</span> <span class="n">dictionary_folder_path</span>
-        
-        
+
     <span class="k">def</span> <span class="nf">set_saved_model_folder_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">saved_model_folder_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__saved_model_folder</span> <span class="o">=</span> <span class="n">saved_model_folder_path</span>
-        
-        
-    <span class="k">def</span> <span class="nf">get_rel_dictionary_file_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">language</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-        
-        <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dictionary_folder</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">full_dictionary_file_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dictionary_folder</span><span class="p">)</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dictionary_filename</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">language</span><span class="p">))</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;full_dictionary_file_path = </span><span class="si">{</span><span class="n">full_dictionary_file_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            
-        <span class="k">return</span> <span class="n">full_dictionary_file_path</span>
-    
-    
-    <span class="k">def</span> <span class="nf">get_experiments_file_path</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-        
-        <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__experiment_folder</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">full_exp_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__experiment_folder</span><span class="p">)</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__experiment_filename</span><span class="p">)</span>
-            
-        <span class="k">return</span> <span class="n">full_exp_path</span>
-        
 
+<div class="viewcode-block" id="Config.get_rel_dictionary_file_path">
+<a class="viewcode-back" href="../../../_autosummary/mt_transformer.config.project_config.Config.html#mt_transformer.config.project_config.Config.get_rel_dictionary_file_path">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_rel_dictionary_file_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">language</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Construct relative file path for dictionary of a specific language.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            language (str): language</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Path: relative file path for dictionary </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dictionary_folder</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">full_dictionary_file_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span>
+            <span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dictionary_folder</span><span class="p">)</span> <span class="o">/</span> \
+            <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dictionary_filename</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">language</span><span class="p">))</span>
+
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Full dictionary_file_path = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                     <span class="n">full_dictionary_file_path</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">full_dictionary_file_path</span></div>
+
+
+<div class="viewcode-block" id="Config.get_experiments_file_path">
+<a class="viewcode-back" href="../../../_autosummary/mt_transformer.config.project_config.Config.html#mt_transformer.config.project_config.Config.get_experiments_file_path">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_experiments_file_path</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;get file path for all runs</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Path: file path for all runs</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__experiment_folder</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">full_exp_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__experiment_folder</span><span class="p">)</span> <span class="o">/</span> \
+            <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__experiment_filename</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">full_exp_path</span></div>
+
+
+<div class="viewcode-block" id="Config.get_saved_model_file_path">
+<a class="viewcode-back" href="../../../_autosummary/mt_transformer.config.project_config.Config.html#mt_transformer.config.project_config.Config.get_saved_model_file_path">[docs]</a>
     <span class="k">def</span> <span class="nf">get_saved_model_file_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epoch</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-        
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct saved model file path</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            epoch (str): current epoch</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Path: saved model file path</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__saved_model_folder</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            
+
         <span class="n">model_filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__saved_model_filename</span><span class="si">}{</span><span class="n">epoch</span><span class="si">}</span><span class="s2">.pt&quot;</span>
-        <span class="n">full_saved_model_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__saved_model_folder</span><span class="p">)</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="n">model_filename</span><span class="p">)</span>  
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;full_saved_model_path = </span><span class="si">{</span><span class="n">full_saved_model_path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">full_saved_model_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__saved_model_folder</span><span class="p">)</span> <span class="o">/</span> \
+            <span class="n">Path</span><span class="p">(</span><span class="n">model_filename</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Full saved model path = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">full_saved_model_path</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">full_saved_model_path</span></div>
+</div>
 
-    
 </pre></div>
 
                 </article>

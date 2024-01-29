@@ -377,56 +377,95 @@ document.write(`
                 <article class="bd-article">
                   
   <h1>Source code for mt_transformer.data_handler.data_loader</h1><div class="highlight"><pre>
-<span></span>
-<span class="kn">import</span> <span class="nn">logging</span>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
+
 <span class="c1"># huggingface datasets</span>
-<span class="kn">from</span> <span class="nn">datasets</span> <span class="kn">import</span> <span class="n">load_dataset</span>
+<span class="kn">from</span> <span class="nn">datasets</span> <span class="kn">import</span> <span class="n">load_dataset</span><span class="p">,</span> <span class="n">Dataset</span>
+<span class="kn">from</span> <span class="nn">tokenizers</span> <span class="kn">import</span> <span class="n">Tokenizer</span>
 <span class="c1"># pytorch</span>
 <span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="n">random_split</span>
 
+<span class="kn">from</span> <span class="nn">mt_transformer.config.project_config</span> <span class="kn">import</span> <span class="n">Config</span>
 <span class="kn">from</span> <span class="nn">mt_transformer.data_handler.data_tokenizer</span> <span class="kn">import</span> <span class="n">get_or_create_tokenizer</span>
 <span class="kn">from</span> <span class="nn">mt_transformer.data_handler.two_language_data_set</span> <span class="kn">import</span> <span class="n">TwoLanguagesDataset</span>
 
 
 <div class="viewcode-block" id="get_raw_data_opus_books">
 <a class="viewcode-back" href="../../../_autosummary/mt_transformer.data_handler.data_loader.get_raw_data_opus_books.html#mt_transformer.data_handler.data_loader.get_raw_data_opus_books">[docs]</a>
-<span class="k">def</span> <span class="nf">get_raw_data_opus_books</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">get_raw_data_opus_books</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">Config</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dataset</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;get raw data set &quot;Opus Books&quot;</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        config (Config): configuration</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Dataset: raw data set &quot;Opus Books&quot; from Huggingface</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># for the opus books only the train split is available</span>
-    <span class="k">return</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s1">&#39;opus_books&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">DATA</span><span class="p">[</span><span class="s1">&#39;lang_src&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">DATA</span><span class="p">[</span><span class="s1">&#39;lang_tgt&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">)</span>
+    <span class="n">data_set</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span>
+        <span class="s1">&#39;opus_books&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">DATA</span><span class="p">[</span><span class="s1">&#39;lang_src&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">DATA</span><span class="p">[</span><span class="s1">&#39;lang_tgt&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">split</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">)</span>
 
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Opus books raw data set loaded.&#39;</span><span class="p">)</span></div>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Opus books raw data set loaded for source language </span><span class="si">%s</span><span class="s2"> and &quot;</span> <span class="o">+</span>
+                 <span class="s2">&quot;target language </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">DATA</span><span class="p">[</span><span class="s1">&#39;lang_src&#39;</span><span class="p">],</span>
+                 <span class="n">config</span><span class="o">.</span><span class="n">DATA</span><span class="p">[</span><span class="s1">&#39;lang_tgt&#39;</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">data_set</span></div>
 
 
 
 <div class="viewcode-block" id="create_tokenizers_dataloaders">
 <a class="viewcode-back" href="../../../_autosummary/mt_transformer.data_handler.data_loader.create_tokenizers_dataloaders.html#mt_transformer.data_handler.data_loader.create_tokenizers_dataloaders">[docs]</a>
-<span class="k">def</span> <span class="nf">create_tokenizers_dataloaders</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">create_tokenizers_dataloaders</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">Config</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">DataLoader</span><span class="p">,</span> <span class="n">DataLoader</span><span class="p">,</span>
+                                                      <span class="n">Tokenizer</span><span class="p">,</span> <span class="n">Tokenizer</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;create tokenizers and data loaders</span>
 
+<span class="sd">    Args:</span>
+<span class="sd">        config (Config): configuration</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        [DataLoader, DataLoader, Tokenizer, Tokenizer]: data loader for </span>
+<span class="sd">        training and validation data, Tokenizer for source and target </span>
+<span class="sd">        vocabulary </span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># load opus_books data set (it has only a train split)</span>
     <span class="n">ds_raw</span> <span class="o">=</span> <span class="n">get_raw_data_opus_books</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 
     <span class="c1"># create tokenizers</span>
-    <span class="n">tokenizer_src</span> <span class="o">=</span> <span class="n">get_or_create_tokenizer</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">ds_raw</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">DATA</span><span class="p">[</span><span class="s1">&#39;lang_src&#39;</span><span class="p">])</span>
-    <span class="n">tokenizer_tgt</span> <span class="o">=</span> <span class="n">get_or_create_tokenizer</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">ds_raw</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">DATA</span><span class="p">[</span><span class="s1">&#39;lang_tgt&#39;</span><span class="p">])</span>
+    <span class="n">tokenizer_src</span> <span class="o">=</span> <span class="n">get_or_create_tokenizer</span><span class="p">(</span>
+        <span class="n">config</span><span class="p">,</span> <span class="n">ds_raw</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">DATA</span><span class="p">[</span><span class="s1">&#39;lang_src&#39;</span><span class="p">])</span>
+    <span class="n">tokenizer_tgt</span> <span class="o">=</span> <span class="n">get_or_create_tokenizer</span><span class="p">(</span>
+        <span class="n">config</span><span class="p">,</span> <span class="n">ds_raw</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">DATA</span><span class="p">[</span><span class="s1">&#39;lang_tgt&#39;</span><span class="p">])</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;data_loader: tokenizers created&#39;</span><span class="p">)</span>
 
     <span class="c1"># split into 90% for training and 10% for validation</span>
     <span class="n">train_ds_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.9</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">ds_raw</span><span class="p">))</span>
     <span class="n">val_ds_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ds_raw</span><span class="p">)</span> <span class="o">-</span> <span class="n">train_ds_size</span>
-    <span class="n">train_ds_raw</span><span class="p">,</span> <span class="n">val_ds_raw</span> <span class="o">=</span> <span class="n">random_split</span><span class="p">(</span><span class="n">ds_raw</span><span class="p">,</span> <span class="p">[</span><span class="n">train_ds_size</span><span class="p">,</span> <span class="n">val_ds_size</span><span class="p">])</span>
+    <span class="n">train_ds_raw</span><span class="p">,</span> <span class="n">val_ds_raw</span> <span class="o">=</span> <span class="n">random_split</span><span class="p">(</span>
+        <span class="n">ds_raw</span><span class="p">,</span> <span class="p">[</span><span class="n">train_ds_size</span><span class="p">,</span> <span class="n">val_ds_size</span><span class="p">])</span>
 
     <span class="c1"># get train and val data set</span>
-    <span class="n">train_ds</span> <span class="o">=</span> <span class="n">TwoLanguagesDataset</span><span class="p">(</span><span class="n">train_ds_raw</span><span class="p">,</span> <span class="n">tokenizer_src</span><span class="p">,</span> <span class="n">tokenizer_tgt</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">DATA</span><span class="p">[</span><span class="s1">&#39;lang_src&#39;</span><span class="p">],</span> <span class="n">config</span><span class="o">.</span><span class="n">DATA</span><span class="p">[</span><span class="s1">&#39;lang_tgt&#39;</span><span class="p">],</span>
+    <span class="n">train_ds</span> <span class="o">=</span> <span class="n">TwoLanguagesDataset</span><span class="p">(</span><span class="n">train_ds_raw</span><span class="p">,</span> <span class="n">tokenizer_src</span><span class="p">,</span> <span class="n">tokenizer_tgt</span><span class="p">,</span>
+                                   <span class="n">config</span><span class="o">.</span><span class="n">DATA</span><span class="p">[</span><span class="s1">&#39;lang_src&#39;</span><span class="p">],</span>
+                                   <span class="n">config</span><span class="o">.</span><span class="n">DATA</span><span class="p">[</span><span class="s1">&#39;lang_tgt&#39;</span><span class="p">],</span>
                                    <span class="n">config</span><span class="o">.</span><span class="n">DATA</span><span class="p">[</span><span class="s1">&#39;seq_len&#39;</span><span class="p">])</span>
-    <span class="n">val_ds</span> <span class="o">=</span> <span class="n">TwoLanguagesDataset</span><span class="p">(</span><span class="n">val_ds_raw</span><span class="p">,</span> <span class="n">tokenizer_src</span><span class="p">,</span> <span class="n">tokenizer_tgt</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">DATA</span><span class="p">[</span><span class="s1">&#39;lang_src&#39;</span><span class="p">],</span> <span class="n">config</span><span class="o">.</span><span class="n">DATA</span><span class="p">[</span><span class="s1">&#39;lang_tgt&#39;</span><span class="p">],</span>
+    <span class="n">val_ds</span> <span class="o">=</span> <span class="n">TwoLanguagesDataset</span><span class="p">(</span><span class="n">val_ds_raw</span><span class="p">,</span> <span class="n">tokenizer_src</span><span class="p">,</span> <span class="n">tokenizer_tgt</span><span class="p">,</span>
+                                 <span class="n">config</span><span class="o">.</span><span class="n">DATA</span><span class="p">[</span><span class="s1">&#39;lang_src&#39;</span><span class="p">],</span>
+                                 <span class="n">config</span><span class="o">.</span><span class="n">DATA</span><span class="p">[</span><span class="s1">&#39;lang_tgt&#39;</span><span class="p">],</span>
                                  <span class="n">config</span><span class="o">.</span><span class="n">DATA</span><span class="p">[</span><span class="s1">&#39;seq_len&#39;</span><span class="p">])</span>
 
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;data_loader: train and validation data set created&#39;</span><span class="p">)</span>
+
     <span class="c1"># create PyTorch train and val dataloaders</span>
-    <span class="n">train_dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">MODEL</span><span class="p">[</span><span class="s1">&#39;batch_size&#39;</span><span class="p">],</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">train_dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span>
+        <span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">MODEL</span><span class="p">[</span><span class="s1">&#39;batch_size&#39;</span><span class="p">],</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">val_dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">val_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">train_dataloader</span><span class="p">,</span> <span class="n">val_dataloader</span><span class="p">,</span> <span class="n">tokenizer_src</span><span class="p">,</span> <span class="n">tokenizer_tgt</span></div>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;data_loader: dataloader and tokenizers created&#39;</span><span class="p">)</span>
 
+    <span class="k">return</span> <span class="n">train_dataloader</span><span class="p">,</span> <span class="n">val_dataloader</span><span class="p">,</span> <span class="n">tokenizer_src</span><span class="p">,</span> <span class="n">tokenizer_tgt</span></div>
 
 </pre></div>
 

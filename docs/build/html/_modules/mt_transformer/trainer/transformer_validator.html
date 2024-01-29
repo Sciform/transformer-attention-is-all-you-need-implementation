@@ -391,21 +391,20 @@ document.write(`
 <div class="viewcode-block" id="TransformerValidator">
 <a class="viewcode-back" href="../../../_autosummary/mt_transformer.trainer.transformer_validator.TransformerValidator.html#mt_transformer.trainer.transformer_validator.TransformerValidator">[docs]</a>
 <span class="k">class</span> <span class="nc">TransformerValidator</span><span class="p">:</span>
-    
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">pass</span>
 
-
-    <span class="k">def</span> <span class="nf">perform_validation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
-                           <span class="n">model</span><span class="p">,</span> 
-                           <span class="n">validation_ds</span><span class="p">,</span> 
-                           <span class="n">tokenizer_src</span><span class="p">,</span> 
-                           <span class="n">tokenizer_tgt</span><span class="p">,</span> 
-                           <span class="n">max_len</span><span class="p">,</span> 
-                           <span class="n">device</span><span class="p">,</span> 
+    <span class="k">def</span> <span class="nf">perform_validation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                           <span class="n">model</span><span class="p">,</span>
+                           <span class="n">validation_ds</span><span class="p">,</span>
+                           <span class="n">tokenizer_src</span><span class="p">,</span>
+                           <span class="n">tokenizer_tgt</span><span class="p">,</span>
+                           <span class="n">max_len</span><span class="p">,</span>
+                           <span class="n">device</span><span class="p">,</span>
                            <span class="n">print_msg</span><span class="p">,</span>
-                           <span class="n">global_step</span><span class="p">,</span> 
-                           <span class="n">writer</span><span class="p">,</span> 
+                           <span class="n">global_step</span><span class="p">,</span>
+                           <span class="n">writer</span><span class="p">,</span>
                            <span class="n">num_examples</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 
         <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
@@ -427,19 +426,24 @@ document.write(`
         <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
             <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">validation_ds</span><span class="p">:</span>
                 <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="n">encoder_input</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s2">&quot;encoder_input&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>  <span class="c1"># (b, seq_len)</span>
-                <span class="n">encoder_mask</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s2">&quot;encoder_mask&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>  <span class="c1"># (b, 1, 1, seq_len)</span>
+                <span class="n">encoder_input</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s2">&quot;encoder_input&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span>
+                    <span class="n">device</span><span class="p">)</span>  <span class="c1"># (b, seq_len)</span>
+                <span class="n">encoder_mask</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s2">&quot;encoder_mask&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span>
+                    <span class="n">device</span><span class="p">)</span>  <span class="c1"># (b, 1, 1, seq_len)</span>
 
                 <span class="c1"># check that the batch size is 1</span>
-                <span class="k">assert</span> <span class="n">encoder_input</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Batch size must be &gt;= 1 for validation&quot;</span>
+                <span class="k">assert</span> <span class="n">encoder_input</span><span class="o">.</span><span class="n">size</span><span class="p">(</span>
+                    <span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Batch size must be &gt;= 1 for validation&quot;</span>
 
                 <span class="n">greedy_decoder</span> <span class="o">=</span> <span class="n">GreedyDecoder</span><span class="p">()</span>
-                <span class="n">model_out</span> <span class="o">=</span> <span class="n">greedy_decoder</span><span class="o">.</span><span class="n">greedy_decode</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">encoder_input</span><span class="p">,</span> <span class="n">encoder_mask</span><span class="p">,</span> <span class="n">tokenizer_src</span><span class="p">,</span>
-                                                         <span class="n">tokenizer_tgt</span><span class="p">,</span> <span class="n">max_len</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+                <span class="n">model_out</span> <span class="o">=</span> <span class="n">greedy_decoder</span><span class="o">.</span><span class="n">greedy_decode</span><span class="p">(</span>
+                    <span class="n">model</span><span class="p">,</span> <span class="n">encoder_input</span><span class="p">,</span> <span class="n">encoder_mask</span><span class="p">,</span> <span class="n">tokenizer_tgt</span><span class="p">,</span> <span class="n">max_len</span><span class="p">,</span>
+                    <span class="n">device</span><span class="p">)</span>
 
                 <span class="n">source_text</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s2">&quot;src_text&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
                 <span class="n">target_text</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s2">&quot;tgt_text&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-                <span class="n">model_out_text</span> <span class="o">=</span> <span class="n">tokenizer_tgt</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">model_out</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+                <span class="n">model_out_text</span> <span class="o">=</span> <span class="n">tokenizer_tgt</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span>
+                    <span class="n">model_out</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
 
                 <span class="n">source_texts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">source_text</span><span class="p">)</span>
                 <span class="n">expected</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">target_text</span><span class="p">)</span>
@@ -447,9 +451,9 @@ document.write(`
 
                 <span class="c1"># Print the source, target and model output</span>
                 <span class="n">print_msg</span><span class="p">(</span><span class="s1">&#39;-&#39;</span> <span class="o">*</span> <span class="n">console_width</span><span class="p">)</span>
-                <span class="n">print_msg</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="sa">f</span><span class="s1">&#39;SOURCE: &#39;</span><span class="si">:</span><span class="s2">&gt;12</span><span class="si">}{</span><span class="n">source_text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-                <span class="n">print_msg</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="sa">f</span><span class="s1">&#39;TARGET: &#39;</span><span class="si">:</span><span class="s2">&gt;12</span><span class="si">}{</span><span class="n">target_text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-                <span class="n">print_msg</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="sa">f</span><span class="s1">&#39;PREDICTED: &#39;</span><span class="si">:</span><span class="s2">&gt;12</span><span class="si">}{</span><span class="n">model_out_text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">print_msg</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="sa">f</span><span class="s1">&#39;Source: &#39;</span><span class="si">:</span><span class="s2">&gt;12</span><span class="si">}{</span><span class="n">source_text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">print_msg</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="sa">f</span><span class="s1">&#39;Target: &#39;</span><span class="si">:</span><span class="s2">&gt;12</span><span class="si">}{</span><span class="n">target_text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">print_msg</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="sa">f</span><span class="s1">&#39;Predicted: &#39;</span><span class="si">:</span><span class="s2">&gt;12</span><span class="si">}{</span><span class="n">model_out_text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
                 <span class="k">if</span> <span class="n">count</span> <span class="o">==</span> <span class="n">num_examples</span><span class="p">:</span>
                     <span class="n">print_msg</span><span class="p">(</span><span class="s1">&#39;-&#39;</span> <span class="o">*</span> <span class="n">console_width</span><span class="p">)</span>

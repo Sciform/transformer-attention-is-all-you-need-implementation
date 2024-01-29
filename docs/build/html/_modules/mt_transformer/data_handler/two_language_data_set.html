@@ -377,59 +377,75 @@ document.write(`
                 <article class="bd-article">
                   
   <h1>Source code for mt_transformer.data_handler.two_language_data_set</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
 
-<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">Dataset</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">tokenizers</span> <span class="kn">import</span> <span class="n">Tokenizer</span>
+<span class="kn">from</span> <span class="nn">datasets</span> <span class="kn">import</span> <span class="n">Dataset</span> <span class="k">as</span> <span class="n">HfDataSet</span>
 
 <span class="kn">from</span> <span class="nn">mt_transformer.data_handler.masks</span> <span class="kn">import</span> <span class="n">causal_mask</span>
 
 
 <div class="viewcode-block" id="TwoLanguagesDataset">
 <a class="viewcode-back" href="../../../_autosummary/mt_transformer.data_handler.two_language_data_set.TwoLanguagesDataset.html#mt_transformer.data_handler.two_language_data_set.TwoLanguagesDataset">[docs]</a>
-<span class="k">class</span> <span class="nc">TwoLanguagesDataset</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">TwoLanguagesDataset</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">tokenizer_src</span><span class="p">,</span> <span class="n">tokenizer_tgt</span><span class="p">,</span> <span class="n">src_lang</span><span class="p">,</span> <span class="n">tgt_lang</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">ds_raw</span><span class="p">:</span> <span class="n">HfDataSet</span><span class="p">,</span>
+                 <span class="n">tokenizer_src</span><span class="p">:</span> <span class="n">Tokenizer</span><span class="p">,</span>
+                 <span class="n">tokenizer_tgt</span><span class="p">:</span> <span class="n">Tokenizer</span><span class="p">,</span>
+                 <span class="n">src_lang</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                 <span class="n">tgt_lang</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                 <span class="n">seq_len</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">seq_len</span> <span class="o">=</span> <span class="n">seq_len</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer_src</span> <span class="o">=</span> <span class="n">tokenizer_src</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer_tgt</span> <span class="o">=</span> <span class="n">tokenizer_tgt</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">src_lang</span> <span class="o">=</span> <span class="n">src_lang</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tgt_lang</span> <span class="o">=</span> <span class="n">tgt_lang</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__seq_len</span> <span class="o">=</span> <span class="n">seq_len</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__ds</span> <span class="o">=</span> <span class="n">ds_raw</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__tokenizer_src</span> <span class="o">=</span> <span class="n">tokenizer_src</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__tokenizer_tgt</span> <span class="o">=</span> <span class="n">tokenizer_tgt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__src_lang</span> <span class="o">=</span> <span class="n">src_lang</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__tgt_lang</span> <span class="o">=</span> <span class="n">tgt_lang</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">sos_token</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="n">tokenizer_tgt</span><span class="o">.</span><span class="n">token_to_id</span><span class="p">(</span><span class="s2">&quot;[SOS]&quot;</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">eos_token</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="n">tokenizer_tgt</span><span class="o">.</span><span class="n">token_to_id</span><span class="p">(</span><span class="s2">&quot;[EOS]&quot;</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pad_token</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="n">tokenizer_tgt</span><span class="o">.</span><span class="n">token_to_id</span><span class="p">(</span><span class="s2">&quot;[PAD]&quot;</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__sos_token</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="n">tokenizer_tgt</span><span class="o">.</span><span class="n">token_to_id</span><span class="p">(</span><span class="s2">&quot;[SOS]&quot;</span><span class="p">)],</span>
+                                        <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__eos_token</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="n">tokenizer_tgt</span><span class="o">.</span><span class="n">token_to_id</span><span class="p">(</span><span class="s2">&quot;[EOS]&quot;</span><span class="p">)],</span>
+                                        <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__pad_token</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="n">tokenizer_tgt</span><span class="o">.</span><span class="n">token_to_id</span><span class="p">(</span><span class="s2">&quot;[PAD]&quot;</span><span class="p">)],</span>
+                                        <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ds</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__ds</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
-        <span class="n">src_target_pair</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ds</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-        <span class="n">src_text</span> <span class="o">=</span> <span class="n">src_target_pair</span><span class="p">[</span><span class="s1">&#39;translation&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">src_lang</span><span class="p">]</span>
-        <span class="n">tgt_text</span> <span class="o">=</span> <span class="n">src_target_pair</span><span class="p">[</span><span class="s1">&#39;translation&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">tgt_lang</span><span class="p">]</span>
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                    <span class="n">idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+
+        <span class="n">src_target_pair</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ds</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="n">src_text</span> <span class="o">=</span> <span class="n">src_target_pair</span><span class="p">[</span><span class="s1">&#39;translation&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">__src_lang</span><span class="p">]</span>
+        <span class="n">tgt_text</span> <span class="o">=</span> <span class="n">src_target_pair</span><span class="p">[</span><span class="s1">&#39;translation&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">__tgt_lang</span><span class="p">]</span>
 
         <span class="c1"># Transform the text into tokens</span>
-        <span class="n">enc_input_tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer_src</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">src_text</span><span class="p">)</span><span class="o">.</span><span class="n">ids</span>
-        <span class="n">dec_input_tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer_tgt</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">tgt_text</span><span class="p">)</span><span class="o">.</span><span class="n">ids</span>
+        <span class="n">enc_input_tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tokenizer_src</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">src_text</span><span class="p">)</span><span class="o">.</span><span class="n">ids</span>
+        <span class="n">dec_input_tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tokenizer_tgt</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">tgt_text</span><span class="p">)</span><span class="o">.</span><span class="n">ids</span>
 
         <span class="c1"># Add sos, eos and padding to each sentence</span>
-        <span class="n">enc_num_padding_tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">seq_len</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">enc_input_tokens</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span>  <span class="c1"># We will add &lt;s&gt; and &lt;/s&gt;</span>
+        <span class="n">enc_num_padding_tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__seq_len</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">enc_input_tokens</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span>
+        <span class="c1"># We will add &lt;s&gt; and &lt;/s&gt;</span>
         <span class="c1"># We will only add &lt;s&gt;, and &lt;/s&gt; only on the label</span>
-        <span class="n">dec_num_padding_tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">seq_len</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dec_input_tokens</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">dec_num_padding_tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__seq_len</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dec_input_tokens</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
 
-        <span class="c1"># Make sure the number of padding tokens is not negative. If it is, the sentence is too long</span>
+        <span class="c1"># Make sure the number of padding tokens is not negative.</span>
+        <span class="c1"># If it is, the sentence is too long</span>
         <span class="k">if</span> <span class="n">enc_num_padding_tokens</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">dec_num_padding_tokens</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Sentence is too long&quot;</span><span class="p">)</span>
 
         <span class="c1"># Add &lt;s&gt; and &lt;/s&gt; token</span>
         <span class="n">encoder_input</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span>
             <span class="p">[</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">sos_token</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__sos_token</span><span class="p">,</span>
                 <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">enc_input_tokens</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">eos_token</span><span class="p">,</span>
-                <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">pad_token</span><span class="p">]</span> <span class="o">*</span> <span class="n">enc_num_padding_tokens</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__eos_token</span><span class="p">,</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">__pad_token</span><span class="p">]</span> <span class="o">*</span> <span class="n">enc_num_padding_tokens</span><span class="p">,</span>
+                             <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
             <span class="p">],</span>
             <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
         <span class="p">)</span>
@@ -437,9 +453,10 @@ document.write(`
         <span class="c1"># Add only &lt;s&gt; token</span>
         <span class="n">decoder_input</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span>
             <span class="p">[</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">sos_token</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__sos_token</span><span class="p">,</span>
                 <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">dec_input_tokens</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
-                <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">pad_token</span><span class="p">]</span> <span class="o">*</span> <span class="n">dec_num_padding_tokens</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">__pad_token</span><span class="p">]</span> <span class="o">*</span> <span class="n">dec_num_padding_tokens</span><span class="p">,</span>
+                             <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
             <span class="p">],</span>
             <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
         <span class="p">)</span>
@@ -448,28 +465,32 @@ document.write(`
         <span class="n">label</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span>
             <span class="p">[</span>
                 <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">dec_input_tokens</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">eos_token</span><span class="p">,</span>
-                <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">pad_token</span><span class="p">]</span> <span class="o">*</span> <span class="n">dec_num_padding_tokens</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__eos_token</span><span class="p">,</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">__pad_token</span><span class="p">]</span> <span class="o">*</span>
+                             <span class="n">dec_num_padding_tokens</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
             <span class="p">],</span>
             <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="c1"># Check the size of the tensors to make sure they are all seq_len long</span>
-        <span class="k">assert</span> <span class="n">encoder_input</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">seq_len</span>
-        <span class="k">assert</span> <span class="n">decoder_input</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">seq_len</span>
-        <span class="k">assert</span> <span class="n">label</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">seq_len</span>
+        <span class="k">assert</span> <span class="n">encoder_input</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">__seq_len</span>
+        <span class="k">assert</span> <span class="n">decoder_input</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">__seq_len</span>
+        <span class="k">assert</span> <span class="n">label</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">__seq_len</span>
 
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;encoder_input&quot;</span><span class="p">:</span> <span class="n">encoder_input</span><span class="p">,</span>  <span class="c1"># (seq_len)</span>
-            <span class="s2">&quot;decoder_input&quot;</span><span class="p">:</span> <span class="n">decoder_input</span><span class="p">,</span>  <span class="c1"># (seq_len)</span>
-            <span class="s2">&quot;encoder_mask&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">encoder_input</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pad_token</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">int</span><span class="p">(),</span>  <span class="c1"># (1, 1, seq_len)</span>
-            <span class="s2">&quot;decoder_mask&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">decoder_input</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pad_token</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">int</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">causal_mask</span><span class="p">(</span><span class="n">decoder_input</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)),</span>
+            <span class="c1"># (seq_len)</span>
+            <span class="s2">&quot;encoder_input&quot;</span><span class="p">:</span> <span class="n">encoder_input</span><span class="p">,</span>
+            <span class="c1"># (seq_len)</span>
+            <span class="s2">&quot;decoder_input&quot;</span><span class="p">:</span> <span class="n">decoder_input</span><span class="p">,</span>
+            <span class="c1"># (1, 1, seq_len)</span>
+            <span class="s2">&quot;encoder_mask&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">encoder_input</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pad_token</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">int</span><span class="p">(),</span>
+            <span class="s2">&quot;decoder_mask&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">decoder_input</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pad_token</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">int</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">causal_mask</span><span class="p">(</span><span class="n">decoder_input</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)),</span>
             <span class="c1"># (1, seq_len) &amp; (1, seq_len, seq_len),</span>
-            <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="n">label</span><span class="p">,</span>  <span class="c1"># (seq_len)</span>
+            <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="n">label</span><span class="p">,</span>
+            <span class="c1"># (seq_len)</span>
             <span class="s2">&quot;src_text&quot;</span><span class="p">:</span> <span class="n">src_text</span><span class="p">,</span>
             <span class="s2">&quot;tgt_text&quot;</span><span class="p">:</span> <span class="n">tgt_text</span><span class="p">,</span>
         <span class="p">}</span></div>
-
 
 </pre></div>
 

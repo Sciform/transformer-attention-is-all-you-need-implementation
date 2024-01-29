@@ -378,12 +378,15 @@ document.write(`
                   
   <h1>Source code for mt_transformer.inference.tf_inference</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
 
 <span class="kn">import</span> <span class="nn">torch</span>
 
-<span class="kn">from</span> <span class="nn">mt_transformer.config.project_config</span> <span class="kn">import</span> <span class="n">Config</span>
+<span class="c1"># from Huggingface</span>
+<span class="kn">from</span> <span class="nn">tokenizers</span> <span class="kn">import</span> <span class="n">Tokenizer</span>
+
 <span class="kn">from</span> <span class="nn">mt_transformer.data_handler.data_loader</span> <span class="kn">import</span> <span class="n">create_tokenizers_dataloaders</span>
-<span class="kn">from</span> <span class="nn">mt_transformer.model.transformer_model</span> <span class="kn">import</span> <span class="n">get_transformer_model</span>
+<span class="kn">from</span> <span class="nn">mt_transformer.model.transformer_model</span> <span class="kn">import</span> <span class="n">TransformerModel</span><span class="p">,</span> <span class="n">get_transformer_model</span>
 <span class="kn">from</span> <span class="nn">mt_transformer.trainer.transformer_validator</span> <span class="kn">import</span> <span class="n">TransformerValidator</span>
 <span class="kn">from</span> <span class="nn">mt_transformer.utils.tf_utils</span> <span class="kn">import</span> <span class="n">get_proc_device</span>
 
@@ -392,33 +395,114 @@ document.write(`
 <a class="viewcode-back" href="../../../_autosummary/mt_transformer.inference.tf_inference.TfInference.html#mt_transformer.inference.tf_inference.TfInference">[docs]</a>
 <span class="k">class</span> <span class="nc">TfInference</span><span class="p">:</span>
 
-
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__config</span> <span class="o">=</span> <span class="n">config</span>
 
-
     <span class="k">def</span> <span class="nf">perform_inference</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        
+
         <span class="c1"># get Cuda-GPU if available otherwise CPU</span>
         <span class="n">device</span> <span class="o">=</span> <span class="n">get_proc_device</span><span class="p">()</span>
 
         <span class="c1"># get data loaders and tokenizers</span>
-        <span class="n">_</span><span class="p">,</span> <span class="n">val_dataloader</span><span class="p">,</span> <span class="n">tokenizer_src</span><span class="p">,</span> <span class="n">tokenizer_tgt</span> <span class="o">=</span> <span class="n">create_tokenizers_dataloaders</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">val_dataloader</span><span class="p">,</span> <span class="n">tokenizer_src</span><span class="p">,</span> <span class="n">tokenizer_tgt</span> <span class="o">=</span> \
+            <span class="n">create_tokenizers_dataloaders</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="p">)</span>
 
         <span class="c1"># create transformer model</span>
-        <span class="n">transformer_model</span> <span class="o">=</span> <span class="n">get_transformer_model</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="p">,</span> <span class="n">tokenizer_src</span><span class="o">.</span><span class="n">get_vocab_size</span><span class="p">(),</span> 
+        <span class="n">transformer_model</span> <span class="o">=</span> <span class="n">get_transformer_model</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="p">,</span>
+            <span class="n">tokenizer_src</span><span class="o">.</span><span class="n">get_vocab_size</span><span class="p">(),</span>
             <span class="n">tokenizer_tgt</span><span class="o">.</span><span class="n">get_vocab_size</span><span class="p">())</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
 
-        <span class="c1"># load pretrained state into model</span>
-        <span class="n">state</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="o">.</span><span class="n">get_saved_model_file_path</span><span class="p">(</span><span class="n">epoch</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;29&quot;</span><span class="p">))</span>
+        <span class="c1"># load trained state into model</span>
+        <span class="n">trained_model_epoch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="o">.</span><span class="n">INFERENCE</span><span class="p">[</span><span class="s2">&quot;trained_model_epoch&quot;</span><span class="p">]</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;TfInference: load trained model at epoch </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                     <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">trained_model_epoch</span><span class="si">:</span><span class="s1">03d</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="n">state</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="o">.</span><span class="n">get_saved_model_file_path</span><span class="p">(</span>
+            <span class="n">epoch</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">trained_model_epoch</span><span class="si">:</span><span class="s2">03d</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">),</span>
+            <span class="n">map_location</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="n">device</span><span class="p">))</span>
         <span class="n">transformer_model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s1">&#39;model_state_dict&#39;</span><span class="p">])</span>
 
-        <span class="c1"># perform inference</span>
+        <span class="c1"># perform validation - translate</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;TfInference: perform validation&#39;</span><span class="p">)</span>
         <span class="n">transformer_val</span> <span class="o">=</span> <span class="n">TransformerValidator</span><span class="p">()</span>
-        <span class="n">transformer_val</span><span class="o">.</span><span class="n">perform_validation</span><span class="p">(</span><span class="n">transformer_model</span><span class="p">,</span> <span class="n">val_dataloader</span><span class="p">,</span> <span class="n">tokenizer_src</span><span class="p">,</span> <span class="n">tokenizer_tgt</span><span class="p">,</span> 
-                                           <span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="o">.</span><span class="n">DATA</span><span class="p">[</span><span class="s1">&#39;seq_len&#39;</span><span class="p">],</span> <span class="n">device</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">num_examples</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span></div>
+        <span class="n">transformer_val</span><span class="o">.</span><span class="n">perform_validation</span><span class="p">(</span>
+            <span class="n">transformer_model</span><span class="p">,</span> <span class="n">val_dataloader</span><span class="p">,</span> <span class="n">tokenizer_src</span><span class="p">,</span>
+            <span class="n">tokenizer_tgt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="o">.</span><span class="n">DATA</span><span class="p">[</span><span class="s1">&#39;seq_len&#39;</span><span class="p">],</span> <span class="n">device</span><span class="p">,</span>
+            <span class="k">lambda</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">num_examples</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 
-        
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;TfInference: perform translation&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__perform_translation</span><span class="p">(</span>
+            <span class="n">transformer_model</span><span class="p">,</span> <span class="n">tokenizer_src</span><span class="p">,</span> <span class="n">tokenizer_tgt</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="o">.</span><span class="n">DATA</span><span class="p">[</span><span class="s1">&#39;seq_len&#39;</span><span class="p">],</span> <span class="n">device</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__perform_translation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                              <span class="n">transformer_model</span><span class="p">:</span> <span class="n">TransformerModel</span><span class="p">,</span>
+                              <span class="n">tokenizer_src</span><span class="p">:</span> <span class="n">Tokenizer</span><span class="p">,</span>
+                              <span class="n">tokenizer_tgt</span><span class="p">:</span> <span class="n">Tokenizer</span><span class="p">,</span>
+                              <span class="n">seq_len</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                              <span class="n">device</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                              <span class="n">sentence</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;I am a big fan of transformer models&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+
+        <span class="n">transformer_model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+            <span class="c1"># pre compute the encoder output and reuse it for every generation step</span>
+            <span class="n">tokenized_sentence</span> <span class="o">=</span> <span class="n">tokenizer_src</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+
+            <span class="n">source</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="n">tokenizer_src</span><span class="o">.</span><span class="n">token_to_id</span><span class="p">(</span><span class="s1">&#39;[SOS]&#39;</span><span class="p">)],</span>
+                             <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">tokenized_sentence</span><span class="o">.</span><span class="n">ids</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="n">tokenizer_src</span><span class="o">.</span><span class="n">token_to_id</span><span class="p">(</span><span class="s1">&#39;[EOS]&#39;</span><span class="p">)],</span>
+                             <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="n">tokenizer_src</span><span class="o">.</span><span class="n">token_to_id</span><span class="p">(</span><span class="s1">&#39;[PAD]&#39;</span><span class="p">)]</span> <span class="o">*</span>
+                             <span class="p">(</span><span class="n">seq_len</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokenized_sentence</span><span class="o">.</span><span class="n">ids</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="p">),</span>
+                             <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+            <span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+
+            <span class="n">source_mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">source</span> <span class="o">!=</span> <span class="n">tokenizer_src</span><span class="o">.</span><span class="n">token_to_id</span><span class="p">(</span>
+                <span class="s1">&#39;[PAD]&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">int</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">encoder_output</span> <span class="o">=</span> <span class="n">transformer_model</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">source_mask</span><span class="p">)</span>
+
+            <span class="c1"># initialize the decoder input with the sos token</span>
+            <span class="n">decoder_input</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">fill_</span><span class="p">(</span>
+                <span class="n">tokenizer_tgt</span><span class="o">.</span><span class="n">token_to_id</span><span class="p">(</span><span class="s1">&#39;[SOS]&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">type_as</span><span class="p">(</span><span class="n">source</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+
+            <span class="c1"># print the source sentence and the predicted translation</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="sa">f</span><span class="s1">&#39;Source: &#39;</span><span class="si">:</span><span class="s2">&gt;12</span><span class="si">}{</span><span class="n">sentence</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="sa">f</span><span class="s1">&#39;Predicted: &#39;</span><span class="si">:</span><span class="s2">&gt;12</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+            <span class="c1"># generate the translation word by word</span>
+            <span class="k">while</span> <span class="n">decoder_input</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">seq_len</span><span class="p">:</span>
+
+                <span class="c1"># build decoder mask and decode</span>
+                <span class="n">decoder_mask</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">triu</span><span class="p">(</span>
+                    <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">decoder_input</span><span class="o">.</span><span class="n">size</span><span class="p">(</span>
+                        <span class="mi">1</span><span class="p">),</span> <span class="n">decoder_input</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1</span><span class="p">))),</span>
+                    <span class="n">diagonal</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">int</span><span class="p">)</span><span class="o">.</span><span class="n">type_as</span><span class="p">(</span><span class="n">source_mask</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+
+                <span class="n">decoded_output</span> <span class="o">=</span> <span class="n">transformer_model</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span>
+                    <span class="n">encoder_output</span><span class="p">,</span> <span class="n">source_mask</span><span class="p">,</span> <span class="n">decoder_input</span><span class="p">,</span>
+                    <span class="n">decoder_mask</span><span class="p">)</span>
+
+                <span class="c1"># project next token</span>
+                <span class="n">prob</span> <span class="o">=</span> <span class="n">transformer_model</span><span class="o">.</span><span class="n">project</span><span class="p">(</span><span class="n">decoded_output</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">_</span><span class="p">,</span> <span class="n">next_word</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">prob</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+                <span class="n">decoder_input</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span>
+                    <span class="p">[</span><span class="n">decoder_input</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">type_as</span><span class="p">(</span><span class="n">source</span><span class="p">)</span><span class="o">.</span><span class="n">fill_</span><span class="p">(</span>
+                        <span class="n">next_word</span><span class="o">.</span><span class="n">item</span><span class="p">())</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+                <span class="c1"># print the translated word</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">tokenizer_tgt</span><span class="o">.</span><span class="n">decode</span><span class="p">([</span><span class="n">next_word</span><span class="o">.</span><span class="n">item</span><span class="p">()])</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+
+                <span class="c1"># stop if the end of sentence token is predicted</span>
+                <span class="k">if</span> <span class="n">next_word</span> <span class="o">==</span> <span class="n">tokenizer_tgt</span><span class="o">.</span><span class="n">token_to_id</span><span class="p">(</span><span class="s1">&#39;[EOS]&#39;</span><span class="p">):</span>
+                    <span class="k">break</span>
+
+        <span class="c1"># convert ids to tokens</span>
+        <span class="k">return</span> <span class="n">tokenizer_tgt</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">decoder_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span></div>
+
 </pre></div>
 
                 </article>

@@ -488,32 +488,18 @@ document.write(`
 <dt class="sig sig-object py" id="mt_transformer.config.project_config.Config">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Config</span></span><a class="reference internal" href="../_modules/mt_transformer/config/project_config.html#Config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mt_transformer.config.project_config.Config" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Configuration</p>
 <p class="rubric">Methods</p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_experiments_file_path</span></code></p></td>
-<td><p><dl class="field-list simple">
-<dt class="field-odd">rtype<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a></span></p>
-</dd>
-</dl>
-</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mt_transformer.config.project_config.Config.get_experiments_file_path" title="mt_transformer.config.project_config.Config.get_experiments_file_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_experiments_file_path</span></code></a></p></td>
+<td><p>get file path for all runs</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_rel_dictionary_file_path</span></code></p></td>
-<td><p><dl class="field-list simple">
-<dt class="field-odd">rtype<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a></span></p>
-</dd>
-</dl>
-</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#mt_transformer.config.project_config.Config.get_rel_dictionary_file_path" title="mt_transformer.config.project_config.Config.get_rel_dictionary_file_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_rel_dictionary_file_path</span></code></a></p></td>
+<td><p>Construct relative file path for dictionary of a specific language.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_saved_model_file_path</span></code></p></td>
-<td><p><dl class="field-list simple">
-<dt class="field-odd">rtype<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a></span></p>
-</dd>
-</dl>
-</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mt_transformer.config.project_config.Config.get_saved_model_file_path" title="mt_transformer.config.project_config.Config.get_saved_model_file_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_saved_model_file_path</span></code></a></p></td>
+<td><p>Construct saved model file path</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_dictionary_folder_path</span></code></p></td>
 <td><p><dl class="field-list simple">
@@ -533,6 +519,55 @@ document.write(`
 </tr>
 </tbody>
 </table>
+<dl class="py method">
+<dt class="sig sig-object py" id="mt_transformer.config.project_config.Config.get_experiments_file_path">
+<span class="sig-name descname"><span class="pre">get_experiments_file_path</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mt_transformer/config/project_config.html#Config.get_experiments_file_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mt_transformer.config.project_config.Config.get_experiments_file_path" title="Link to this definition">#</a></dt>
+<dd><p>get file path for all runs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a></span></p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>Path: file path for all runs</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mt_transformer.config.project_config.Config.get_rel_dictionary_file_path">
+<span class="sig-name descname"><span class="pre">get_rel_dictionary_file_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">language</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mt_transformer/config/project_config.html#Config.get_rel_dictionary_file_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mt_transformer.config.project_config.Config.get_rel_dictionary_file_path" title="Link to this definition">#</a></dt>
+<dd><p>Construct relative file path for dictionary of a specific language.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a></span></p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Args:</dt><dd><p>language (str): language</p>
+</dd>
+<dt>Returns:</dt><dd><p>Path: relative file path for dictionary</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mt_transformer.config.project_config.Config.get_saved_model_file_path">
+<span class="sig-name descname"><span class="pre">get_saved_model_file_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mt_transformer/config/project_config.html#Config.get_saved_model_file_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mt_transformer.config.project_config.Config.get_saved_model_file_path" title="Link to this definition">#</a></dt>
+<dd><p>Construct saved model file path</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a></span></p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Args:</dt><dd><p>epoch (str): current epoch</p>
+</dd>
+<dt>Returns:</dt><dd><p>Path: saved model file path</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -559,7 +594,12 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mt_transformer.config.project_config.Config"><code class="docutils literal notranslate"><span class="pre">Config</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mt_transformer.config.project_config.Config"><code class="docutils literal notranslate"><span class="pre">Config</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mt_transformer.config.project_config.Config.get_experiments_file_path"><code class="docutils literal notranslate"><span class="pre">Config.get_experiments_file_path()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mt_transformer.config.project_config.Config.get_rel_dictionary_file_path"><code class="docutils literal notranslate"><span class="pre">Config.get_rel_dictionary_file_path()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mt_transformer.config.project_config.Config.get_saved_model_file_path"><code class="docutils literal notranslate"><span class="pre">Config.get_saved_model_file_path()</span></code></a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 

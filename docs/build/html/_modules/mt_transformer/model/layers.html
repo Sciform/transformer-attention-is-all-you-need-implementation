@@ -387,35 +387,40 @@ document.write(`
 <a class="viewcode-back" href="../../../_autosummary/mt_transformer.model.layers.TokenEmbeddings.html#mt_transformer.model.layers.TokenEmbeddings">[docs]</a>
 <span class="k">class</span> <span class="nc">TokenEmbeddings</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    The token embeddings layer refers to a tensor that learns &quot;d_model&quot;</span>
+<span class="sd">    The token embeddings layer module holds a tensor that learns &quot;d_model&quot;</span>
 <span class="sd">    embeddings (= features) for every token in a fixed size dictionary.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">d_model</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
                  <span class="n">dictionary_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        
-        <span class="bp">self</span><span class="o">.</span><span class="n">__d_model</span> <span class="o">=</span> <span class="n">d_model</span>                                        <span class="c1"># number of features</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__embedding</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">dictionary_size</span><span class="p">,</span> <span class="n">d_model</span><span class="p">)</span>       <span class="c1"># embedding layer</span>
+
+        <span class="c1"># number of features</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__d_model</span> <span class="o">=</span> <span class="n">d_model</span>
+        <span class="c1"># embedding layer (dict_size x d_model)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__embedding</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">dictionary_size</span><span class="p">,</span> <span class="n">d_model</span><span class="p">)</span>
 
 <div class="viewcode-block" id="TokenEmbeddings.forward">
 <a class="viewcode-back" href="../../../_autosummary/mt_transformer.model.layers.TokenEmbeddings.html#mt_transformer.model.layers.TokenEmbeddings.forward">[docs]</a>
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        For every token in a token sequence of a batch of token sequences x &quot;d_model&quot; </span>
-<span class="sd">        embeddings are learned.</span>
+<span class="sd">        For every token in a token sequence of a batch of token sequences x </span>
+<span class="sd">        &quot;d_model&quot; embeddings are learned.</span>
 <span class="sd">        A map x with dim(num_batch, sequence_length) to embeddings tensor with </span>
-<span class="sd">        dim(num_batch, sequence_length, d_model) is</span>
-<span class="sd">        performed</span>
+<span class="sd">        dim(num_batch, sequence_length, d_model) is performed.</span>
 <span class="sd">        The embedding tensor is multiply by sqrt(d_model) to scale the embeddings.</span>
 <span class="sd">        The original paper does not explain why the scaling is applied.</span>
 <span class="sd">        https://datascience.stackexchange.com/questions/87906/transformer-model-why-are-word-embeddings-scaled-before-adding-positional-encod</span>
+<span class="sd">        Should be sqrt(sqrt(d_model))</span>
 
-<span class="sd">    </span>
-<span class="sd">        :param x : batch o token sequences (tensor with dim(num_batch, sequence_length))</span>
-<span class="sd">        :return</span>
-<span class="sd">            learned &quot;d_model&quot; embeddings for every token in the dictionary</span>
+<span class="sd">        Args:</span>
+<span class="sd">            x (Any): batch of token sequences (tensor with dim(num_batch, sequence_length))</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Any: embedding layer with learned &quot;d_model&quot; embeddings for every </span>
+<span class="sd">            token in the dictionary</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__embedding</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__d_model</span><span class="p">)</span></div>
 </div>
@@ -425,39 +430,47 @@ document.write(`
 <div class="viewcode-block" id="PositionalEncoding">
 <a class="viewcode-back" href="../../../_autosummary/mt_transformer.model.layers.PositionalEncoding.html#mt_transformer.model.layers.PositionalEncoding">[docs]</a>
 <span class="k">class</span> <span class="nc">PositionalEncoding</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The positional encoding layer module holds a tensor with precomputed </span>
+<span class="sd">    positional values for every token in a sequence .</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">d_model</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
                  <span class="n">seq_len</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-                 <span class="n">drop_out</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+                 <span class="n">drop_out_prob</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">__drop_out_layer</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">drop_out</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__drop_out_layer</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">drop_out_prob</span><span class="p">)</span>
 
         <span class="c1"># create a tensor of shape (seq_len, d_model) filled with zeros</span>
         <span class="n">positional_encoding</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">seq_len</span><span class="p">,</span> <span class="n">d_model</span><span class="p">)</span>
 
-        <span class="c1"># create a tensor of shape (seq_len)</span>
-        <span class="n">position</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># (seq_len, 1)</span>
+        <span class="c1"># create a tensor of shape (seq_len, 1)</span>
+        <span class="n">position</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
         <span class="c1"># create a tensor of shape (d_model) for every embedding</span>
         <span class="c1"># the using exp and log leads to the same result but makes the computation numerically (better stability</span>
         <span class="c1"># https://kazemnejad.com/blog/transformer_architecture_positional_encoding/ and</span>
         <span class="c1"># https://ai.stackexchange.com/questions/41670/why-use-exponential-and-log-in-positional-encoding-of-transformer</span>
-        <span class="n">denominator</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">d_model</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">10000.0</span><span class="p">)</span> <span class="o">/</span> <span class="n">d_model</span><span class="p">))</span>  <span class="c1"># (d_model / 2)</span>
+        <span class="n">denominator</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">d_model</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span> <span class="o">*</span>
+                                <span class="p">(</span><span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">10000.0</span><span class="p">)</span> <span class="o">/</span> <span class="n">d_model</span><span class="p">))</span>  <span class="c1"># (d_model / 2)</span>
 
         <span class="c1"># compute sine-function for even indices</span>
-        <span class="n">positional_encoding</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">position</span> <span class="o">*</span> <span class="n">denominator</span><span class="p">)</span>  <span class="c1"># sin(position / (10000 ** (2i / d_model))</span>
+        <span class="c1"># sin(position / (10000 ** (2i / d_model))</span>
+        <span class="n">positional_encoding</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">position</span> <span class="o">*</span> <span class="n">denominator</span><span class="p">)</span>
         <span class="c1"># Compute cosine-function for odd indices</span>
-        <span class="n">positional_encoding</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">position</span> <span class="o">*</span> <span class="n">denominator</span><span class="p">)</span>  <span class="c1"># cos(position / (10000 ** (2i / d_model))</span>
+        <span class="c1"># cos(position / (10000 ** (2i / d_model))</span>
+        <span class="n">positional_encoding</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">position</span> <span class="o">*</span> <span class="n">denominator</span><span class="p">)</span>
 
-        <span class="c1"># Add a batch dimension to the positional encoding</span>
-        <span class="n">positional_encoding</span> <span class="o">=</span> <span class="n">positional_encoding</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># (1, seq_len, d_model)</span>
+        <span class="c1"># Add a batch dimension to the positional encoding (1, seq_len, d_model)</span>
+        <span class="n">positional_encoding</span> <span class="o">=</span> <span class="n">positional_encoding</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
         <span class="c1"># register the positional encoding as a buffer - registering store the positional encoding with the model during</span>
         <span class="c1"># model save</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s1">&#39;positional_encoding&#39;</span><span class="p">,</span> <span class="n">positional_encoding</span><span class="p">)</span>
-    
+
 <div class="viewcode-block" id="PositionalEncoding.forward">
 <a class="viewcode-back" href="../../../_autosummary/mt_transformer.model.layers.PositionalEncoding.html#mt_transformer.model.layers.PositionalEncoding.forward">[docs]</a>
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
@@ -473,20 +486,21 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># positional encoding is registered !!!</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">positional_encoding</span><span class="p">[:,</span> <span class="p">:</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">:])</span><span class="o">.</span><span class="n">requires_grad_</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">positional_encoding</span><span class="p">[:,</span>
+                 <span class="p">:</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">:])</span><span class="o">.</span><span class="n">requires_grad_</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__drop_out_layer</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div>
 </div>
 
-    
+
 
 <div class="viewcode-block" id="MultiHeadAttention">
 <a class="viewcode-back" href="../../../_autosummary/mt_transformer.model.layers.MultiHeadAttention.html#mt_transformer.model.layers.MultiHeadAttention">[docs]</a>
 <span class="k">class</span> <span class="nc">MultiHeadAttention</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
-                 <span class="n">d_model</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> 
-                 <span class="n">num_heads</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> 
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">d_model</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                 <span class="n">num_heads</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
                  <span class="n">dropout</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__d_model</span> <span class="o">=</span> <span class="n">d_model</span>  <span class="c1"># num of embeddings</span>
@@ -495,7 +509,7 @@ document.write(`
         <span class="k">assert</span> <span class="n">d_model</span> <span class="o">%</span> <span class="n">num_heads</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;d_model is not divisible by num_heads&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__d_k</span> <span class="o">=</span> <span class="n">d_model</span> <span class="o">//</span> <span class="n">num_heads</span>  <span class="c1"># Dimension of vector seen by each head</span>
-        <span class="c1">#TODO why no bias ???</span>
+        <span class="c1"># TODO why no bias ???</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__w_q</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">d_model</span><span class="p">,</span> <span class="n">d_model</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># Wq</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__w_k</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">d_model</span><span class="p">,</span> <span class="n">d_model</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># Wk</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__w_v</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">d_model</span><span class="p">,</span> <span class="n">d_model</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># Wv</span>
@@ -515,7 +529,8 @@ document.write(`
             <span class="c1"># Write a very low value (approximating -inf) to the positions where mask == 0</span>
             <span class="n">attention_scores</span><span class="o">.</span><span class="n">masked_fill_</span><span class="p">(</span><span class="n">mask</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1e9</span><span class="p">)</span>
 
-        <span class="n">attention_scores</span> <span class="o">=</span> <span class="n">attention_scores</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># (batch, h, seq_len, seq_len) # Apply softmax</span>
+        <span class="c1"># (batch, h, seq_len, seq_len) # Apply softmax</span>
+        <span class="n">attention_scores</span> <span class="o">=</span> <span class="n">attention_scores</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dropout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">attention_scores</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dropout</span><span class="p">(</span><span class="n">attention_scores</span><span class="p">)</span>
@@ -527,21 +542,28 @@ document.write(`
 
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">mask</span><span class="p">):</span>
 
-        <span class="n">query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__w_q</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>  <span class="c1"># (batch, seq_len, d_model) --&gt; (batch, seq_len, d_model)</span>
-        <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__w_k</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>  <span class="c1"># (batch, seq_len, d_model) --&gt; (batch, seq_len, d_model)</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__w_v</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>  <span class="c1"># (batch, seq_len, d_model) --&gt; (batch, seq_len, d_model)</span>
+        <span class="c1"># (batch, seq_len, d_model) --&gt; (batch, seq_len, d_model)</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__w_q</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+        <span class="c1"># (batch, seq_len, d_model) --&gt; (batch, seq_len, d_model)</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__w_k</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+        <span class="c1"># (batch, seq_len, d_model) --&gt; (batch, seq_len, d_model)</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__w_v</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
 
         <span class="c1"># (batch, seq_len, d_model) --&gt; (batch, seq_len, h, d_k) --&gt; (batch, h, seq_len, d_k)</span>
-        <span class="n">query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">query</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">__num_heads</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__d_k</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-        <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">key</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">__num_heads</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__d_k</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">__num_heads</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__d_k</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">view</span><span class="p">(</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">query</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">__num_heads</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__d_k</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">key</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                       <span class="bp">self</span><span class="o">.</span><span class="n">__num_heads</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__d_k</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">view</span><span class="p">(</span>
+            <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">__num_heads</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__d_k</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 
         <span class="c1"># Calculate attention</span>
         <span class="n">x</span><span class="p">,</span> <span class="n">attention_scores</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__attention</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span>
 
         <span class="c1"># Combine all the heads together</span>
         <span class="c1"># (batch, h, seq_len, d_k) --&gt; (batch, seq_len, h, d_k) --&gt; (batch, seq_len, d_model)</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">contiguous</span><span class="p">()</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__num_heads</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__d_k</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">contiguous</span><span class="p">()</span><span class="o">.</span><span class="n">view</span><span class="p">(</span>
+            <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__num_heads</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__d_k</span><span class="p">)</span>
 
         <span class="c1"># Multiply by Wo</span>
         <span class="c1"># (batch, seq_len, d_model) --&gt; (batch, seq_len, d_model)</span>
@@ -557,13 +579,15 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">eps</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="o">-</span><span class="mi">6</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__eps</span> <span class="o">=</span> <span class="n">eps</span> <span class="c1"># to avoid division by zero</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__eps</span> <span class="o">=</span> <span class="n">eps</span>  <span class="c1"># to avoid division by zero</span>
         <span class="c1"># to provide a scaling option for the model (check this)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__alpha</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>  <span class="c1"># alpha is a multiplicative learnable parameter</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__bias</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>  <span class="c1"># bias is an additive learnable parameter</span>
+        <span class="c1"># alpha is a multiplicative learnable parameter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__alpha</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+        <span class="c1"># bias is an additive learnable parameter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__bias</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="c1"># x: (batch, seq_len, hidden_size)</span>
@@ -587,7 +611,7 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">dropout</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">dropout</span><span class="p">)</span>
@@ -605,9 +629,9 @@ document.write(`
 <a class="viewcode-back" href="../../../_autosummary/mt_transformer.model.layers.FeedForwardBlock.html#mt_transformer.model.layers.FeedForwardBlock">[docs]</a>
 <span class="k">class</span> <span class="nc">FeedForwardBlock</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
-                 <span class="n">d_model</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> 
-                 <span class="n">d_ff</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> 
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">d_model</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                 <span class="n">d_ff</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
                  <span class="n">dropout</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__linear_layer_1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">d_model</span><span class="p">,</span> <span class="n">d_ff</span><span class="p">)</span>  <span class="c1"># w1 and b1</span>
@@ -624,15 +648,15 @@ document.write(`
 <a class="viewcode-back" href="../../../_autosummary/mt_transformer.model.layers.ProjectionLayer.html#mt_transformer.model.layers.ProjectionLayer">[docs]</a>
 <span class="k">class</span> <span class="nc">ProjectionLayer</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
-                 <span class="n">d_model</span><span class="p">,</span> 
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">d_model</span><span class="p">,</span>
                  <span class="n">vocab_size</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__projection</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">d_model</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="c1"># (batch, seq_len, d_model) --&gt; (batch, seq_len, vocab_size)</span>
-        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">log_softmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__projection</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">dim</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">log_softmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__projection</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span></div>
 
 </pre></div>
 

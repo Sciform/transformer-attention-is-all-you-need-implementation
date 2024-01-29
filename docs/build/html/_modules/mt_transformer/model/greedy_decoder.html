@@ -377,10 +377,7 @@ document.write(`
                 <article class="bd-article">
                   
   <h1>Source code for mt_transformer.model.greedy_decoder</h1><div class="highlight"><pre>
-<span></span><span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;{Ursula Maria Mayer}&#39;</span>
-<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;Copyright </span><span class="si">{2023}</span><span class="s1">, {Sciform GmbH}&#39;</span>
-
-<span class="kn">import</span> <span class="nn">torch</span>
+<span></span><span class="kn">import</span> <span class="nn">torch</span>
 
 <span class="kn">from</span> <span class="nn">mt_transformer.data_handler.masks</span> <span class="kn">import</span> <span class="n">causal_mask</span>
 
@@ -389,44 +386,52 @@ document.write(`
 <a class="viewcode-back" href="../../../_autosummary/mt_transformer.model.greedy_decoder.GreedyDecoder.html#mt_transformer.model.greedy_decoder.GreedyDecoder">[docs]</a>
 <span class="k">class</span> <span class="nc">GreedyDecoder</span><span class="p">:</span>
 
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">pass</span>
+
     <span class="k">def</span> <span class="nf">greedy_decode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                      <span class="n">model</span><span class="p">,</span>
+                      <span class="n">transformer_model</span><span class="p">,</span>
                       <span class="n">source</span><span class="p">,</span>
                       <span class="n">source_mask</span><span class="p">,</span>
-                      <span class="n">tokenizer_src</span><span class="p">,</span>
                       <span class="n">tokenizer_tgt</span><span class="p">,</span>
                       <span class="n">max_len</span><span class="p">,</span>
-                      <span class="n">device</span><span class="p">):</span>
+                      <span class="n">device</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
 
         <span class="n">sos_idx</span> <span class="o">=</span> <span class="n">tokenizer_tgt</span><span class="o">.</span><span class="n">token_to_id</span><span class="p">(</span><span class="s1">&#39;[SOS]&#39;</span><span class="p">)</span>
         <span class="n">eos_idx</span> <span class="o">=</span> <span class="n">tokenizer_tgt</span><span class="o">.</span><span class="n">token_to_id</span><span class="p">(</span><span class="s1">&#39;[EOS]&#39;</span><span class="p">)</span>
 
         <span class="c1"># Precompute the encoder output and reuse it for every step</span>
-        <span class="n">encoder_output</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">source_mask</span><span class="p">)</span>
+        <span class="n">encoder_output</span> <span class="o">=</span> <span class="n">transformer_model</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">source_mask</span><span class="p">)</span>
         <span class="c1"># Initialize the decoder input with the sos token</span>
-        <span class="n">decoder_input</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">fill_</span><span class="p">(</span><span class="n">sos_idx</span><span class="p">)</span><span class="o">.</span><span class="n">type_as</span><span class="p">(</span><span class="n">source</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">decoder_input</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">fill_</span><span class="p">(</span>
+            <span class="n">sos_idx</span><span class="p">)</span><span class="o">.</span><span class="n">type_as</span><span class="p">(</span><span class="n">source</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+
         <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">decoder_input</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">max_len</span><span class="p">:</span>
                 <span class="k">break</span>
 
             <span class="c1"># build mask for target</span>
-            <span class="n">decoder_mask</span> <span class="o">=</span> <span class="n">causal_mask</span><span class="p">(</span><span class="n">decoder_input</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">type_as</span><span class="p">(</span><span class="n">source_mask</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">decoder_mask</span> <span class="o">=</span> <span class="n">causal_mask</span><span class="p">(</span>
+                <span class="n">decoder_input</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">type_as</span><span class="p">(</span><span class="n">source_mask</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
 
             <span class="c1"># calculate output</span>
-            <span class="n">out</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">encoder_output</span><span class="p">,</span> <span class="n">source_mask</span><span class="p">,</span> <span class="n">decoder_input</span><span class="p">,</span> <span class="n">decoder_mask</span><span class="p">)</span>
+            <span class="n">decoded_output</span> <span class="o">=</span> <span class="n">transformer_model</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span>
+                <span class="n">encoder_output</span><span class="p">,</span> <span class="n">source_mask</span><span class="p">,</span> <span class="n">decoder_input</span><span class="p">,</span> <span class="n">decoder_mask</span><span class="p">)</span>
 
             <span class="c1"># get next token</span>
-            <span class="n">prob</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">project</span><span class="p">(</span><span class="n">out</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">prob</span> <span class="o">=</span> <span class="n">transformer_model</span><span class="o">.</span><span class="n">project</span><span class="p">(</span><span class="n">decoded_output</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
             <span class="n">_</span><span class="p">,</span> <span class="n">next_word</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">prob</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
             <span class="n">decoder_input</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span>
-                <span class="p">[</span><span class="n">decoder_input</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">type_as</span><span class="p">(</span><span class="n">source</span><span class="p">)</span><span class="o">.</span><span class="n">fill_</span><span class="p">(</span><span class="n">next_word</span><span class="o">.</span><span class="n">item</span><span class="p">())</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span>
+                <span class="p">[</span><span class="n">decoder_input</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">type_as</span><span class="p">(</span>
+                    <span class="n">source</span><span class="p">)</span><span class="o">.</span><span class="n">fill_</span><span class="p">(</span><span class="n">next_word</span><span class="o">.</span><span class="n">item</span><span class="p">())</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span>
             <span class="p">)</span>
 
             <span class="k">if</span> <span class="n">next_word</span> <span class="o">==</span> <span class="n">eos_idx</span><span class="p">:</span>
                 <span class="k">break</span>
 
         <span class="k">return</span> <span class="n">decoder_input</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
-
 
 </pre></div>
 
