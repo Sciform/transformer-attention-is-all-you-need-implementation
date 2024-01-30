@@ -126,7 +126,7 @@ class MultiHeadAttention(nn.Module):
                  num_heads: int,
                  dropout: float) -> None:
         super().__init__()
-        self.__d_model = d_model  # num of embeddings
+
         self.__num_heads = num_heads  # number of heads
         # Make sure d_model is divisible by h
         assert d_model % num_heads == 0, "d_model is not divisible by num_heads"
@@ -181,12 +181,12 @@ class MultiHeadAttention(nn.Module):
             value.shape[0], value.shape[1], self.__num_heads, self.__d_k).transpose(1, 2)
 
         # Calculate attention
-        x, attention_scores = self.__attention(query, key, value, mask)
+        x, _ = self.__attention(query, key, value, mask)
 
         # Combine all the heads together
         # (batch, h, seq_len, d_k) --> (batch, seq_len, h, d_k) --> (batch, seq_len, d_model)
-        x = x.transpose(1, 2).contiguous().view(
-            x.shape[0], -1, self.__num_heads * self.__d_k)
+        x = x.transpose(1, 2).contiguous().view(x.shape[0], -1,
+                                                self.__num_heads * self.__d_k)
 
         # Multiply by Wo
         # (batch, seq_len, d_model) --> (batch, seq_len, d_model)
