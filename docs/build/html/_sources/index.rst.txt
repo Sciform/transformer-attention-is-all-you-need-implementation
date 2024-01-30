@@ -26,5 +26,5 @@ Here, we provide an implementation of the transformer architecture originally pu
    :hidden:
 
    Introduction <self>
-   Embeddings <embeddings>
+   Transformer <transformer/transformer.rst>
    Code Reference <_autosummary/mt_transformer>
