@@ -1,4 +1,5 @@
 import math
+from typing import Any
 
 import torch
 import torch.nn as nn
@@ -8,6 +9,11 @@ class TokenEmbeddings(nn.Module):
     """
     The token embeddings layer module holds a tensor that learns "d_model"
     embeddings (= features) for every token in a fixed size dictionary.
+
+    :param d_model: number of features per token
+    :type d_model: int
+    :param dictionary_size: length of dictionary
+    :type dictionary_size: int
 
     """
 
@@ -21,8 +27,9 @@ class TokenEmbeddings(nn.Module):
         # embedding layer (dict_size x d_model)
         self.__embedding = nn.Embedding(dictionary_size, d_model)
 
-    def forward(self, x):
-        """
+    def forward(self, x: Any) -> Any:
+        """Compute embedding layer
+
         For every token in a token sequence of a batch of token sequences x 
         "d_model" embeddings are learned.
         A map x with dim(num_batch, sequence_length) to embeddings tensor with 
@@ -30,14 +37,14 @@ class TokenEmbeddings(nn.Module):
         The embedding tensor is multiply by sqrt(d_model) to scale the embeddings.
         The original paper does not explain why the scaling is applied.
         https://datascience.stackexchange.com/questions/87906/transformer-model-why-are-word-embeddings-scaled-before-adding-positional-encod
-        Should be sqrt(sqrt(d_model))
+        #TODO Should be sqrt(sqrt(d_model))
 
-        Args:
-            x (Any): batch of token sequences (tensor with dim(num_batch, sequence_length))
-
-        Returns:
-            Any: embedding layer with learned "d_model" embeddings for every 
+        :param x: batch of token sequences (tensor with dim(num_batch, sequence_length)) 
+            for source and target text
+        :type x: Any
+        :return: embedding layer with learned "d_model" embeddings for every 
             token in the dictionary
+        :rtype: Any
         """
         return self.__embedding(x) * math.sqrt(self.__d_model)
 
