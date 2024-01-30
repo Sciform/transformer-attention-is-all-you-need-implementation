@@ -393,13 +393,12 @@ document.write(`
 <div class="viewcode-block" id="get_raw_data_opus_books">
 <a class="viewcode-back" href="../../../_autosummary/mt_transformer.data_handler.data_loader.get_raw_data_opus_books.html#mt_transformer.data_handler.data_loader.get_raw_data_opus_books">[docs]</a>
 <span class="k">def</span> <span class="nf">get_raw_data_opus_books</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">Config</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dataset</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;get raw data set &quot;Opus Books&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;get raw data set \&quot;Opus Books\&quot;</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        config (Config): configuration</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        Dataset: raw data set &quot;Opus Books&quot; from Huggingface</span>
+<span class="sd">    :param config: configuration</span>
+<span class="sd">    :type config: Config</span>
+<span class="sd">    :return: raw data set &quot;Opus Books&quot; from Hugging Face</span>
+<span class="sd">    :rtype: Dataset</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># for the opus books only the train split is available</span>
@@ -421,13 +420,11 @@ document.write(`
                                                       <span class="n">Tokenizer</span><span class="p">,</span> <span class="n">Tokenizer</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;create tokenizers and data loaders</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        config (Config): configuration</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        [DataLoader, DataLoader, Tokenizer, Tokenizer]: data loader for </span>
-<span class="sd">        training and validation data, Tokenizer for source and target </span>
-<span class="sd">        vocabulary </span>
+<span class="sd">    :param config: configuration</span>
+<span class="sd">    :type config: Config</span>
+<span class="sd">    :return: data loader for training and validation data, Tokenizer for </span>
+<span class="sd">            source and target vocabulary </span>
+<span class="sd">    :rtype: [DataLoader, DataLoader, Tokenizer, Tokenizer]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># load opus_books data set (it has only a train split)</span>
     <span class="n">ds_raw</span> <span class="o">=</span> <span class="n">get_raw_data_opus_books</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>

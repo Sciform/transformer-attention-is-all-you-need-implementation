@@ -489,16 +489,15 @@ document.write(`
 <span class="sig-name descname"><span class="pre">create_tokenizers_dataloaders</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mt_transformer/data_handler/data_loader.html#create_tokenizers_dataloaders"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mt_transformer.data_handler.data_loader.create_tokenizers_dataloaders" title="Link to this definition">#</a></dt>
 <dd><p>create tokenizers and data loaders</p>
 <dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config</strong> (<a class="reference internal" href="mt_transformer.config.project_config.Config.html#mt_transformer.config.project_config.Config" title="mt_transformer.config.project_config.Config"><em>Config</em></a>) – configuration</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>data loader for training and validation data, Tokenizer for 
+source and target vocabulary</p>
+</dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">[&lt;class ‘torch.utils.data.dataloader.DataLoader’&gt;, &lt;class ‘torch.utils.data.dataloader.DataLoader’&gt;, &lt;class ‘tokenizers.Tokenizer’&gt;, &lt;class ‘tokenizers.Tokenizer’&gt;]</span></p>
-</dd>
-</dl>
-<dl class="simple">
-<dt>Args:</dt><dd><p>config (Config): configuration</p>
-</dd>
-<dt>Returns:</dt><dd><p>[DataLoader, DataLoader, Tokenizer, Tokenizer]: data loader for 
-training and validation data, Tokenizer for source and target 
-vocabulary</p>
+<dd class="field-odd"><p>[DataLoader, DataLoader, Tokenizer, Tokenizer]</p>
 </dd>
 </dl>
 </dd></dl>

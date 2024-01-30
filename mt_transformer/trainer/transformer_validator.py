@@ -1,6 +1,3 @@
-__author__ = '{Ursula Maria Mayer}'
-__copyright__ = 'Copyright {2024}, {Sciform GmbH}'
-
 import os
 
 import torch

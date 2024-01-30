@@ -44,13 +44,12 @@ class Config:
         self.__saved_model_folder = saved_model_folder_path
 
     def get_rel_dictionary_file_path(self, language: str) -> Path:
-        """
-        Construct relative file path for dictionary of a specific language.
+        """Construct relative file path for dictionary of a specific language.
 
-        Args:
-            language (str): language
-        Returns:
-            Path: relative file path for dictionary 
+        :param language: language
+        :type language: str
+        :return: relative file path for dictionary 
+        :rtype: Path
         """
         Path(self.__dictionary_folder).mkdir(parents=True, exist_ok=True)
 
@@ -64,10 +63,10 @@ class Config:
         return full_dictionary_file_path
 
     def get_experiments_file_path(self) -> Path:
-        """get file path for all runs
+        """Get file path for experiments
 
-        Returns:
-            Path: file path for all runs
+        :return: file path for experiments
+        :rtype: Path
         """
         Path(self.__experiment_folder).mkdir(parents=True, exist_ok=True)
         full_exp_path = Path('.') / Path(self.__experiment_folder) / \
@@ -78,11 +77,10 @@ class Config:
     def get_saved_model_file_path(self, epoch: str) -> Path:
         """Construct saved model file path
 
-        Args:
-            epoch (str): current epoch
-
-        Returns:
-            Path: saved model file path
+        :param epoch: epoch to be loaded
+        :type epoch: str
+        :return: saved model file path at specified epoch
+        :rtype: Path
         """
         Path(self.__saved_model_folder).mkdir(parents=True, exist_ok=True)
 
