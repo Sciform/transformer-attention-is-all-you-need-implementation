@@ -387,7 +387,7 @@ document.write(`
 <div class="viewcode-block" id="TokenEmbeddings">
 <a class="viewcode-back" href="../../../_autosummary/mt_transformer.model.layers.TokenEmbeddings.html#mt_transformer.model.layers.TokenEmbeddings">[docs]</a>
 <span class="k">class</span> <span class="nc">TokenEmbeddings</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The token embeddings layer module holds a tensor that learns &quot;d_model&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The token embeddings layer module holds a tensor that learns &quot;d_model&quot; </span>
 <span class="sd">    embeddings (= features) for every token in a fixed size dictionary.</span>
 
 <span class="sd">    :param d_model: number of features per token</span>
@@ -426,6 +426,7 @@ document.write(`
 <span class="sd">        :return: embedding layer with learned &quot;d_model&quot; embeddings for every </span>
 <span class="sd">            token in the dictionary</span>
 <span class="sd">        :rtype: Any</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__embedding</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__d_model</span><span class="p">)</span></div>
@@ -445,6 +446,7 @@ document.write(`
 <span class="sd">    :type seq_len: int</span>
 <span class="sd">    :param drop_out_prob: probability for drop out</span>
 <span class="sd">    :type drop_out_prob: float</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
