@@ -3,7 +3,6 @@
 .ipynb_checkpoints/
 .venv
 
-
 data/dictionary*
 experiments/
 saved_model/
