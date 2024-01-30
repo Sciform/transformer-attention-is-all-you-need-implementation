@@ -14,7 +14,6 @@ class TokenEmbeddings(nn.Module):
     :type d_model: int
     :param dictionary_size: length of dictionary
     :type dictionary_size: int
-
     """
 
     def __init__(self,
@@ -46,6 +45,7 @@ class TokenEmbeddings(nn.Module):
             token in the dictionary
         :rtype: Any
         """
+
         return self.__embedding(x) * math.sqrt(self.__d_model)
 
 
@@ -54,6 +54,12 @@ class PositionalEncoding(nn.Module):
     The positional encoding layer module holds a tensor with precomputed 
     positional values for every token in a sequence .
 
+    :param d_model: number of features per token
+    :type d_model: int
+    :param seq_len: length of token sequence
+    :type seq_len: int
+    :param drop_out_prob: probability for drop out
+    :type drop_out_prob: float
     """
 
     def __init__(self,
@@ -91,21 +97,24 @@ class PositionalEncoding(nn.Module):
         # model save
         self.register_buffer('positional_encoding', positional_encoding)
 
-    def forward(self, x):
+    def forward(self, x: Any) -> Any:
         """
-        Adds the positional encoding to the previous encoding tensor, which usually contains
-        the input encoding. The shape of the positional encoding tensor is
-        dim(batch, seq_len, d_model). The method "requires_grad_(False)" tells the model
+        Adds the positional encoding to the previous encoding tensor, which 
+        usually contains the input encoding. The shape of the positional 
+        encoding tensor is dim(batch, seq_len, d_model). 
+        The method "requires_grad_(False)" tells the model
         that the positional encodings are precomputed and not learned
         A drop out is applied to the resulting tensor.
 
         :param x: input encoding tensor
-        :return: sum of input encoding and positional encoding with drop out
+        :type x: Any
+        :return: Positional encoding with drop out applied to the input module
+        :rtype: Any
         """
 
         # positional encoding is registered !!!
-        x = x + (self.positional_encoding[:,
-                 :x.shape[1], :]).requires_grad_(False)
+        x = x + (self.positional_encoding[:, :x.shape[1], :]). \
+            requires_grad_(False)
 
         return self.__drop_out_layer(x)
 
