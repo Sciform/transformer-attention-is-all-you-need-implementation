@@ -383,10 +383,12 @@ document.write(`
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
 <span class="kn">from</span> <span class="nn">torch.utils.tensorboard</span> <span class="kn">import</span> <span class="n">SummaryWriter</span>
+<span class="kn">from</span> <span class="nn">torch.optim</span> <span class="kn">import</span> <span class="n">Optimizer</span>
 <span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
 
+<span class="kn">from</span> <span class="nn">mt_transformer.config.project_config</span> <span class="kn">import</span> <span class="n">Config</span>
 <span class="kn">from</span> <span class="nn">mt_transformer.data_handler.data_loader</span> <span class="kn">import</span> <span class="n">create_tokenizers_dataloaders</span>
-<span class="kn">from</span> <span class="nn">mt_transformer.model.transformer_model</span> <span class="kn">import</span> <span class="n">get_transformer_model</span>
+<span class="kn">from</span> <span class="nn">mt_transformer.model.transformer_model</span> <span class="kn">import</span> <span class="n">Transformer</span><span class="p">,</span> <span class="n">get_transformer_model</span>
 <span class="kn">from</span> <span class="nn">mt_transformer.trainer.transformer_validator</span> <span class="kn">import</span> <span class="n">TransformerValidator</span>
 <span class="kn">from</span> <span class="nn">mt_transformer.utils.tf_utils</span> <span class="kn">import</span> <span class="n">get_proc_device</span>
 
@@ -395,33 +397,50 @@ document.write(`
 <a class="viewcode-back" href="../../../_autosummary/mt_transformer.trainer.transformer_trainer.TransformerTrainer.html#mt_transformer.trainer.transformer_trainer.TransformerTrainer">[docs]</a>
 <span class="k">class</span> <span class="nc">TransformerTrainer</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; </span>
-<span class="sd">    The class handles the training flow of the Transformer</span>
+<span class="sd">    The class handles the training flow of the MT_Transformer</span>
+
+<span class="sd">    :param config: configuration</span>
+<span class="sd">    :type config: Config</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Config</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">__config</span> <span class="o">=</span> <span class="n">config</span>
 
-    <span class="k">def</span> <span class="nf">__get_initial_model_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transformer_model</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__get_initial_model_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                  <span class="n">transformer_model</span><span class="p">:</span> <span class="n">Transformer</span><span class="p">,</span>
+                                  <span class="n">optimizer</span><span class="p">:</span> <span class="n">Optimizer</span><span class="p">,</span>
+                                  <span class="n">device</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get initial model setup</span>
 
-        <span class="n">initial_epoch</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="sd">        :param transformer_model: transformer model</span>
+<span class="sd">        :type transformer_model: Transformer</span>
+<span class="sd">        :param optimizer: PyTorch optimizer</span>
+<span class="sd">        :type optimizer: Optimizer</span>
+<span class="sd">        :param device: device type</span>
+<span class="sd">        :type device: str</span>
+<span class="sd">        :return: epoch to be started with, global step of state</span>
+<span class="sd">        :rtype: [int, int]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">start_epoch</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">global_step</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="o">.</span><span class="n">MODEL</span><span class="p">[</span><span class="s1">&#39;pretrained_model_epoch&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 
-            <span class="n">epoch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="o">.</span><span class="n">MODEL</span><span class="p">[</span><span class="s1">&#39;pretrained_model_epoch&#39;</span><span class="p">]</span>
+            <span class="n">last_epoch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="o">.</span><span class="n">MODEL</span><span class="p">[</span><span class="s1">&#39;pretrained_model_epoch&#39;</span><span class="p">]</span>
             <span class="n">model_filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="o">.</span><span class="n">get_saved_model_file_path</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">epoch</span><span class="si">:</span><span class="s2">03d</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">last_epoch</span><span class="si">:</span><span class="s2">03d</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Load pretrained model </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">model_filename</span><span class="p">)</span>
 
             <span class="n">state</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model_filename</span><span class="p">,</span>
                                <span class="n">map_location</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="n">device</span><span class="p">))</span>
             <span class="n">transformer_model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s1">&#39;model_state_dict&#39;</span><span class="p">])</span>
 
-            <span class="n">initial_epoch</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s1">&#39;epoch&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">start_epoch</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s1">&#39;epoch&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
             <span class="n">optimizer</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s1">&#39;optimizer_state_dict&#39;</span><span class="p">])</span>
             <span class="n">global_step</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s1">&#39;global_step&#39;</span><span class="p">]</span>
 
-        <span class="k">return</span> <span class="n">initial_epoch</span><span class="p">,</span> <span class="n">global_step</span>
+        <span class="k">return</span> <span class="n">start_epoch</span><span class="p">,</span> <span class="n">global_step</span>
 
     <span class="k">def</span> <span class="nf">perform_training</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
@@ -435,28 +454,30 @@ document.write(`
         <span class="c1">###</span>
 
         <span class="c1"># get data loaders and tokenizers</span>
-        <span class="n">train_dataloader</span><span class="p">,</span> <span class="n">val_dataloader</span><span class="p">,</span> <span class="n">tokenizer_src</span><span class="p">,</span> <span class="n">tokenizer_tgt</span> <span class="o">=</span> <span class="n">create_tokenizers_dataloaders</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="p">)</span>
+        <span class="n">train_dataloader</span><span class="p">,</span> <span class="n">val_dataloader</span><span class="p">,</span> <span class="n">tokenizer_src</span><span class="p">,</span> <span class="n">tokenizer_tgt</span> <span class="o">=</span> \
+            <span class="n">create_tokenizers_dataloaders</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="p">)</span>
 
         <span class="c1">###</span>
         <span class="c1"># Model</span>
         <span class="c1">###</span>
 
         <span class="c1"># create transformer model</span>
-        <span class="n">transformer_model</span> <span class="o">=</span> <span class="n">get_transformer_model</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="p">,</span> <span class="n">tokenizer_src</span><span class="o">.</span><span class="n">get_vocab_size</span><span class="p">(),</span>
-                                                  <span class="n">tokenizer_tgt</span><span class="o">.</span><span class="n">get_vocab_size</span><span class="p">())</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">transformer_model</span> <span class="o">=</span> <span class="n">get_transformer_model</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="p">,</span> <span class="n">tokenizer_src</span><span class="o">.</span><span class="n">get_vocab_size</span><span class="p">(),</span>
+            <span class="n">tokenizer_tgt</span><span class="o">.</span><span class="n">get_vocab_size</span><span class="p">())</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
 
         <span class="c1"># create Adam optimizer</span>
-        <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">transformer_model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span>
-                                     <span class="n">lr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="o">.</span><span class="n">MODEL</span><span class="p">[</span><span class="s1">&#39;learning_rate&#39;</span><span class="p">],</span>
-                                     <span class="n">eps</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="o">.</span><span class="n">MODEL</span><span class="p">[</span><span class="s1">&#39;eps&#39;</span><span class="p">])</span>
+        <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span>
+            <span class="n">transformer_model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span>
+            <span class="n">lr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="o">.</span><span class="n">MODEL</span><span class="p">[</span><span class="s1">&#39;learning_rate&#39;</span><span class="p">],</span>
+            <span class="n">eps</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="o">.</span><span class="n">MODEL</span><span class="p">[</span><span class="s1">&#39;eps&#39;</span><span class="p">])</span>
 
         <span class="c1"># create loss function</span>
         <span class="n">ce_loss</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">(</span><span class="n">ignore_index</span><span class="o">=</span><span class="n">tokenizer_src</span><span class="o">.</span><span class="n">token_to_id</span><span class="p">(</span><span class="s1">&#39;[PAD]&#39;</span><span class="p">),</span>
                                       <span class="n">label_smoothing</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
 
         <span class="c1"># load saved model if available</span>
-        <span class="n">initial_epoch</span><span class="p">,</span> <span class="n">global_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_initial_model_setup</span><span class="p">(</span>
+        <span class="n">start_epoch</span><span class="p">,</span> <span class="n">global_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_initial_model_setup</span><span class="p">(</span>
             <span class="n">transformer_model</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
 
         <span class="c1"># get validator</span>
@@ -470,31 +491,33 @@ document.write(`
         <span class="c1">###</span>
 
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Perform training&quot;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">initial_epoch</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="o">.</span><span class="n">MODEL</span><span class="p">[</span><span class="s1">&#39;num_epochs&#39;</span><span class="p">]):</span>
+        <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start_epoch</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="o">.</span><span class="n">MODEL</span><span class="p">[</span><span class="s1">&#39;num_epochs&#39;</span><span class="p">]):</span>
 
             <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">empty_cache</span><span class="p">()</span>
             <span class="n">transformer_model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
 
-            <span class="n">batch_iterator</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span>
-                <span class="n">train_dataloader</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Processing Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="si">:</span><span class="s2">02d</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">batch_iterator</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">train_dataloader</span><span class="p">,</span>
+                                  <span class="n">desc</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Processing Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="si">:</span><span class="s2">02d</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
             <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">batch_iterator</span><span class="p">:</span>
-                <span class="n">encoder_input</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s1">&#39;encoder_input&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span>
-                    <span class="n">device</span><span class="p">)</span>  <span class="c1"># (b, seq_len)</span>
-                <span class="n">decoder_input</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s1">&#39;decoder_input&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span>
-                    <span class="n">device</span><span class="p">)</span>  <span class="c1"># (B, seq_len)</span>
-                <span class="n">encoder_mask</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s1">&#39;encoder_mask&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span>
-                    <span class="n">device</span><span class="p">)</span>  <span class="c1"># (B, 1, 1, seq_len)</span>
-                <span class="n">decoder_mask</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s1">&#39;decoder_mask&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span>
-                    <span class="n">device</span><span class="p">)</span>  <span class="c1"># (B, 1, seq_len, seq_len)</span>
+                <span class="c1"># (b, seq_len)</span>
+                <span class="n">encoder_input</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s1">&#39;encoder_input&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+                <span class="c1"># (B, seq_len)</span>
+                <span class="n">decoder_input</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s1">&#39;decoder_input&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+                <span class="c1"># (B, 1, 1, seq_len)</span>
+                <span class="n">encoder_mask</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s1">&#39;encoder_mask&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+                <span class="c1"># (B, 1, seq_len, seq_len)</span>
+                <span class="n">decoder_mask</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s1">&#39;decoder_mask&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
 
                 <span class="c1"># Run the tensors through the encoder, decoder and the projection layer</span>
+                <span class="c1"># (B, seq_len, d_model)</span>
                 <span class="n">encoder_output</span> <span class="o">=</span> <span class="n">transformer_model</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span>
-                    <span class="n">encoder_input</span><span class="p">,</span> <span class="n">encoder_mask</span><span class="p">)</span>  <span class="c1"># (B, seq_len, d_model)</span>
-                <span class="n">decoder_output</span> <span class="o">=</span> <span class="n">transformer_model</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">encoder_output</span><span class="p">,</span> <span class="n">encoder_mask</span><span class="p">,</span> <span class="n">decoder_input</span><span class="p">,</span>
-                                                          <span class="n">decoder_mask</span><span class="p">)</span>  <span class="c1"># (B, seq_len, d_model)</span>
-                <span class="n">proj_output</span> <span class="o">=</span> <span class="n">transformer_model</span><span class="o">.</span><span class="n">project</span><span class="p">(</span>
-                    <span class="n">decoder_output</span><span class="p">)</span>  <span class="c1"># (B, seq_len, vocab_size)</span>
+                    <span class="n">encoder_input</span><span class="p">,</span> <span class="n">encoder_mask</span><span class="p">)</span>
+                <span class="c1"># (B, seq_len, d_model)</span>
+                <span class="n">decoder_output</span> <span class="o">=</span> <span class="n">transformer_model</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span>
+                    <span class="n">encoder_output</span><span class="p">,</span> <span class="n">encoder_mask</span><span class="p">,</span> <span class="n">decoder_input</span><span class="p">,</span> <span class="n">decoder_mask</span><span class="p">)</span>
+                <span class="c1"># (B, seq_len, vocab_size)</span>
+                <span class="n">proj_output</span> <span class="o">=</span> <span class="n">transformer_model</span><span class="o">.</span><span class="n">project</span><span class="p">(</span><span class="n">decoder_output</span><span class="p">)</span>
 
                 <span class="c1"># Compare the output with the label</span>
                 <span class="n">label</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>  <span class="c1"># (B, seq_len)</span>
@@ -519,10 +542,10 @@ document.write(`
                 <span class="n">global_step</span> <span class="o">+=</span> <span class="mi">1</span>
 
             <span class="c1"># perform validation at the end of every epoch</span>
-            <span class="n">trans_val</span><span class="o">.</span><span class="n">perform_validation</span><span class="p">(</span><span class="n">transformer_model</span><span class="p">,</span> <span class="n">val_dataloader</span><span class="p">,</span> <span class="n">tokenizer_src</span><span class="p">,</span>
-                                         <span class="n">tokenizer_tgt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="o">.</span><span class="n">DATA</span><span class="p">[</span><span class="s1">&#39;seq_len&#39;</span><span class="p">],</span> <span class="n">device</span><span class="p">,</span>
-                                         <span class="k">lambda</span> <span class="n">msg</span><span class="p">:</span> <span class="n">batch_iterator</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">msg</span><span class="p">),</span>
-                                         <span class="n">global_step</span><span class="p">,</span> <span class="n">writer</span><span class="p">)</span>
+            <span class="n">trans_val</span><span class="o">.</span><span class="n">perform_validation</span><span class="p">(</span>
+                <span class="n">transformer_model</span><span class="p">,</span> <span class="n">val_dataloader</span><span class="p">,</span> <span class="n">tokenizer_src</span><span class="p">,</span>
+                <span class="n">tokenizer_tgt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="o">.</span><span class="n">DATA</span><span class="p">[</span><span class="s1">&#39;seq_len&#39;</span><span class="p">],</span> <span class="n">device</span><span class="p">,</span>
+                <span class="k">lambda</span> <span class="n">msg</span><span class="p">:</span> <span class="n">batch_iterator</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">msg</span><span class="p">),</span> <span class="n">global_step</span><span class="p">,</span> <span class="n">writer</span><span class="p">)</span>
 
             <span class="c1"># save the model at the end of every epoch</span>
             <span class="n">saved_model_filepath</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="o">.</span><span class="n">get_saved_model_file_path</span><span class="p">(</span>

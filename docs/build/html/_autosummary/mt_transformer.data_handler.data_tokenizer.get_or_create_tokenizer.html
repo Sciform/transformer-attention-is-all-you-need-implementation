@@ -49,7 +49,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="mt_transformer.data_handler.masks" href="mt_transformer.data_handler.masks.html" />
-    <link rel="prev" title="mt_transformer.data_handler.data_tokenizer.get_all_text_sequences_form_dataset_in_language" href="mt_transformer.data_handler.data_tokenizer.get_all_text_sequences_form_dataset_in_language.html" />
+    <link rel="prev" title="mt_transformer.data_handler.data_tokenizer.get_all_text_sequences_from_dataset_in_language" href="mt_transformer.data_handler.data_tokenizer.get_all_text_sequences_from_dataset_in_language.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -346,7 +346,7 @@ document.write(`
 </li>
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="mt_transformer.data_handler.data_tokenizer.html">mt_transformer.data_handler.data_tokenizer</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="mt_transformer.data_handler.data_tokenizer.check_max_seq_length.html">mt_transformer.data_handler.data_tokenizer.check_max_seq_length</a></li>
-<li class="toctree-l3"><a class="reference internal" href="mt_transformer.data_handler.data_tokenizer.get_all_text_sequences_form_dataset_in_language.html">mt_transformer.data_handler.data_tokenizer.get_all_text_sequences_form_dataset_in_language</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mt_transformer.data_handler.data_tokenizer.get_all_text_sequences_from_dataset_in_language.html">mt_transformer.data_handler.data_tokenizer.get_all_text_sequences_from_dataset_in_language</a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">mt_transformer.data_handler.data_tokenizer.get_or_create_tokenizer</a></li>
 </ul>
 </li>
@@ -487,9 +487,20 @@ document.write(`
 <dl class="py function">
 <dt class="sig sig-object py" id="mt_transformer.data_handler.data_tokenizer.get_or_create_tokenizer">
 <span class="sig-name descname"><span class="pre">get_or_create_tokenizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ds_raw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">language</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mt_transformer/data_handler/data_tokenizer.html#get_or_create_tokenizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mt_transformer.data_handler.data_tokenizer.get_or_create_tokenizer" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Get or create Hugging Face tokenizer</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config</strong> (<a class="reference internal" href="mt_transformer.config.project_config.Config.html#mt_transformer.config.project_config.Config" title="mt_transformer.config.project_config.Config"><em>Config</em></a>) – configuration</p></li>
+<li><p><strong>ds_raw</strong> (<em>Dataset</em>) – raw data set “Opus Books”</p></li>
+<li><p><strong>language</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – language</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>tokenizer for provided data set in given language</p>
+</dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tokenizer</span></code></span></p>
+<dd class="field-odd"><p>Tokenizer</p>
 </dd>
 </dl>
 </dd></dl>

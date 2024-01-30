@@ -378,6 +378,7 @@ document.write(`
                   
   <h1>Source code for mt_transformer.model.layers</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
 
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
@@ -386,10 +387,13 @@ document.write(`
 <div class="viewcode-block" id="TokenEmbeddings">
 <a class="viewcode-back" href="../../../_autosummary/mt_transformer.model.layers.TokenEmbeddings.html#mt_transformer.model.layers.TokenEmbeddings">[docs]</a>
 <span class="k">class</span> <span class="nc">TokenEmbeddings</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    The token embeddings layer module holds a tensor that learns &quot;d_model&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The token embeddings layer module holds a tensor that learns &quot;d_model&quot;</span>
 <span class="sd">    embeddings (= features) for every token in a fixed size dictionary.</span>
 
+<span class="sd">    :param d_model: number of features per token</span>
+<span class="sd">    :type d_model: int</span>
+<span class="sd">    :param dictionary_size: length of dictionary</span>
+<span class="sd">    :type dictionary_size: int</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
@@ -404,8 +408,9 @@ document.write(`
 
 <div class="viewcode-block" id="TokenEmbeddings.forward">
 <a class="viewcode-back" href="../../../_autosummary/mt_transformer.model.layers.TokenEmbeddings.html#mt_transformer.model.layers.TokenEmbeddings.forward">[docs]</a>
-    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute embedding layer</span>
+
 <span class="sd">        For every token in a token sequence of a batch of token sequences x </span>
 <span class="sd">        &quot;d_model&quot; embeddings are learned.</span>
 <span class="sd">        A map x with dim(num_batch, sequence_length) to embeddings tensor with </span>
@@ -413,15 +418,16 @@ document.write(`
 <span class="sd">        The embedding tensor is multiply by sqrt(d_model) to scale the embeddings.</span>
 <span class="sd">        The original paper does not explain why the scaling is applied.</span>
 <span class="sd">        https://datascience.stackexchange.com/questions/87906/transformer-model-why-are-word-embeddings-scaled-before-adding-positional-encod</span>
-<span class="sd">        Should be sqrt(sqrt(d_model))</span>
+<span class="sd">        #TODO Should be sqrt(sqrt(d_model))</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            x (Any): batch of token sequences (tensor with dim(num_batch, sequence_length))</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            Any: embedding layer with learned &quot;d_model&quot; embeddings for every </span>
+<span class="sd">        :param x: batch of token sequences (tensor with dim(num_batch, sequence_length)) </span>
+<span class="sd">            for source and target text</span>
+<span class="sd">        :type x: Any</span>
+<span class="sd">        :return: embedding layer with learned &quot;d_model&quot; embeddings for every </span>
 <span class="sd">            token in the dictionary</span>
+<span class="sd">        :rtype: Any</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__embedding</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__d_model</span><span class="p">)</span></div>
 </div>
 
@@ -430,19 +436,24 @@ document.write(`
 <div class="viewcode-block" id="PositionalEncoding">
 <a class="viewcode-back" href="../../../_autosummary/mt_transformer.model.layers.PositionalEncoding.html#mt_transformer.model.layers.PositionalEncoding">[docs]</a>
 <span class="k">class</span> <span class="nc">PositionalEncoding</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    The positional encoding layer module holds a tensor with precomputed </span>
-<span class="sd">    positional values for every token in a sequence .</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The positional encoding layer module holds a tensor with precomputed </span>
+<span class="sd">    positional values for every token in a sequence.</span>
 
+<span class="sd">    :param d_model: number of features per token</span>
+<span class="sd">    :type d_model: int</span>
+<span class="sd">    :param seq_len: length of token sequence</span>
+<span class="sd">    :type seq_len: int</span>
+<span class="sd">    :param drop_out_prob: probability for drop out</span>
+<span class="sd">    :type drop_out_prob: float</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">d_model</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
                  <span class="n">seq_len</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-                 <span class="n">drop_out_prob</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+                 <span class="n">dropout_prob</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">__drop_out_layer</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">drop_out_prob</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__drop_out_layer</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">dropout_prob</span><span class="p">)</span>
 
         <span class="c1"># create a tensor of shape (seq_len, d_model) filled with zeros</span>
         <span class="n">positional_encoding</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">seq_len</span><span class="p">,</span> <span class="n">d_model</span><span class="p">)</span>
@@ -473,21 +484,25 @@ document.write(`
 
 <div class="viewcode-block" id="PositionalEncoding.forward">
 <a class="viewcode-back" href="../../../_autosummary/mt_transformer.model.layers.PositionalEncoding.html#mt_transformer.model.layers.PositionalEncoding.forward">[docs]</a>
-    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Adds the positional encoding to the previous encoding tensor, which usually contains</span>
-<span class="sd">        the input encoding. The shape of the positional encoding tensor is</span>
-<span class="sd">        dim(batch, seq_len, d_model). The method &quot;requires_grad_(False)&quot; tells the model</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Forwards the positional encodings</span>
+
+<span class="sd">        Adds the positional encoding to the previous encoding tensor, which </span>
+<span class="sd">        usually contains the input encoding. The shape of the positional </span>
+<span class="sd">        encoding tensor is dim(batch, seq_len, d_model). </span>
+<span class="sd">        The method &quot;requires_grad_(False)&quot; tells the model</span>
 <span class="sd">        that the positional encodings are precomputed and not learned</span>
 <span class="sd">        A drop out is applied to the resulting tensor.</span>
 
 <span class="sd">        :param x: input encoding tensor</span>
-<span class="sd">        :return: sum of input encoding and positional encoding with drop out</span>
+<span class="sd">        :type x: Any</span>
+<span class="sd">        :return: Positional encoding with drop out applied to the input module</span>
+<span class="sd">        :rtype: Any</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># positional encoding is registered !!!</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">positional_encoding</span><span class="p">[:,</span>
-                 <span class="p">:</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">:])</span><span class="o">.</span><span class="n">requires_grad_</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">positional_encoding</span><span class="p">[:,</span> <span class="p">:</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">:])</span><span class="o">.</span> \
+            <span class="n">requires_grad_</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__drop_out_layer</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div>
 </div>
@@ -497,13 +512,22 @@ document.write(`
 <div class="viewcode-block" id="MultiHeadAttention">
 <a class="viewcode-back" href="../../../_autosummary/mt_transformer.model.layers.MultiHeadAttention.html#mt_transformer.model.layers.MultiHeadAttention">[docs]</a>
 <span class="k">class</span> <span class="nc">MultiHeadAttention</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Layer module for multi-head attention</span>
+
+<span class="sd">    :param d_model: number of embedding features</span>
+<span class="sd">    :type d_model: int</span>
+<span class="sd">    :param num_heads: number of attention heads</span>
+<span class="sd">    :type num_heads: int</span>
+<span class="sd">    :param dropout_prob: probability of drop out</span>
+<span class="sd">    :type dropout_prob: float</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">d_model</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
                  <span class="n">num_heads</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-                 <span class="n">dropout</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+                 <span class="n">dropout_prob</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__d_model</span> <span class="o">=</span> <span class="n">d_model</span>  <span class="c1"># num of embeddings</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">__num_heads</span> <span class="o">=</span> <span class="n">num_heads</span>  <span class="c1"># number of heads</span>
         <span class="c1"># Make sure d_model is divisible by h</span>
         <span class="k">assert</span> <span class="n">d_model</span> <span class="o">%</span> <span class="n">num_heads</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;d_model is not divisible by num_heads&quot;</span>
@@ -515,7 +539,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">__w_v</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">d_model</span><span class="p">,</span> <span class="n">d_model</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># Wv</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__w_o</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">d_model</span><span class="p">,</span> <span class="n">d_model</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># Wo</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">__dropout</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">dropout</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dropout</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">dropout_prob</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__attention</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">mask</span><span class="p">):</span>
 
@@ -558,12 +582,12 @@ document.write(`
             <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">__num_heads</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__d_k</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 
         <span class="c1"># Calculate attention</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">attention_scores</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__attention</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__attention</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span>
 
         <span class="c1"># Combine all the heads together</span>
         <span class="c1"># (batch, h, seq_len, d_k) --&gt; (batch, seq_len, h, d_k) --&gt; (batch, seq_len, d_model)</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">contiguous</span><span class="p">()</span><span class="o">.</span><span class="n">view</span><span class="p">(</span>
-            <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__num_heads</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__d_k</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">contiguous</span><span class="p">()</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+                                                <span class="bp">self</span><span class="o">.</span><span class="n">__num_heads</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__d_k</span><span class="p">)</span>
 
         <span class="c1"># Multiply by Wo</span>
         <span class="c1"># (batch, seq_len, d_model) --&gt; (batch, seq_len, d_model)</span>

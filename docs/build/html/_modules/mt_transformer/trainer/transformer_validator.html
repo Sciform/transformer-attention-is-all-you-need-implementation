@@ -377,10 +377,7 @@ document.write(`
                 <article class="bd-article">
                   
   <h1>Source code for mt_transformer.trainer.transformer_validator</h1><div class="highlight"><pre>
-<span></span><span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;{Ursula Maria Mayer}&#39;</span>
-<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;Copyright </span><span class="si">{2024}</span><span class="s1">, {Sciform GmbH}&#39;</span>
-
-<span class="kn">import</span> <span class="nn">os</span>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
 
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">torchmetrics.text</span> <span class="k">as</span> <span class="nn">tmtext</span>
@@ -419,17 +416,17 @@ document.write(`
             <span class="k">with</span> <span class="n">os</span><span class="o">.</span><span class="n">popen</span><span class="p">(</span><span class="s1">&#39;stty size&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">console</span><span class="p">:</span>
                 <span class="n">_</span><span class="p">,</span> <span class="n">console_width</span> <span class="o">=</span> <span class="n">console</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
                 <span class="n">console_width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">console_width</span><span class="p">)</span>
-        <span class="k">except</span><span class="p">:</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
             <span class="c1"># if we can&#39;t get the console width, use 80 as default</span>
             <span class="n">console_width</span> <span class="o">=</span> <span class="mi">80</span>
 
         <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
             <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">validation_ds</span><span class="p">:</span>
                 <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="n">encoder_input</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s2">&quot;encoder_input&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span>
-                    <span class="n">device</span><span class="p">)</span>  <span class="c1"># (b, seq_len)</span>
-                <span class="n">encoder_mask</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s2">&quot;encoder_mask&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span>
-                    <span class="n">device</span><span class="p">)</span>  <span class="c1"># (b, 1, 1, seq_len)</span>
+                <span class="c1"># (b, seq_len)</span>
+                <span class="n">encoder_input</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s2">&quot;encoder_input&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+                <span class="c1"># (b, 1, 1, seq_len)</span>
+                <span class="n">encoder_mask</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s2">&quot;encoder_mask&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
 
                 <span class="c1"># check that the batch size is 1</span>
                 <span class="k">assert</span> <span class="n">encoder_input</span><span class="o">.</span><span class="n">size</span><span class="p">(</span>

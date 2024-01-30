@@ -346,7 +346,7 @@ document.write(`
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="mt_transformer.data_handler.data_tokenizer.html">mt_transformer.data_handler.data_tokenizer</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="mt_transformer.data_handler.data_tokenizer.check_max_seq_length.html">mt_transformer.data_handler.data_tokenizer.check_max_seq_length</a></li>
-<li class="toctree-l3"><a class="reference internal" href="mt_transformer.data_handler.data_tokenizer.get_all_text_sequences_form_dataset_in_language.html">mt_transformer.data_handler.data_tokenizer.get_all_text_sequences_form_dataset_in_language</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mt_transformer.data_handler.data_tokenizer.get_all_text_sequences_from_dataset_in_language.html">mt_transformer.data_handler.data_tokenizer.get_all_text_sequences_from_dataset_in_language</a></li>
 <li class="toctree-l3"><a class="reference internal" href="mt_transformer.data_handler.data_tokenizer.get_or_create_tokenizer.html">mt_transformer.data_handler.data_tokenizer.get_or_create_tokenizer</a></li>
 </ul>
 </li>
@@ -490,6 +490,14 @@ document.write(`
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <p>The token embeddings layer module holds a tensor that learns “d_model”
 embeddings (= features) for every token in a fixed size dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d_model</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – number of features per token</p></li>
+<li><p><strong>dictionary_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – length of dictionary</p></li>
+</ul>
+</dd>
+</dl>
 <p class="rubric">Methods</p>
 <table class="autosummary longtable table autosummary">
 <tbody>
@@ -530,7 +538,7 @@ embeddings (= features) for every token in a fixed size dictionary.</p>
 <td><p>Casts all floating point parameters and buffers to <code class="docutils literal notranslate"><span class="pre">float</span></code> datatype.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#mt_transformer.model.layers.TokenEmbeddings.forward" title="mt_transformer.model.layers.TokenEmbeddings.forward"><code class="xref py py-obj docutils literal notranslate"><span class="pre">forward</span></code></a></p></td>
-<td><p>For every token in a token sequence of a batch of token sequences x  &quot;d_model&quot; embeddings are learned.</p></td>
+<td><p>Compute embedding layer</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#mt_transformer.model.layers.TokenEmbeddings.get_buffer" title="mt_transformer.model.layers.TokenEmbeddings.get_buffer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_buffer</span></code></a></p></td>
 <td><p>Returns the buffer given by <code class="docutils literal notranslate"><span class="pre">target</span></code> if it exists, otherwise throws an error.</p></td>
@@ -887,19 +895,26 @@ strings are acceptable.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="mt_transformer.model.layers.TokenEmbeddings.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mt_transformer/model/layers.html#TokenEmbeddings.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mt_transformer.model.layers.TokenEmbeddings.forward" title="Link to this definition">#</a></dt>
-<dd><p>For every token in a token sequence of a batch of token sequences x 
+<dd><p>Compute embedding layer</p>
+<p>For every token in a token sequence of a batch of token sequences x 
 “d_model” embeddings are learned.
 A map x with dim(num_batch, sequence_length) to embeddings tensor with 
 dim(num_batch, sequence_length, d_model) is performed.
 The embedding tensor is multiply by sqrt(d_model) to scale the embeddings.
 The original paper does not explain why the scaling is applied.
 <a class="reference external" href="https://datascience.stackexchange.com/questions/87906/transformer-model-why-are-word-embeddings-scaled-before-adding-positional-encod">https://datascience.stackexchange.com/questions/87906/transformer-model-why-are-word-embeddings-scaled-before-adding-positional-encod</a>
-Should be sqrt(sqrt(d_model))</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>x (Any): batch of token sequences (tensor with dim(num_batch, sequence_length))</p>
+#TODO Should be sqrt(sqrt(d_model))</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>Any</em>) – batch of token sequences (tensor with dim(num_batch, sequence_length)) 
+for source and target text</p>
 </dd>
-<dt>Returns:</dt><dd><p>Any: embedding layer with learned “d_model” embeddings for every 
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>embedding layer with learned “d_model” embeddings for every 
 token in the dictionary</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Any</p>
 </dd>
 </dl>
 </dd></dl>

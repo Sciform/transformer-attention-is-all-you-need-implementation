@@ -378,8 +378,10 @@ document.write(`
                   
   <h1>Source code for mt_transformer.data_handler.data_tokenizer</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Generator</span>
 
 <span class="c1"># from HuggingFace</span>
+<span class="kn">from</span> <span class="nn">datasets</span> <span class="kn">import</span> <span class="n">Dataset</span>
 <span class="kn">from</span> <span class="nn">tokenizers</span> <span class="kn">import</span> <span class="n">Tokenizer</span>
 <span class="kn">from</span> <span class="nn">tokenizers.models</span> <span class="kn">import</span> <span class="n">WordLevel</span>
 <span class="kn">from</span> <span class="nn">tokenizers.pre_tokenizers</span> <span class="kn">import</span> <span class="n">Whitespace</span>
@@ -388,17 +390,39 @@ document.write(`
 <span class="kn">from</span> <span class="nn">mt_transformer.config.project_config</span> <span class="kn">import</span> <span class="n">Config</span>
 
 
-<div class="viewcode-block" id="get_all_text_sequences_form_dataset_in_language">
-<a class="viewcode-back" href="../../../_autosummary/mt_transformer.data_handler.data_tokenizer.get_all_text_sequences_form_dataset_in_language.html#mt_transformer.data_handler.data_tokenizer.get_all_text_sequences_form_dataset_in_language">[docs]</a>
-<span class="k">def</span> <span class="nf">get_all_text_sequences_form_dataset_in_language</span><span class="p">(</span><span class="n">lang_data_set</span><span class="p">,</span> <span class="n">language</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">lang_data_set</span><span class="p">:</span>
+<div class="viewcode-block" id="get_all_text_sequences_from_dataset_in_language">
+<a class="viewcode-back" href="../../../_autosummary/mt_transformer.data_handler.data_tokenizer.get_all_text_sequences_from_dataset_in_language.html#mt_transformer.data_handler.data_tokenizer.get_all_text_sequences_from_dataset_in_language">[docs]</a>
+<span class="k">def</span> <span class="nf">get_all_text_sequences_from_dataset_in_language</span><span class="p">(</span>
+        <span class="n">ds_raw</span><span class="p">:</span> <span class="n">Dataset</span><span class="p">,</span>
+        <span class="n">language</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get all text sequences form a data set in a given language</span>
+
+<span class="sd">    :param ds_raw: _description_</span>
+<span class="sd">    :type ds_raw: Dataset</span>
+<span class="sd">    :param language: language</span>
+<span class="sd">    :type language: str</span>
+<span class="sd">    :yield: iterator over every sentence in data set</span>
+<span class="sd">    :rtype: Generator[Any, Any, None]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">ds_raw</span><span class="p">:</span>
         <span class="k">yield</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;translation&#39;</span><span class="p">][</span><span class="n">language</span><span class="p">]</span></div>
 
 
 
 <div class="viewcode-block" id="check_max_seq_length">
 <a class="viewcode-back" href="../../../_autosummary/mt_transformer.data_handler.data_tokenizer.check_max_seq_length.html#mt_transformer.data_handler.data_tokenizer.check_max_seq_length">[docs]</a>
-<span class="k">def</span> <span class="nf">check_max_seq_length</span><span class="p">(</span><span class="n">ds_raw</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">language</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">check_max_seq_length</span><span class="p">(</span><span class="n">ds_raw</span><span class="p">:</span> <span class="n">Dataset</span><span class="p">,</span>
+                         <span class="n">tokenizer</span><span class="p">:</span> <span class="n">Tokenizer</span><span class="p">,</span>
+                         <span class="n">language</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check for maximum sequence length</span>
+
+<span class="sd">    :param ds_raw: raw data set &quot;Opus Books&quot;</span>
+<span class="sd">    :type ds_raw: Dataset</span>
+<span class="sd">    :param tokenizer: tokenizer</span>
+<span class="sd">    :type tokenizer: Tokenizer</span>
+<span class="sd">    :param language: language</span>
+<span class="sd">    :type language: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># determine the maximum length of each sentence in the source and target language</span>
     <span class="n">max_len</span> <span class="o">=</span> <span class="mi">0</span>
 
@@ -406,14 +430,27 @@ document.write(`
         <span class="n">ids</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;translation&#39;</span><span class="p">][</span><span class="n">language</span><span class="p">])</span><span class="o">.</span><span class="n">ids</span>
         <span class="n">max_len</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_len</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">))</span>
 
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s1">&#39;Max length of a sentence in language </span><span class="si">{</span><span class="n">language</span><span class="si">}</span><span class="s1"> is: </span><span class="si">{</span><span class="n">max_len</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Max length of a sentence in language </span><span class="si">%s</span><span class="s2"> is </span><span class="si">%s</span><span class="s2">.&quot;</span><span class="p">,</span> <span class="n">language</span><span class="p">,</span>
+                 <span class="n">max_len</span><span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="get_or_create_tokenizer">
 <a class="viewcode-back" href="../../../_autosummary/mt_transformer.data_handler.data_tokenizer.get_or_create_tokenizer.html#mt_transformer.data_handler.data_tokenizer.get_or_create_tokenizer">[docs]</a>
-<span class="k">def</span> <span class="nf">get_or_create_tokenizer</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">Config</span><span class="p">,</span> <span class="n">ds_raw</span><span class="p">,</span> <span class="n">language</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tokenizer</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">get_or_create_tokenizer</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">Config</span><span class="p">,</span>
+                            <span class="n">ds_raw</span><span class="p">:</span> <span class="n">Dataset</span><span class="p">,</span>
+                            <span class="n">language</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tokenizer</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get or create Hugging Face tokenizer </span>
+
+<span class="sd">    :param config: configuration</span>
+<span class="sd">    :type config: Config</span>
+<span class="sd">    :param ds_raw: raw data set &quot;Opus Books&quot;</span>
+<span class="sd">    :type ds_raw: Dataset</span>
+<span class="sd">    :param language: language</span>
+<span class="sd">    :type language: str</span>
+<span class="sd">    :return: tokenizer for provided data set in given language</span>
+<span class="sd">    :rtype: Tokenizer</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">tokenizer_path</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get_rel_dictionary_file_path</span><span class="p">(</span><span class="n">language</span><span class="p">)</span>
 
@@ -423,8 +460,9 @@ document.write(`
         <span class="n">tokenizer</span><span class="o">.</span><span class="n">pre_tokenizer</span> <span class="o">=</span> <span class="n">Whitespace</span><span class="p">()</span>
         <span class="n">world_level_trainer</span> <span class="o">=</span> <span class="n">WordLevelTrainer</span><span class="p">(</span>
             <span class="n">special_tokens</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;[UNK]&quot;</span><span class="p">,</span> <span class="s2">&quot;[PAD]&quot;</span><span class="p">,</span> <span class="s2">&quot;[SOS]&quot;</span><span class="p">,</span> <span class="s2">&quot;[EOS]&quot;</span><span class="p">],</span> <span class="n">min_frequency</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-        <span class="n">tokenizer</span><span class="o">.</span><span class="n">train_from_iterator</span><span class="p">(</span><span class="n">get_all_text_sequences_form_dataset_in_language</span><span class="p">(</span><span class="n">ds_raw</span><span class="p">,</span> <span class="n">language</span><span class="p">),</span>
-                                      <span class="n">trainer</span><span class="o">=</span><span class="n">world_level_trainer</span><span class="p">)</span>
+        <span class="n">tokenizer</span><span class="o">.</span><span class="n">train_from_iterator</span><span class="p">(</span>
+            <span class="n">get_all_text_sequences_from_dataset_in_language</span><span class="p">(</span><span class="n">ds_raw</span><span class="p">,</span> <span class="n">language</span><span class="p">),</span>
+            <span class="n">trainer</span><span class="o">=</span><span class="n">world_level_trainer</span><span class="p">)</span>
 
         <span class="n">tokenizer</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">tokenizer_path</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>

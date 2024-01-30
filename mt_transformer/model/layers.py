@@ -6,8 +6,7 @@ import torch.nn as nn
 
 
 class TokenEmbeddings(nn.Module):
-    """
-    The token embeddings layer module holds a tensor that learns "d_model"
+    """The token embeddings layer module holds a tensor that learns "d_model" 
     embeddings (= features) for every token in a fixed size dictionary.
 
     :param d_model: number of features per token
@@ -44,15 +43,15 @@ class TokenEmbeddings(nn.Module):
         :return: embedding layer with learned "d_model" embeddings for every 
             token in the dictionary
         :rtype: Any
+
         """
 
         return self.__embedding(x) * math.sqrt(self.__d_model)
 
 
 class PositionalEncoding(nn.Module):
-    """
-    The positional encoding layer module holds a tensor with precomputed 
-    positional values for every token in a sequence .
+    """The positional encoding layer module holds a tensor with precomputed 
+    positional values for every token in a sequence.
 
     :param d_model: number of features per token
     :type d_model: int
@@ -60,15 +59,16 @@ class PositionalEncoding(nn.Module):
     :type seq_len: int
     :param drop_out_prob: probability for drop out
     :type drop_out_prob: float
+
     """
 
     def __init__(self,
                  d_model: int,
                  seq_len: int,
-                 drop_out_prob: float) -> None:
+                 dropout_prob: float) -> None:
         super().__init__()
 
-        self.__drop_out_layer = nn.Dropout(drop_out_prob)
+        self.__drop_out_layer = nn.Dropout(dropout_prob)
 
         # create a tensor of shape (seq_len, d_model) filled with zeros
         positional_encoding = torch.zeros(seq_len, d_model)
@@ -98,7 +98,8 @@ class PositionalEncoding(nn.Module):
         self.register_buffer('positional_encoding', positional_encoding)
 
     def forward(self, x: Any) -> Any:
-        """
+        """Forwards the positional encodings
+
         Adds the positional encoding to the previous encoding tensor, which 
         usually contains the input encoding. The shape of the positional 
         encoding tensor is dim(batch, seq_len, d_model). 
@@ -120,11 +121,20 @@ class PositionalEncoding(nn.Module):
 
 
 class MultiHeadAttention(nn.Module):
+    """Layer module for multi-head attention
+
+    :param d_model: number of embedding features
+    :type d_model: int
+    :param num_heads: number of attention heads
+    :type num_heads: int
+    :param dropout_prob: probability of drop out
+    :type dropout_prob: float
+    """
 
     def __init__(self,
                  d_model: int,
                  num_heads: int,
-                 dropout: float) -> None:
+                 dropout_prob: float) -> None:
         super().__init__()
 
         self.__num_heads = num_heads  # number of heads
@@ -138,7 +148,7 @@ class MultiHeadAttention(nn.Module):
         self.__w_v = nn.Linear(d_model, d_model, bias=False)  # Wv
         self.__w_o = nn.Linear(d_model, d_model, bias=False)  # Wo
 
-        self.__dropout = nn.Dropout(dropout)
+        self.__dropout = nn.Dropout(dropout_prob)
 
     def __attention(self, query, key, value, mask):
 

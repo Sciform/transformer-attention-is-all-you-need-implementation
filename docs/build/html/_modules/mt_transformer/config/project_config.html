@@ -427,13 +427,12 @@ document.write(`
 <div class="viewcode-block" id="Config.get_rel_dictionary_file_path">
 <a class="viewcode-back" href="../../../_autosummary/mt_transformer.config.project_config.Config.html#mt_transformer.config.project_config.Config.get_rel_dictionary_file_path">[docs]</a>
     <span class="k">def</span> <span class="nf">get_rel_dictionary_file_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">language</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Construct relative file path for dictionary of a specific language.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct relative file path for dictionary of a specific language.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            language (str): language</span>
-<span class="sd">        Returns:</span>
-<span class="sd">            Path: relative file path for dictionary </span>
+<span class="sd">        :param language: language</span>
+<span class="sd">        :type language: str</span>
+<span class="sd">        :return: relative file path for dictionary </span>
+<span class="sd">        :rtype: Path</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dictionary_folder</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -450,10 +449,10 @@ document.write(`
 <div class="viewcode-block" id="Config.get_experiments_file_path">
 <a class="viewcode-back" href="../../../_autosummary/mt_transformer.config.project_config.Config.html#mt_transformer.config.project_config.Config.get_experiments_file_path">[docs]</a>
     <span class="k">def</span> <span class="nf">get_experiments_file_path</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;get file path for all runs</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get file path for experiments</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            Path: file path for all runs</span>
+<span class="sd">        :return: file path for experiments</span>
+<span class="sd">        :rtype: Path</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__experiment_folder</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">full_exp_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__experiment_folder</span><span class="p">)</span> <span class="o">/</span> \
@@ -467,11 +466,10 @@ document.write(`
     <span class="k">def</span> <span class="nf">get_saved_model_file_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epoch</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct saved model file path</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            epoch (str): current epoch</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            Path: saved model file path</span>
+<span class="sd">        :param epoch: epoch to be loaded</span>
+<span class="sd">        :type epoch: str</span>
+<span class="sd">        :return: saved model file path at specified epoch</span>
+<span class="sd">        :rtype: Path</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__saved_model_folder</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 

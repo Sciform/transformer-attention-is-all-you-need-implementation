@@ -35,17 +35,17 @@ class TransformerValidator:
             with os.popen('stty size', 'r') as console:
                 _, console_width = console.read().split()
                 console_width = int(console_width)
-        except:
+        except ImportError:
             # if we can't get the console width, use 80 as default
             console_width = 80
 
         with torch.no_grad():
             for batch in validation_ds:
                 count += 1
-                encoder_input = batch["encoder_input"].to(
-                    device)  # (b, seq_len)
-                encoder_mask = batch["encoder_mask"].to(
-                    device)  # (b, 1, 1, seq_len)
+                # (b, seq_len)
+                encoder_input = batch["encoder_input"].to(device)
+                # (b, 1, 1, seq_len)
+                encoder_mask = batch["encoder_mask"].to(device)
 
                 # check that the batch size is 1
                 assert encoder_input.size(
