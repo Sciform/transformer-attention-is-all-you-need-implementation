@@ -12,13 +12,12 @@ from mt_transformer.data_handler.two_language_data_set import TwoLanguagesDatase
 
 
 def get_raw_data_opus_books(config: Config) -> Dataset:
-    """get raw data set "Opus Books"
+    """get raw data set \"Opus Books\"
 
-    Args:
-        config (Config): configuration
-
-    Returns:
-        Dataset: raw data set "Opus Books" from Huggingface
+    :param config: configuration
+    :type config: Config
+    :return: raw data set "Opus Books" from Hugging Face
+    :rtype: Dataset
     """
 
     # for the opus books only the train split is available
@@ -37,13 +36,11 @@ def create_tokenizers_dataloaders(config: Config) -> [DataLoader, DataLoader,
                                                       Tokenizer, Tokenizer]:
     """create tokenizers and data loaders
 
-    Args:
-        config (Config): configuration
-
-    Returns:
-        [DataLoader, DataLoader, Tokenizer, Tokenizer]: data loader for 
-        training and validation data, Tokenizer for source and target 
-        vocabulary 
+    :param config: configuration
+    :type config: Config
+    :return: data loader for training and validation data, Tokenizer for 
+            source and target vocabulary 
+    :rtype: [DataLoader, DataLoader, Tokenizer, Tokenizer]
     """
     # load opus_books data set (it has only a train split)
     ds_raw = get_raw_data_opus_books(config)

@@ -1,7 +1,8 @@
 
+.vscode
 .ipynb_checkpoints/
 .venv
-.vscode
+
 
 data/dictionary*
 experiments/
