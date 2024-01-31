@@ -16,3 +16,5 @@ sphinx-design
 sphinx-favicon
 nbsphinx
 pydata-sphinx-theme
+myst-parser
+playwright

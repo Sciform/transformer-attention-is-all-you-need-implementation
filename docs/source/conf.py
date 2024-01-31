@@ -33,6 +33,8 @@ extensions = [
     'sphinx_design',
     'sphinx_favicon',
     'IPython.sphinxext.ipython_console_highlighting',
+    'myst_parser',
+    "docs.source._extension.gallery_directive"
 ]
 
 # Mappings for sphinx.ext.intersphinx. Projects have to have Sphinx-generated doc! (.inv file)
@@ -80,7 +82,8 @@ html_theme_options = {
             # The type of image to be used (see below for details)
             "type": "fontawesome",
         }
-    ]
+    ],
+    "navigation_with_keys": True
 }
 
 

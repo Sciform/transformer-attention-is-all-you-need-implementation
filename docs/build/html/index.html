@@ -7,8 +7,9 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="Top-level documentation.. " lang="en" name="description" xml:lang="en" />
 
-    <title>How to implement a transformer architecture from scratch ? &#8212; Sciform MT Transformer Implementation 0.1 documentation</title>
+    <title>How to implement a Transformer ? &#8212; Sciform MT Transformer Implementation 0.1 documentation</title>
   
   
   
@@ -38,7 +39,7 @@
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509" />
   <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=bd9e20870c6007c4c509"></script>
 
-    <script src="_static/documentation_options.js?v=2709fde1"></script>
+    <script src="_static/documentation_options.js?v=1b390748"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -48,7 +49,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="mt_transformer" href="_autosummary/mt_transformer.html" />
+    <link rel="next" title="Introduction" href="intro.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -145,8 +146,15 @@
   <ul class="bd-navbar-elements navbar-nav">
     
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="#">
+                      <a class="nav-link nav-internal" href="intro.html">
                         Introduction
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="transformer/index.html">
+                        Transformer
                       </a>
                     </li>
                 
@@ -235,10 +243,6 @@ document.write(`
   
 
   
-    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
-      <span class="fa-solid fa-outdent"></span>
-    </label>
-  
 </div>
 
     </div>
@@ -266,8 +270,15 @@ document.write(`
   <ul class="bd-navbar-elements navbar-nav">
     
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="#">
+                      <a class="nav-link nav-internal" href="intro.html">
                         Introduction
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="transformer/index.html">
+                        Transformer
                       </a>
                     </li>
                 
@@ -349,37 +360,62 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="how-to-implement-a-transformer-architecture-from-scratch">
-<h1>How to implement a transformer architecture from scratch ?<a class="headerlink" href="#how-to-implement-a-transformer-architecture-from-scratch" title="Link to this heading">#</a></h1>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This project is under active development! Stay tuned - we will let you know, when we are ready!</p>
-</div>
-<p>The transformer architecture powers currently almost every state-of-the-art deep learning model.
-Here, we provide an implementation of the transformer architecture originally published by Vaswani et al. in 2017.</p>
+  <section id="how-to-implement-a-transformer">
+<h1>How to implement a Transformer ?<a class="headerlink" href="#how-to-implement-a-transformer" title="Link to this heading">#</a></h1>
+<p>The transformer architecture powers currently almost every state-of-the-art
+deep learning model. Here, we provide an implementation of the transformer
+architecture originally published by Vaswani et al. in 2017.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p>Vaswani A. et al., “Attention is all you need”, 2017, <a class="reference external" href="https://arxiv.org/abs/1706.03762">https://arxiv.org/abs/1706.03762</a>.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>  Vaswani A. et al., &quot;Attention is all you need&quot;, 2017, https://arxiv.org/abs/1706.03762.
+</pre></div>
+</div>
+</div>
+</section>
+<section id="sciform-ai-consulting">
+<h1>Sciform - AI Consulting<a class="headerlink" href="#sciform-ai-consulting" title="Link to this heading">#</a></h1>
+</section>
+<section id="quick-select">
+<h1>Quick Select<a class="headerlink" href="#quick-select" title="Link to this heading">#</a></h1>
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 gallery-directive docutils">
+<div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-1 sd-row-cols-md-1 sd-row-cols-lg-3 sd-g-2 sd-g-xs-2 sd-g-sm-2 sd-g-md-2 sd-g-lg-2 docutils">
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-header docutils">
+<p class="sd-card-text"><span class="fas fa-palette pst-color-primary"></span> Transformer Architecture</p>
+</div>
+<div class="sd-card-body docutils">
+<p class="sd-card-text">Understand the Transformer Architecture in detail!</p>
+</div>
+<a class="sd-stretched-link reference internal" href="transformer/index.html"><span class="doc"></span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-header docutils">
+<p class="sd-card-text"><span class="fab fa-python pst-color-primary"></span> Code Reference</p>
+</div>
+<div class="sd-card-body docutils">
+<p class="sd-card-text">Check out the code documentation!</p>
+</div>
+<a class="sd-stretched-link reference external" href="_autosummary/mt_transformer"></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-header docutils">
+<p class="sd-card-text"><span class="fas fa-lightbulb pst-color-primary"></span> Sciform GmbH</p>
+</div>
+<div class="sd-card-body docutils">
+<p class="sd-card-text">Contact us to learn more about our consulting services!</p>
+</div>
+<a class="sd-stretched-link reference external" href="https://www.sciform.com"></a></div>
+</div>
+</div>
 </div>
 <div class="toctree-wrapper compound">
-<ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a></li>
-</ul>
 </div>
 <div class="toctree-wrapper compound">
 </div>
 <div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="_autosummary/mt_transformer.html">Code Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="_autosummary/mt_transformer.config.html">mt_transformer.config</a></li>
-<li class="toctree-l2"><a class="reference internal" href="_autosummary/mt_transformer.data_handler.html">mt_transformer.data_handler</a></li>
-<li class="toctree-l2"><a class="reference internal" href="_autosummary/mt_transformer.inference.html">mt_transformer.inference</a></li>
-<li class="toctree-l2"><a class="reference internal" href="_autosummary/mt_transformer.model.html">mt_transformer.model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="_autosummary/mt_transformer.trainer.html">mt_transformer.trainer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="_autosummary/mt_transformer.utils.html">mt_transformer.utils</a></li>
-</ul>
-</li>
-</ul>
 </div>
 </section>
 
@@ -393,8 +429,6 @@ Here, we provide an implementation of the transformer architecture originally pu
             </div>
             
             
-              
-                <div class="bd-sidebar-secondary bd-toc"></div>
               
             
           </div>

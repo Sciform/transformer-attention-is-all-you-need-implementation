@@ -7,6 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="Documentation of Transformer Architecture. " lang="en" name="description" xml:lang="en" />
 
     <title>Transformer &#8212; Sciform MT Transformer Implementation 0.1 documentation</title>
   
@@ -38,7 +39,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509" />
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=bd9e20870c6007c4c509"></script>
 
-    <script src="../_static/documentation_options.js?v=2709fde1"></script>
+    <script src="../_static/documentation_options.js?v=1b390748"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -48,6 +49,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'transformer/index';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="The Embeddings Layer" href="embeddings.html" />
+    <link rel="prev" title="Introduction" href="../intro.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -144,8 +147,15 @@
   <ul class="bd-navbar-elements navbar-nav">
     
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../index.html">
+                      <a class="nav-link nav-internal" href="../intro.html">
                         Introduction
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="#">
+                        Transformer
                       </a>
                     </li>
                 
@@ -249,9 +259,7 @@ document.write(`
       
       
       
-        
-      
-      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -265,8 +273,15 @@ document.write(`
   <ul class="bd-navbar-elements navbar-nav">
     
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../index.html">
+                      <a class="nav-link nav-internal" href="../intro.html">
                         Introduction
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="#">
+                        Transformer
                       </a>
                     </li>
                 
@@ -325,6 +340,19 @@ document.write(`
     
   </div>
   
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">The layer types</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="embeddings.html">The Embeddings Layer</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
   </div>
@@ -376,10 +404,17 @@ document.write(`
                   
   <section id="transformer">
 <h1>Transformer<a class="headerlink" href="#transformer" title="Link to this heading">#</a></h1>
+<p>Learn how to build the original transformer architecture for a machine
+translation solution as proposed in the paper
+<a class="reference external" href="https://arxiv.org/abs/1706.03762">“Attention is all you need”</a>
+by Vaswani A. et al., 2017.</p>
 <div class="toctree-wrapper compound">
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">The layer types</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="embeddings.html">Embeddings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embeddings.html">The Embeddings Layer</a></li>
 </ul>
+</div>
+<div class="toctree-wrapper compound">
 </div>
 </section>
 

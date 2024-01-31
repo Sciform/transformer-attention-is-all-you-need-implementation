@@ -13,4 +13,6 @@ sphinx-design
 sphinx-favicon
 nbsphinx
 pydata-sphinx-theme
-ipykernel 
+ipykernel
+myst-parser 
+playwright
