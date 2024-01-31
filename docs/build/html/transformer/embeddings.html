@@ -408,19 +408,20 @@ document.write(`
                   
   <section id="the-embeddings-layer">
 <h1>The Embeddings Layer<a class="headerlink" href="#the-embeddings-layer" title="Link to this heading">#</a></h1>
-<p>My take on scaling the Embeddings</p>
+<section id="what-are-embeddings">
+<h2>What are embeddings ?<a class="headerlink" href="#what-are-embeddings" title="Link to this heading">#</a></h2>
+</section>
+<section id="my-take-on-scaling-the-embeddings">
+<h2>My take on scaling the embeddings<a class="headerlink" href="#my-take-on-scaling-the-embeddings" title="Link to this heading">#</a></h2>
 <p>The original paper by Vaswani as well the original implementation by Google
-mention a scaling of the embedding by</p>
-<div class="math notranslate nohighlight">
-\[\]</div>
-<p><span class="math notranslate nohighlight">\(\sqrt{d_{model}},\)</span></p>
-<p>where <span class="math notranslate nohighlight">\(d_{model}\)</span></p>
-<p>refers to the number of features for each token.
+mention a scaling of the embedding by <span class="math notranslate nohighlight">\(\sqrt{d_{model}},\)</span>
+where <span class="math notranslate nohighlight">\(d_{model}\)</span> refers to the number of features for each token.
 However, neither in the paper nor in</p>
 <div class="math notranslate nohighlight">
 \[\frac{ \sum_{t=0}^{N}f(t,k) }{N}\]</div>
 <p>Or if you want to write inline you can use this:</p>
 <p><span class="math notranslate nohighlight">\(\frac{ \sum_{t=0}^{N}f(t,k) }{N}\)</span></p>
+</section>
 </section>
 
 
@@ -434,7 +435,23 @@ However, neither in the paper nor in</p>
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"></div>
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-are-embeddings">What are embeddings ?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#my-take-on-scaling-the-embeddings">My take on scaling the embeddings</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

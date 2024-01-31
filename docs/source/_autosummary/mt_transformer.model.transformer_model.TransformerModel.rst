@@ -6,7 +6,7 @@ mt\_transformer.model.transformer\_model.TransformerModel
 .. autoclass:: TransformerModel
    :members:
    :show-inheritance:
-   :inherited-members:
+   :no-inherited-members:
    :special-members: __call__, __add__, __mul__
 
    

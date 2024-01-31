@@ -6,7 +6,7 @@ mt\_transformer.model.greedy\_decoder.GreedyDecoder
 .. autoclass:: GreedyDecoder
    :members:
    :show-inheritance:
-   :inherited-members:
+   :no-inherited-members:
    :special-members: __call__, __add__, __mul__
 
    

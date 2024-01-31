@@ -1,23 +1,20 @@
 
 
 The Embeddings Layer
-==========================================================
+=================================
 
-My take on scaling the Embeddings
+What are embeddings ?
+---------------------------------
+
+
+
+My take on scaling the embeddings
+---------------------------------
 
 The original paper by Vaswani as well the original implementation by Google
-mention a scaling of the embedding by 
-
-.. math::
-
-:math:`\sqrt{d_{model}},`
-
-where :math:`d_{model}` 
-
-refers to the number of features for each token.
+mention a scaling of the embedding by :math:`\sqrt{d_{model}},`
+where :math:`d_{model}` refers to the number of features for each token.
 However, neither in the paper nor in 
-
-
 
 .. math::
 

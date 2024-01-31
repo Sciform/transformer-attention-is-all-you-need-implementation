@@ -3,6 +3,10 @@
 # For the full list of built-in configuration values, see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
+#   :show-inheritance:
+#   :inherited-members:
+#    :no-inherited-members:
+
 import os
 import sys
 # Source code dir relative to this file
@@ -85,8 +89,8 @@ html_theme_options = {
         }
     ],
     "navigation_with_keys": True,
-    "pygment_light_style": "tango",
-    "pygment_dark_style": "monokai"
+    "pygment_light_style": "default",
+    "pygment_dark_style": "github-dark"
 }
 
 

@@ -6,7 +6,7 @@ mt\_transformer.data\_handler.two\_language\_data\_set.TwoLanguagesDataset
 .. autoclass:: TwoLanguagesDataset
    :members:
    :show-inheritance:
-   :inherited-members:
+   :no-inherited-members:
    :special-members: __call__, __add__, __mul__
 
    

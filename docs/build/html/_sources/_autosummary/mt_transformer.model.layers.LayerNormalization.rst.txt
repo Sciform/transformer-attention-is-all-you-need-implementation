@@ -6,7 +6,7 @@ mt\_transformer.model.layers.LayerNormalization
 .. autoclass:: LayerNormalization
    :members:
    :show-inheritance:
-   :inherited-members:
+   :no-inherited-members:
    :special-members: __call__, __add__, __mul__
 
    
