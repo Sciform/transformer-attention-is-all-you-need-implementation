@@ -16,7 +16,7 @@ by Vaswani A. et al., 2017.
 [comment]: # (Overview)
 
 ```{toctree}
-:caption: The layer types
+:caption: Layer Types
 
 embeddings
 ```

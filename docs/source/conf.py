@@ -11,6 +11,7 @@ sys.path.insert(0, os.path.abspath('../..'))
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
+# pylint: disable=redefined-builtin, invalid-name
 project = 'Sciform MT Transformer Implementation'
 copyright = '2024, Ursula Maria Mayer, Sciform GmbH'
 author = 'Ursula Maria Mayer, Sciform GmbH'

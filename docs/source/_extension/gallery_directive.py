@@ -76,6 +76,7 @@ class GalleryGridDirective(SphinxDirective):
             path_data = (path_doc / path_data_rel).resolve()
             if not path_data.exists():
                 logger.info(f"Could not find grid data at {path_data}.")
+                # pylint: disable=no-member
                 nodes.text("No grid data found at {path_data}.")
                 return
             yaml_string = path_data.read_text()
