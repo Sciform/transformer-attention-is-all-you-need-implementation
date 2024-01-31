@@ -84,7 +84,9 @@ html_theme_options = {
             "type": "fontawesome",
         }
     ],
-    "navigation_with_keys": True
+    "navigation_with_keys": True,
+    "pygment_light_style": "tango",
+    "pygment_dark_style": "monokai"
 }
 
 

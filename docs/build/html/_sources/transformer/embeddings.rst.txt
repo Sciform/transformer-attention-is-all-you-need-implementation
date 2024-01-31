@@ -3,11 +3,12 @@
 The Embeddings Layer
 ==========================================================
 
-.. math::
+My take on scaling the Embeddings
 
-My take on the scaling 
 The original paper by Vaswani as well the original implementation by Google
 mention a scaling of the embedding by 
+
+.. math::
 
 :math:`\sqrt{d_{model}},`
 

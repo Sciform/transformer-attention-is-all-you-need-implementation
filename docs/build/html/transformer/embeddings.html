@@ -31,7 +31,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
-    <link rel="stylesheet" type="text/css" href="../_static/pydata-custom.css?v=3f612d79" />
+    <link rel="stylesheet" type="text/css" href="../_static/pydata-custom.css?v=795008d3" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509" />
@@ -408,11 +408,11 @@ document.write(`
                   
   <section id="the-embeddings-layer">
 <h1>The Embeddings Layer<a class="headerlink" href="#the-embeddings-layer" title="Link to this heading">#</a></h1>
+<p>My take on scaling the Embeddings</p>
+<p>The original paper by Vaswani as well the original implementation by Google
+mention a scaling of the embedding by</p>
 <div class="math notranslate nohighlight">
 \[\]</div>
-<p>My take on the scaling
-The original paper by Vaswani as well the original implementation by Google
-mention a scaling of the embedding by</p>
 <p><span class="math notranslate nohighlight">\(\sqrt{d_{model}},\)</span></p>
 <p>where <span class="math notranslate nohighlight">\(d_{model}\)</span></p>
 <p>refers to the number of features for each token.
