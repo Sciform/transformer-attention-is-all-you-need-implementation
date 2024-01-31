@@ -3,6 +3,20 @@
 The Embeddings Layer
 ==========================================================
 
+.. math::
+
+My take on the scaling 
+The original paper by Vaswani as well the original implementation by Google
+mention a scaling of the embedding by 
+
+:math:`\sqrt{d_{model}},`
+
+where :math:`d_{model}` 
+
+refers to the number of features for each token.
+However, neither in the paper nor in 
+
+
 
 .. math::
 
@@ -11,3 +25,5 @@ The Embeddings Layer
 Or if you want to write inline you can use this:
 
 :math:`\frac{ \sum_{t=0}^{N}f(t,k) }{N}`
+
+

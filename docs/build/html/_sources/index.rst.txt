@@ -23,8 +23,16 @@ Here, we provide an implementation of the transformer architecture originally pu
 
 
 .. toctree::
-   :hidden:
+   :maxdepth: 2
 
    Introduction <self>
-   Transformer <transformer/index.rst>
+   
+.. toctree::
+   :maxdepth: 2
+
+   Transformer <transformer/index.md>
+
+.. toctree::
+   :maxdepth: 2
+
    Code Reference <_autosummary/mt_transformer>

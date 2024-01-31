@@ -3,9 +3,8 @@
 Transformer
 ===============
 
-.. toctree::
-    :maxdepth: 2
-    
+.. toctree:: 
+     
     :caption: Layer Types
     Embeddings <embeddings.rst>
 

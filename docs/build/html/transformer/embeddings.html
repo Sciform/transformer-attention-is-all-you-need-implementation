@@ -408,6 +408,15 @@ document.write(`
   <section id="the-embeddings-layer">
 <h1>The Embeddings Layer<a class="headerlink" href="#the-embeddings-layer" title="Link to this heading">#</a></h1>
 <div class="math notranslate nohighlight">
+\[\]</div>
+<p>My take on the scaling
+The original paper by Vaswani as well the original implementation by Google
+mention a scaling of the embedding by</p>
+<p><span class="math notranslate nohighlight">\(\sqrt{d_{model}},\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(d_{model}\)</span></p>
+<p>refers to the number of features for each token.
+However, neither in the paper nor in</p>
+<div class="math notranslate nohighlight">
 \[\frac{ \sum_{t=0}^{N}f(t,k) }{N}\]</div>
 <p>Or if you want to write inline you can use this:</p>
 <p><span class="math notranslate nohighlight">\(\frac{ \sum_{t=0}^{N}f(t,k) }{N}\)</span></p>
