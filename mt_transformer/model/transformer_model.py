@@ -352,9 +352,9 @@ class TransformerModel(nn.Module):
                  d_ff: int = 2048) -> None:
         super().__init__()
 
-        d_model = config['d_model']
-        self.__src_seq_length = config["seq_len"]
-        self.__tgt_seq_length = config["seq_len"]
+        d_model = config.MODEL["d_model"]
+        self.__src_seq_length = config.DATA["seq_len"]
+        self.__tgt_seq_length = config.DATA["seq_len"]
 
         # Create the embedding layers
         self.__src_embed = TokenEmbeddings(d_model, src_vocab_size)
