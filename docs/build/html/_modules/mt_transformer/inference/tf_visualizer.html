@@ -30,7 +30,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/pydata-custom.css?v=0c3ee772" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pydata-custom.css?v=f85081d7" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509" />
@@ -391,18 +391,14 @@ document.write(`
                 <article class="bd-article">
                   
   <h1>Source code for mt_transformer.inference.tf_visualizer</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-
-<span class="kn">import</span> <span class="nn">altair</span> 
+<span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">altair</span>
 <span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span>
 
 <span class="kn">from</span> <span class="nn">mt_transformer.config.project_config</span> <span class="kn">import</span> <span class="n">Config</span>
 <span class="kn">from</span> <span class="nn">mt_transformer.data_handler.data_loader</span> <span class="kn">import</span> <span class="n">create_tokenizers_dataloaders</span>
 <span class="kn">from</span> <span class="nn">mt_transformer.model.greedy_decoder</span> <span class="kn">import</span> <span class="n">GreedyDecoder</span>
-<span class="kn">from</span> <span class="nn">mt_transformer.model.transformer_model</span> <span class="kn">import</span> <span class="n">Transformer</span><span class="p">,</span> <span class="n">get_transformer_model</span>
-<span class="kn">from</span> <span class="nn">mt_transformer.trainer.transformer_validator</span> <span class="kn">import</span> <span class="n">TransformerValidator</span>
+<span class="kn">from</span> <span class="nn">mt_transformer.model.transformer_model</span> <span class="kn">import</span> <span class="n">TransformerModel</span>
 <span class="kn">from</span> <span class="nn">mt_transformer.utils.tf_utils</span> <span class="kn">import</span> <span class="n">get_proc_device</span>
 
 
@@ -410,8 +406,9 @@ document.write(`
 <a class="viewcode-back" href="../../../_autosummary/mt_transformer.inference.tf_visualizer.TfVisualizer.html#mt_transformer.inference.tf_visualizer.TfVisualizer">[docs]</a>
 <span class="k">class</span> <span class="nc">TfVisualizer</span><span class="p">:</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">config</span><span class="p">:</span> <span class="n">Config</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">__config</span> <span class="o">=</span> <span class="n">config</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__device</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__val_dataloader</span> <span class="o">=</span> <span class="kc">None</span>
@@ -419,9 +416,8 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">__tokenizer_tgt</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__transformer_model</span> <span class="o">=</span> <span class="kc">None</span>
 
-
     <span class="k">def</span> <span class="nf">__get_data_and_model</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        
+
         <span class="c1"># get Cuda-GPU if available otherwise CPU</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__device</span> <span class="o">=</span> <span class="n">get_proc_device</span><span class="p">()</span>
 
@@ -430,16 +426,18 @@ document.write(`
             <span class="n">create_tokenizers_dataloaders</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="p">)</span>
 
         <span class="c1"># create transformer model</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__transformer_model</span> <span class="o">=</span> <span class="n">get_transformer_model</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tokenizer_src</span><span class="o">.</span><span class="n">get_vocab_size</span><span class="p">(),</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">__transformer_model</span> <span class="o">=</span> <span class="n">TransformerModel</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__tokenizer_src</span><span class="o">.</span><span class="n">get_vocab_size</span><span class="p">(),</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__tokenizer_tgt</span><span class="o">.</span><span class="n">get_vocab_size</span><span class="p">())</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__device</span><span class="p">)</span>
 
         <span class="c1"># load pretrained state into model</span>
-        <span class="n">state</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="o">.</span><span class="n">get_saved_model_file_path</span><span class="p">(</span><span class="n">epoch</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;29&quot;</span><span class="p">))</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="o">.</span><span class="n">get_saved_model_file_path</span><span class="p">(</span><span class="n">epoch</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;29&quot;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__transformer_model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s1">&#39;model_state_dict&#39;</span><span class="p">])</span>
-        
-    
+
     <span class="k">def</span> <span class="nf">__load_next_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        
+
         <span class="c1"># Load a the next batch from the validation set</span>
         <span class="n">batch</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__val_dataloader</span><span class="p">))</span>
         <span class="n">encoder_input</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s2">&quot;encoder_input&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__device</span><span class="p">)</span>
@@ -447,30 +445,34 @@ document.write(`
         <span class="n">decoder_input</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s2">&quot;decoder_input&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__device</span><span class="p">)</span>
         <span class="n">decoder_mask</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s2">&quot;decoder_mask&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__device</span><span class="p">)</span>
 
-        <span class="n">encoder_input_tokens</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__tokenizer_src</span><span class="o">.</span><span class="n">id_to_token</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">encoder_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()]</span>
-        <span class="n">decoder_input_tokens</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__tokenizer_tgt</span><span class="o">.</span><span class="n">id_to_token</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">decoder_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()]</span>
+        <span class="n">encoder_input_tokens</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__tokenizer_src</span><span class="o">.</span><span class="n">id_to_token</span><span class="p">(</span>
+            <span class="n">idx</span><span class="p">)</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">encoder_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()]</span>
+        <span class="n">decoder_input_tokens</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__tokenizer_tgt</span><span class="o">.</span><span class="n">id_to_token</span><span class="p">(</span>
+            <span class="n">idx</span><span class="p">)</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">decoder_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()]</span>
 
         <span class="c1"># check that the batch size is 1</span>
-        <span class="k">assert</span> <span class="n">encoder_input</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Batch size must be &gt;= 1 for validation&quot;</span>
-        
+        <span class="k">assert</span> <span class="n">encoder_input</span><span class="o">.</span><span class="n">size</span><span class="p">(</span>
+            <span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Batch size must be &gt;= 1 for validation&quot;</span>
+
         <span class="n">greedy_decoder</span> <span class="o">=</span> <span class="n">GreedyDecoder</span><span class="p">()</span>
-        <span class="n">tf_model_output</span> <span class="o">=</span> <span class="n">greedy_decoder</span><span class="o">.</span><span class="n">greedy_decode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__transformer_model</span><span class="p">,</span> <span class="n">encoder_input</span><span class="p">,</span> 
-                                                       <span class="n">encoder_mask</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tokenizer_src</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">__tokenizer_tgt</span><span class="p">,</span> 
-                                                       <span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="o">.</span><span class="n">DATA</span><span class="p">[</span><span class="s1">&#39;seq_len&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">__device</span><span class="p">)</span>
-        
+        <span class="n">tf_model_output</span> <span class="o">=</span> <span class="n">greedy_decoder</span><span class="o">.</span><span class="n">greedy_decode</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__transformer_model</span><span class="p">,</span> <span class="n">encoder_input</span><span class="p">,</span> <span class="n">encoder_mask</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__tokenizer_tgt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="o">.</span><span class="n">DATA</span><span class="p">[</span><span class="s1">&#39;seq_len&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">__device</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">batch</span><span class="p">,</span> <span class="n">encoder_input_tokens</span><span class="p">,</span> <span class="n">decoder_input_tokens</span>
-    
-    
+
     <span class="k">def</span> <span class="nf">__mtx2df</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">max_row</span><span class="p">,</span> <span class="n">max_col</span><span class="p">,</span> <span class="n">row_tokens</span><span class="p">,</span> <span class="n">col_tokens</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-        
+
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
             <span class="p">[</span>
                 <span class="p">(</span>
                     <span class="n">r_id</span><span class="p">,</span>
                     <span class="n">c_id</span><span class="p">,</span>
                     <span class="nb">float</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="n">r_id</span><span class="p">,</span> <span class="n">c_id</span><span class="p">]),</span>
-                    <span class="s2">&quot;</span><span class="si">%.3d</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">r_id</span><span class="p">,</span> <span class="n">row_tokens</span><span class="p">[</span><span class="n">r_id</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">row_tokens</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">r_id</span> <span class="k">else</span> <span class="s2">&quot;&lt;blank&gt;&quot;</span><span class="p">),</span>
-                    <span class="s2">&quot;</span><span class="si">%.3d</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">c_id</span><span class="p">,</span> <span class="n">col_tokens</span><span class="p">[</span><span class="n">c_id</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">col_tokens</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">c_id</span> <span class="k">else</span> <span class="s2">&quot;&lt;blank&gt;&quot;</span><span class="p">),</span>
+                    <span class="s2">&quot;</span><span class="si">%.3d</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">r_id</span><span class="p">,</span> <span class="n">row_tokens</span><span class="p">[</span><span class="n">r_id</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span>
+                        <span class="n">row_tokens</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">r_id</span> <span class="k">else</span> <span class="s2">&quot;&lt;blank&gt;&quot;</span><span class="p">),</span>
+                    <span class="s2">&quot;</span><span class="si">%.3d</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">c_id</span><span class="p">,</span> <span class="n">col_tokens</span><span class="p">[</span><span class="n">c_id</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span>
+                        <span class="n">col_tokens</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">c_id</span> <span class="k">else</span> <span class="s2">&quot;&lt;blank&gt;&quot;</span><span class="p">),</span>
                 <span class="p">)</span>
                 <span class="k">for</span> <span class="n">r_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
                 <span class="k">for</span> <span class="n">c_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
@@ -479,9 +481,8 @@ document.write(`
             <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;row&quot;</span><span class="p">,</span> <span class="s2">&quot;column&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;row_token&quot;</span><span class="p">,</span> <span class="s2">&quot;col_token&quot;</span><span class="p">],</span>
         <span class="p">)</span>
 
-
     <span class="k">def</span> <span class="nf">__get_attn_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attn_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">layer</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">head</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-        
+
         <span class="k">if</span> <span class="n">attn_type</span> <span class="o">==</span> <span class="s2">&quot;encoder&quot;</span><span class="p">:</span>
             <span class="n">attn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__transformer_model</span><span class="o">.</span><span class="n">encoder</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="n">layer</span><span class="p">]</span><span class="o">.</span><span class="n">self_attention_block</span><span class="o">.</span><span class="n">attention_scores</span>
         <span class="k">elif</span> <span class="n">attn_type</span> <span class="o">==</span> <span class="s2">&quot;decoder&quot;</span><span class="p">:</span>
@@ -490,9 +491,8 @@ document.write(`
             <span class="n">attn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__transformer_model</span><span class="o">.</span><span class="n">decoder</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="n">layer</span><span class="p">]</span><span class="o">.</span><span class="n">cross_attention_block</span><span class="o">.</span><span class="n">attention_scores</span>
         <span class="k">return</span> <span class="n">attn</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">head</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
 
-
     <span class="k">def</span> <span class="nf">__attn_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attn_type</span><span class="p">,</span> <span class="n">layer</span><span class="p">,</span> <span class="n">head</span><span class="p">,</span> <span class="n">row_tokens</span><span class="p">,</span> <span class="n">col_tokens</span><span class="p">,</span> <span class="n">max_sentence_len</span><span class="p">):</span>
-        
+
         <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__mtx2df</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__get_attn_map</span><span class="p">(</span><span class="n">attn_type</span><span class="p">,</span> <span class="n">layer</span><span class="p">,</span> <span class="n">head</span><span class="p">),</span>
             <span class="n">max_sentence_len</span><span class="p">,</span>
@@ -500,7 +500,7 @@ document.write(`
             <span class="n">row_tokens</span><span class="p">,</span>
             <span class="n">col_tokens</span><span class="p">,</span>
         <span class="p">)</span>
-        
+
         <span class="k">return</span> <span class="p">(</span>
             <span class="n">altair</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">)</span>
             <span class="o">.</span><span class="n">mark_rect</span><span class="p">()</span>
@@ -510,31 +510,31 @@ document.write(`
                 <span class="n">color</span><span class="o">=</span><span class="s2">&quot;value&quot;</span><span class="p">,</span>
                 <span class="n">tooltip</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;row&quot;</span><span class="p">,</span> <span class="s2">&quot;column&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;row_token&quot;</span><span class="p">,</span> <span class="s2">&quot;col_token&quot;</span><span class="p">],</span>
             <span class="p">)</span>
-            <span class="c1">#.title(f&quot;Layer {layer} Head {head}&quot;)</span>
+            <span class="c1"># .title(f&quot;Layer {layer} Head {head}&quot;)</span>
             <span class="o">.</span><span class="n">properties</span><span class="p">(</span><span class="n">height</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Layer </span><span class="si">{</span><span class="n">layer</span><span class="si">}</span><span class="s2"> Head </span><span class="si">{</span><span class="n">head</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
         <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__get_all_attention_maps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
-                            <span class="n">attn_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
-                            <span class="n">layers</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> 
-                            <span class="n">heads</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> 
-                            <span class="n">row_tokens</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> 
-                            <span class="n">col_tokens</span><span class="p">,</span>    
-                            <span class="n">max_sentence_len</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-        
+    <span class="k">def</span> <span class="nf">__get_all_attention_maps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                 <span class="n">attn_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                                 <span class="n">layers</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+                                 <span class="n">heads</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+                                 <span class="n">row_tokens</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+                                 <span class="n">col_tokens</span><span class="p">,</span>
+                                 <span class="n">max_sentence_len</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+
         <span class="n">charts</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">layers</span><span class="p">:</span>
             <span class="n">rowCharts</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">head</span> <span class="ow">in</span> <span class="n">heads</span><span class="p">:</span>
-                <span class="n">rowCharts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__attn_map</span><span class="p">(</span><span class="n">attn_type</span><span class="p">,</span> <span class="n">layer</span><span class="p">,</span> <span class="n">head</span><span class="p">,</span> <span class="n">row_tokens</span><span class="p">,</span> <span class="n">col_tokens</span><span class="p">,</span> <span class="n">max_sentence_len</span><span class="p">))</span>
+                <span class="n">rowCharts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__attn_map</span><span class="p">(</span>
+                    <span class="n">attn_type</span><span class="p">,</span> <span class="n">layer</span><span class="p">,</span> <span class="n">head</span><span class="p">,</span> <span class="n">row_tokens</span><span class="p">,</span> <span class="n">col_tokens</span><span class="p">,</span> <span class="n">max_sentence_len</span><span class="p">))</span>
             <span class="n">charts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">altair</span><span class="o">.</span><span class="n">hconcat</span><span class="p">(</span><span class="o">*</span><span class="n">rowCharts</span><span class="p">))</span>
-            
+
         <span class="k">return</span> <span class="n">altair</span><span class="o">.</span><span class="n">vconcat</span><span class="p">(</span><span class="o">*</span><span class="n">charts</span><span class="p">)</span>
 
-
     <span class="k">def</span> <span class="nf">perform</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        
+
         <span class="n">batch</span><span class="p">,</span> <span class="n">encoder_input_tokens</span><span class="p">,</span> <span class="n">decoder_input_tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__load_next_batch</span><span class="p">()</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Source: </span><span class="si">{</span><span class="n">batch</span><span class="p">[</span><span class="s2">&quot;src_text&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Target: </span><span class="si">{</span><span class="n">batch</span><span class="p">[</span><span class="s2">&quot;tgt_text&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -544,15 +544,20 @@ document.write(`
         <span class="n">heads</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
 
         <span class="c1"># Encoder Self-Attention</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__get_all_attention_maps</span><span class="p">(</span><span class="s2">&quot;encoder&quot;</span><span class="p">,</span> <span class="n">layers</span><span class="p">,</span> <span class="n">heads</span><span class="p">,</span> <span class="n">encoder_input_tokens</span><span class="p">,</span> <span class="n">encoder_input_tokens</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">sentence_len</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__get_all_attention_maps</span><span class="p">(</span>
+            <span class="s2">&quot;encoder&quot;</span><span class="p">,</span> <span class="n">layers</span><span class="p">,</span> <span class="n">heads</span><span class="p">,</span> <span class="n">encoder_input_tokens</span><span class="p">,</span>
+            <span class="n">encoder_input_tokens</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">sentence_len</span><span class="p">))</span>
 
         <span class="c1"># Encoder Self-Attention</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__get_all_attention_maps</span><span class="p">(</span><span class="s2">&quot;decoder&quot;</span><span class="p">,</span> <span class="n">layers</span><span class="p">,</span> <span class="n">heads</span><span class="p">,</span> <span class="n">decoder_input_tokens</span><span class="p">,</span> <span class="n">decoder_input_tokens</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">sentence_len</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__get_all_attention_maps</span><span class="p">(</span>
+            <span class="s2">&quot;decoder&quot;</span><span class="p">,</span> <span class="n">layers</span><span class="p">,</span> <span class="n">heads</span><span class="p">,</span> <span class="n">decoder_input_tokens</span><span class="p">,</span>
+            <span class="n">decoder_input_tokens</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">sentence_len</span><span class="p">))</span>
 
         <span class="c1"># Encoder Self-Attention</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__get_all_attention_maps</span><span class="p">(</span><span class="s2">&quot;encoder-decoder&quot;</span><span class="p">,</span> <span class="n">layers</span><span class="p">,</span> <span class="n">heads</span><span class="p">,</span> <span class="n">encoder_input_tokens</span><span class="p">,</span> <span class="n">decoder_input_tokens</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">sentence_len</span><span class="p">))</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__get_all_attention_maps</span><span class="p">(</span>
+            <span class="s2">&quot;encoder-decoder&quot;</span><span class="p">,</span> <span class="n">layers</span><span class="p">,</span> <span class="n">heads</span><span class="p">,</span> <span class="n">encoder_input_tokens</span><span class="p">,</span>
+            <span class="n">decoder_input_tokens</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">sentence_len</span><span class="p">))</span></div>
 
-                    
 </pre></div>
 
                 </article>

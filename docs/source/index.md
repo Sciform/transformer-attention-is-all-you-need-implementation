@@ -6,7 +6,7 @@ myst:
 html_theme.sidebar_secondary.remove: true
 ---
 
-### How to implement a Transformer ?
+# How to implement a Transformer ?
 
 The transformer architecture powers currently almost every state-of-the-art 
 deep learning model. Here, we provide an implementation of the transformer 
@@ -17,7 +17,7 @@ architecture originally published by Vaswani et al. in
   Vaswani A. et al., "Attention is all you need", 2017, ["https://arxiv.org/abs/1706.03762"](https://arxiv.org/abs/1706.03762).
 ```
 
-### Sciform - AI Consulting
+# Sciform - AI Consulting
 You would like to use a transformer model or other
 state-of-the-art deep learning models in your own AI solutions ?
 Sciform provides technical, strategic and management consulting services in 
@@ -25,7 +25,7 @@ Artificial Intelligence and Quantum Computing.
 Get in ["contact"](https://sciform.com/html/contact/pageContact.php) 
 with us to find out how we can support you!
 
-### Quick Select
+# Quick Select
 
 ```{gallery-grid}
 :grid-columns: 1 1 1 3

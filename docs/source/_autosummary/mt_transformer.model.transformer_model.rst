@@ -9,15 +9,6 @@ mt\_transformer.model.transformer\_model
 
    
    
-   .. rubric:: Functions
-
-   .. autosummary::
-      :toctree:
-      :nosignatures:
-   
-      create_transformer
-      get_transformer_model
-   
    
 
    
@@ -32,8 +23,7 @@ mt\_transformer.model.transformer\_model
       Decoder
       DecoderStack
       Encoder
-      EncoderStackOld
-      Transformer
+      EncoderStack
       TransformerModel
    
    

@@ -23,9 +23,10 @@ mt\_transformer.model.transformer\_model.TransformerModel
       ~TransformerModel.children
       ~TransformerModel.compile
       ~TransformerModel.cpu
-      ~TransformerModel.create_transformer
       ~TransformerModel.cuda
+      ~TransformerModel.decode
       ~TransformerModel.double
+      ~TransformerModel.encode
       ~TransformerModel.eval
       ~TransformerModel.extra_repr
       ~TransformerModel.float
@@ -43,6 +44,7 @@ mt\_transformer.model.transformer\_model.TransformerModel
       ~TransformerModel.named_modules
       ~TransformerModel.named_parameters
       ~TransformerModel.parameters
+      ~TransformerModel.project
       ~TransformerModel.register_backward_hook
       ~TransformerModel.register_buffer
       ~TransformerModel.register_forward_hook

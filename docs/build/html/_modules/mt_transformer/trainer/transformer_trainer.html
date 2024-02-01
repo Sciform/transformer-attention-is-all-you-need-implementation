@@ -30,7 +30,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/pydata-custom.css?v=0c3ee772" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pydata-custom.css?v=f85081d7" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509" />
@@ -402,7 +402,7 @@ document.write(`
 
 <span class="kn">from</span> <span class="nn">mt_transformer.config.project_config</span> <span class="kn">import</span> <span class="n">Config</span>
 <span class="kn">from</span> <span class="nn">mt_transformer.data_handler.data_loader</span> <span class="kn">import</span> <span class="n">create_tokenizers_dataloaders</span>
-<span class="kn">from</span> <span class="nn">mt_transformer.model.transformer_model</span> <span class="kn">import</span> <span class="n">Transformer</span><span class="p">,</span> <span class="n">get_transformer_model</span>
+<span class="kn">from</span> <span class="nn">mt_transformer.model.transformer_model</span> <span class="kn">import</span> <span class="n">TransformerModel</span>
 <span class="kn">from</span> <span class="nn">mt_transformer.trainer.transformer_validator</span> <span class="kn">import</span> <span class="n">TransformerValidator</span>
 <span class="kn">from</span> <span class="nn">mt_transformer.utils.tf_utils</span> <span class="kn">import</span> <span class="n">get_proc_device</span>
 
@@ -422,7 +422,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">__config</span> <span class="o">=</span> <span class="n">config</span>
 
     <span class="k">def</span> <span class="nf">__get_initial_model_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                                  <span class="n">transformer_model</span><span class="p">:</span> <span class="n">Transformer</span><span class="p">,</span>
+                                  <span class="n">transformer_model</span><span class="p">:</span> <span class="n">TransformerModel</span><span class="p">,</span>
                                   <span class="n">optimizer</span><span class="p">:</span> <span class="n">Optimizer</span><span class="p">,</span>
                                   <span class="n">device</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get initial model setup</span>
@@ -476,7 +476,7 @@ document.write(`
         <span class="c1">###</span>
 
         <span class="c1"># create transformer model</span>
-        <span class="n">transformer_model</span> <span class="o">=</span> <span class="n">get_transformer_model</span><span class="p">(</span>
+        <span class="n">transformer_model</span> <span class="o">=</span> <span class="n">TransformerModel</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="p">,</span> <span class="n">tokenizer_src</span><span class="o">.</span><span class="n">get_vocab_size</span><span class="p">(),</span>
             <span class="n">tokenizer_tgt</span><span class="o">.</span><span class="n">get_vocab_size</span><span class="p">())</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
 
@@ -557,8 +557,8 @@ document.write(`
 
             <span class="c1"># perform validation at the end of every epoch</span>
             <span class="n">trans_val</span><span class="o">.</span><span class="n">perform_validation</span><span class="p">(</span>
-                <span class="n">transformer_model</span><span class="p">,</span> <span class="n">val_dataloader</span><span class="p">,</span> <span class="n">tokenizer_src</span><span class="p">,</span>
-                <span class="n">tokenizer_tgt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="o">.</span><span class="n">DATA</span><span class="p">[</span><span class="s1">&#39;seq_len&#39;</span><span class="p">],</span> <span class="n">device</span><span class="p">,</span>
+                <span class="n">transformer_model</span><span class="p">,</span> <span class="n">val_dataloader</span><span class="p">,</span> <span class="n">tokenizer_tgt</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="o">.</span><span class="n">DATA</span><span class="p">[</span><span class="s1">&#39;seq_len&#39;</span><span class="p">],</span> <span class="n">device</span><span class="p">,</span>
                 <span class="k">lambda</span> <span class="n">msg</span><span class="p">:</span> <span class="n">batch_iterator</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">msg</span><span class="p">),</span> <span class="n">global_step</span><span class="p">,</span> <span class="n">writer</span><span class="p">)</span>
 
             <span class="c1"># save the model at the end of every epoch</span>

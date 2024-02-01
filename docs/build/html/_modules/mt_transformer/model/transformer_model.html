@@ -30,7 +30,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/pydata-custom.css?v=0c3ee772" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pydata-custom.css?v=f85081d7" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509" />
@@ -391,42 +391,49 @@ document.write(`
                 <article class="bd-article">
                   
   <h1>Source code for mt_transformer.model.transformer_model</h1><div class="highlight"><pre>
-<span></span>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
 <span class="kn">from</span> <span class="nn">mt_transformer.config.project_config</span> <span class="kn">import</span> <span class="n">Config</span>
 
-<span class="kn">from</span> <span class="nn">mt_transformer.model.layers</span> <span class="kn">import</span> <span class="n">MultiHeadAttention</span><span class="p">,</span> <span class="n">ResidualConnection</span><span class="p">,</span> <span class="n">LayerNormalization</span><span class="p">,</span> <span class="n">FeedForwardBlock</span><span class="p">,</span> <span class="n">TokenEmbeddings</span><span class="p">,</span> <span class="n">PositionalEncoding</span><span class="p">,</span> <span class="n">ProjectionLayer</span>
+<span class="kn">from</span> <span class="nn">mt_transformer.model.layers</span> <span class="kn">import</span> <span class="n">MultiHeadAttention</span><span class="p">,</span> <span class="n">ResidualConnection</span>
+<span class="kn">from</span> <span class="nn">mt_transformer.model.layers</span> <span class="kn">import</span> <span class="n">LayerNormalization</span><span class="p">,</span> <span class="n">FeedForwardBlock</span>
+<span class="kn">from</span> <span class="nn">mt_transformer.model.layers</span> <span class="kn">import</span> <span class="n">TokenEmbeddings</span><span class="p">,</span> <span class="n">PositionalEncoding</span>
+<span class="kn">from</span> <span class="nn">mt_transformer.model.layers</span> <span class="kn">import</span> <span class="n">ProjectionLayer</span>
 
 
-<div class="viewcode-block" id="EncoderStackOld">
-<a class="viewcode-back" href="../../../_autosummary/mt_transformer.model.transformer_model.EncoderStackOld.html#mt_transformer.model.transformer_model.EncoderStackOld">[docs]</a>
-<span class="k">class</span> <span class="nc">EncoderStackOld</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<div class="viewcode-block" id="EncoderStack">
+<a class="viewcode-back" href="../../../_autosummary/mt_transformer.model.transformer_model.EncoderStack.html#mt_transformer.model.transformer_model.EncoderStack">[docs]</a>
+<span class="k">class</span> <span class="nc">EncoderStack</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                 <span class="n">self_attention_block</span><span class="p">:</span> <span class="n">MultiHeadAttention</span><span class="p">,</span>
-                 <span class="n">feed_forward_block</span><span class="p">:</span> <span class="n">FeedForwardBlock</span><span class="p">,</span>
-                 <span class="n">dropout</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+                 <span class="n">d_model</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                 <span class="n">h</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                 <span class="n">dropout_prob</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                 <span class="n">d_ff</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">self_attention_block</span> <span class="o">=</span> <span class="n">self_attention_block</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">feed_forward_block</span> <span class="o">=</span> <span class="n">feed_forward_block</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">residual_connections</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">(</span>
-            <span class="p">[</span><span class="n">ResidualConnection</span><span class="p">(</span><span class="n">dropout</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__self_attention_block</span> <span class="o">=</span> <span class="n">MultiHeadAttention</span><span class="p">(</span>
+            <span class="n">d_model</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">dropout_prob</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__feed_forward_block</span> <span class="o">=</span> <span class="n">FeedForwardBlock</span><span class="p">(</span>
+            <span class="n">d_model</span><span class="p">,</span> <span class="n">d_ff</span><span class="p">,</span> <span class="n">dropout_prob</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__residual_connections</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">ResidualConnection</span><span class="p">(</span><span class="n">dropout_prob</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)])</span>
 
-<div class="viewcode-block" id="EncoderStackOld.forward">
-<a class="viewcode-back" href="../../../_autosummary/mt_transformer.model.transformer_model.EncoderStackOld.html#mt_transformer.model.transformer_model.EncoderStackOld.forward">[docs]</a>
+<div class="viewcode-block" id="EncoderStack.forward">
+<a class="viewcode-back" href="../../../_autosummary/mt_transformer.model.transformer_model.EncoderStack.html#mt_transformer.model.transformer_model.EncoderStack.forward">[docs]</a>
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">src_mask</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">        :param x:</span>
-<span class="sd">        :param src_mask: the source mask avoids that actual tokens interact with padding token \&lt;PAD\&gt;</span>
+<span class="sd">        :param src_mask: the source mask avoids that actual tokens interact </span>
+<span class="sd">            with padding token \&lt;PAD\&gt;</span>
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># multi head self attention, add &amp; norm</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">residual_connections</span><span class="p">[</span><span class="mi">0</span><span class="p">](</span>
-            <span class="n">x</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">self_attention_block</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">src_mask</span><span class="p">))</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__residual_connections</span><span class="p">[</span><span class="mi">0</span><span class="p">](</span>
+            <span class="n">x</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__self_attention_block</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">src_mask</span><span class="p">))</span>
         <span class="c1"># feed forward, add &amp; norm</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">residual_connections</span><span class="p">[</span><span class="mi">1</span><span class="p">](</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">feed_forward_block</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__residual_connections</span><span class="p">[</span><span class="mi">1</span><span class="p">](</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__feed_forward_block</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">x</span></div>
 </div>
 
@@ -436,17 +443,37 @@ document.write(`
 <a class="viewcode-back" href="../../../_autosummary/mt_transformer.model.transformer_model.Encoder.html#mt_transformer.model.transformer_model.Encoder">[docs]</a>
 <span class="k">class</span> <span class="nc">Encoder</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layers</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">d_model</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                 <span class="n">num_stacks</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                 <span class="n">h</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                 <span class="n">dropout_prob</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                 <span class="n">d_ff</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="n">layers</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">norm</span> <span class="o">=</span> <span class="n">LayerNormalization</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__layer_normalization</span> <span class="o">=</span> <span class="n">LayerNormalization</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__encoder_layers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__create_encoder_layers</span><span class="p">(</span>
+            <span class="n">d_model</span><span class="p">,</span> <span class="n">num_stacks</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">dropout_prob</span><span class="p">,</span> <span class="n">d_ff</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__create_encoder_layers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                <span class="n">d_model</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                                <span class="n">num_stacks</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                                <span class="n">h</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                                <span class="n">dropout_prob</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                                <span class="n">d_ff</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">:</span>
+
+        <span class="n">encoder_blocks</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_stacks</span><span class="p">):</span>
+            <span class="n">encoder_block</span> <span class="o">=</span> <span class="n">EncoderStack</span><span class="p">(</span><span class="n">d_model</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">dropout_prob</span><span class="p">,</span> <span class="n">d_ff</span><span class="p">)</span>
+            <span class="n">encoder_blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">encoder_block</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">(</span><span class="n">encoder_blocks</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">mask</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__encoder_layers</span><span class="p">:</span>
             <span class="n">x</span> <span class="o">=</span> <span class="n">layer</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span>
 
         <span class="c1"># why again a normalization</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__layer_normalization</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div>
 
 
 
@@ -455,16 +482,19 @@ document.write(`
 <span class="k">class</span> <span class="nc">DecoderStack</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                 <span class="n">self_attention_block</span><span class="p">:</span> <span class="n">MultiHeadAttention</span><span class="p">,</span>
-                 <span class="n">cross_attention_block</span><span class="p">:</span> <span class="n">MultiHeadAttention</span><span class="p">,</span>
-                 <span class="n">feed_forward_block</span><span class="p">:</span> <span class="n">FeedForwardBlock</span><span class="p">,</span>
-                 <span class="n">dropout</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+                 <span class="n">d_model</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                 <span class="n">h</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                 <span class="n">dropout_prob</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                 <span class="n">d_ff</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">self_attention_block</span> <span class="o">=</span> <span class="n">self_attention_block</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cross_attention_block</span> <span class="o">=</span> <span class="n">cross_attention_block</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">feed_forward_block</span> <span class="o">=</span> <span class="n">feed_forward_block</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">residual_connections</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">([</span><span class="n">ResidualConnection</span><span class="p">(</span><span class="n">dropout</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__self_attention_block</span> <span class="o">=</span> <span class="n">MultiHeadAttention</span><span class="p">(</span>
+            <span class="n">d_model</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">dropout_prob</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__cross_attention_block</span> <span class="o">=</span> <span class="n">MultiHeadAttention</span><span class="p">(</span>
+            <span class="n">d_model</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">dropout_prob</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__feed_forward_block</span> <span class="o">=</span> <span class="n">FeedForwardBlock</span><span class="p">(</span>
+            <span class="n">d_model</span><span class="p">,</span> <span class="n">d_ff</span><span class="p">,</span> <span class="n">dropout_prob</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__residual_connections</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">([</span><span class="n">ResidualConnection</span><span class="p">(</span><span class="n">dropout_prob</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]))</span>
 
 <div class="viewcode-block" id="DecoderStack.forward">
 <a class="viewcode-back" href="../../../_autosummary/mt_transformer.model.transformer_model.DecoderStack.html#mt_transformer.model.transformer_model.DecoderStack.forward">[docs]</a>
@@ -477,12 +507,12 @@ document.write(`
 <span class="sd">        :param tgt_mask: to establish a causal model</span>
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">residual_connections</span><span class="p">[</span><span class="mi">0</span><span class="p">](</span><span class="n">x</span><span class="p">,</span>
-                                         <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">self_attention_block</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">tgt_mask</span><span class="p">))</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">residual_connections</span><span class="p">[</span><span class="mi">1</span><span class="p">](</span><span class="n">x</span><span class="p">,</span>
-                                         <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cross_attention_block</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">encoder_output</span><span class="p">,</span>
-                                                                              <span class="n">encoder_output</span><span class="p">,</span> <span class="n">src_mask</span><span class="p">))</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">residual_connections</span><span class="p">[</span><span class="mi">2</span><span class="p">](</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">feed_forward_block</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__residual_connections</span><span class="p">[</span><span class="mi">0</span><span class="p">](</span>
+            <span class="n">x</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__self_attention_block</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">tgt_mask</span><span class="p">))</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__residual_connections</span><span class="p">[</span><span class="mi">1</span><span class="p">](</span>
+            <span class="n">x</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cross_attention_block</span><span class="p">(</span>
+                <span class="n">x</span><span class="p">,</span> <span class="n">encoder_output</span><span class="p">,</span> <span class="n">encoder_output</span><span class="p">,</span> <span class="n">src_mask</span><span class="p">))</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__residual_connections</span><span class="p">[</span><span class="mi">2</span><span class="p">](</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__feed_forward_block</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">x</span></div>
 </div>
 
@@ -492,133 +522,35 @@ document.write(`
 <a class="viewcode-back" href="../../../_autosummary/mt_transformer.model.transformer_model.Decoder.html#mt_transformer.model.transformer_model.Decoder">[docs]</a>
 <span class="k">class</span> <span class="nc">Decoder</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layers</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">d_model</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                 <span class="n">num_stacks</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                 <span class="n">h</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                 <span class="n">dropout_prob</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                 <span class="n">d_ff</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__layers</span> <span class="o">=</span> <span class="n">layers</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__layer_normalization_layer</span> <span class="o">=</span> <span class="n">LayerNormalization</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__layer_normalization</span> <span class="o">=</span> <span class="n">LayerNormalization</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__decoder_layers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__create_decoder_layers</span><span class="p">(</span>
+            <span class="n">d_model</span><span class="p">,</span> <span class="n">num_stacks</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">dropout_prob</span><span class="p">,</span> <span class="n">d_ff</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__create_decoder_layers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                <span class="n">d_model</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                                <span class="n">num_stacks</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                                <span class="n">h</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                                <span class="n">dropout_prob</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                                <span class="n">d_ff</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">:</span>
+
+        <span class="n">decoder_blocks</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_stacks</span><span class="p">):</span>
+            <span class="n">decoder_block</span> <span class="o">=</span> <span class="n">DecoderStack</span><span class="p">(</span><span class="n">d_model</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">dropout_prob</span><span class="p">,</span> <span class="n">d_ff</span><span class="p">)</span>
+            <span class="n">decoder_blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">decoder_block</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">(</span><span class="n">decoder_blocks</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">encoder_output</span><span class="p">,</span> <span class="n">src_mask</span><span class="p">,</span> <span class="n">tgt_mask</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__layers</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__decoder_layers</span><span class="p">:</span>
             <span class="n">x</span> <span class="o">=</span> <span class="n">layer</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">encoder_output</span><span class="p">,</span> <span class="n">src_mask</span><span class="p">,</span> <span class="n">tgt_mask</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__layer_normalization_layer</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="Transformer">
-<a class="viewcode-back" href="../../../_autosummary/mt_transformer.model.transformer_model.Transformer.html#mt_transformer.model.transformer_model.Transformer">[docs]</a>
-<span class="k">class</span> <span class="nc">Transformer</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                 <span class="n">encoder</span><span class="p">:</span> <span class="n">Encoder</span><span class="p">,</span>
-                 <span class="n">decoder</span><span class="p">:</span> <span class="n">Decoder</span><span class="p">,</span>
-                 <span class="n">src_embed</span><span class="p">:</span> <span class="n">TokenEmbeddings</span><span class="p">,</span>
-                 <span class="n">tgt_embed</span><span class="p">:</span> <span class="n">TokenEmbeddings</span><span class="p">,</span>
-                 <span class="n">src_pos</span><span class="p">:</span> <span class="n">PositionalEncoding</span><span class="p">,</span>
-                 <span class="n">tgt_pos</span><span class="p">:</span> <span class="n">PositionalEncoding</span><span class="p">,</span>
-                 <span class="n">projection_layer</span><span class="p">:</span> <span class="n">ProjectionLayer</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span> <span class="o">=</span> <span class="n">encoder</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span> <span class="o">=</span> <span class="n">decoder</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">src_embed</span> <span class="o">=</span> <span class="n">src_embed</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tgt_embed</span> <span class="o">=</span> <span class="n">tgt_embed</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">src_pos</span> <span class="o">=</span> <span class="n">src_pos</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tgt_pos</span> <span class="o">=</span> <span class="n">tgt_pos</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">projection_layer</span> <span class="o">=</span> <span class="n">projection_layer</span>
-
-    <span class="k">def</span> <span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-               <span class="n">src</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
-               <span class="n">src_mask</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Encoder</span><span class="p">:</span>
-        <span class="c1"># (batch, seq_len, d_model)</span>
-        <span class="n">src</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">src_embed</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
-        <span class="n">src</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">src_pos</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">src_mask</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">decode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-               <span class="n">encoder_output</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
-               <span class="n">src_mask</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
-               <span class="n">tgt</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
-               <span class="n">tgt_mask</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Decoder</span><span class="p">:</span>
-        <span class="c1"># (batch, seq_len, d_model)</span>
-        <span class="n">tgt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tgt_embed</span><span class="p">(</span><span class="n">tgt</span><span class="p">)</span>
-        <span class="n">tgt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tgt_pos</span><span class="p">(</span><span class="n">tgt</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span><span class="p">(</span><span class="n">tgt</span><span class="p">,</span> <span class="n">encoder_output</span><span class="p">,</span> <span class="n">src_mask</span><span class="p">,</span> <span class="n">tgt_mask</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ProjectionLayer</span><span class="p">:</span>
-        <span class="c1"># (batch, seq_len, vocab_size)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">projection_layer</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="create_transformer">
-<a class="viewcode-back" href="../../../_autosummary/mt_transformer.model.transformer_model.create_transformer.html#mt_transformer.model.transformer_model.create_transformer">[docs]</a>
-<span class="k">def</span> <span class="nf">create_transformer</span><span class="p">(</span><span class="n">src_vocab_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-                       <span class="n">tgt_vocab_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-                       <span class="n">src_seq_len</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-                       <span class="n">tgt_seq_len</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-                       <span class="n">d_model</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">512</span><span class="p">,</span>
-                       <span class="n">num_stacks</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span>
-                       <span class="n">h</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
-                       <span class="n">dropout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
-                       <span class="n">d_ff</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2048</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Transformer</span><span class="p">:</span>
-
-    <span class="c1"># Create the embedding layers</span>
-    <span class="n">src_embed</span> <span class="o">=</span> <span class="n">TokenEmbeddings</span><span class="p">(</span><span class="n">d_model</span><span class="p">,</span> <span class="n">src_vocab_size</span><span class="p">)</span>
-    <span class="n">tgt_embed</span> <span class="o">=</span> <span class="n">TokenEmbeddings</span><span class="p">(</span><span class="n">d_model</span><span class="p">,</span> <span class="n">tgt_vocab_size</span><span class="p">)</span>
-
-    <span class="c1"># Create the positional encoding layers</span>
-    <span class="n">src_pos</span> <span class="o">=</span> <span class="n">PositionalEncoding</span><span class="p">(</span><span class="n">d_model</span><span class="p">,</span> <span class="n">src_seq_len</span><span class="p">,</span> <span class="n">dropout</span><span class="p">)</span>
-    <span class="n">tgt_pos</span> <span class="o">=</span> <span class="n">PositionalEncoding</span><span class="p">(</span><span class="n">d_model</span><span class="p">,</span> <span class="n">tgt_seq_len</span><span class="p">,</span> <span class="n">dropout</span><span class="p">)</span>
-
-    <span class="c1"># Create encoder stacks</span>
-    <span class="n">encoder_blocks</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_stacks</span><span class="p">):</span>
-        <span class="n">encoder_self_attention_block</span> <span class="o">=</span> <span class="n">MultiHeadAttention</span><span class="p">(</span><span class="n">d_model</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">dropout</span><span class="p">)</span>
-        <span class="n">feed_forward_block</span> <span class="o">=</span> <span class="n">FeedForwardBlock</span><span class="p">(</span><span class="n">d_model</span><span class="p">,</span> <span class="n">d_ff</span><span class="p">,</span> <span class="n">dropout</span><span class="p">)</span>
-        <span class="n">encoder_block</span> <span class="o">=</span> <span class="n">EncoderStackOld</span><span class="p">(</span>
-            <span class="n">encoder_self_attention_block</span><span class="p">,</span> <span class="n">feed_forward_block</span><span class="p">,</span> <span class="n">dropout</span><span class="p">)</span>
-        <span class="n">encoder_blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">encoder_block</span><span class="p">)</span>
-
-    <span class="c1"># Create decoder stacks</span>
-    <span class="n">decoder_blocks</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_stacks</span><span class="p">):</span>
-        <span class="n">decoder_self_attention_block</span> <span class="o">=</span> <span class="n">MultiHeadAttention</span><span class="p">(</span><span class="n">d_model</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">dropout</span><span class="p">)</span>
-        <span class="n">decoder_cross_attention_block</span> <span class="o">=</span> <span class="n">MultiHeadAttention</span><span class="p">(</span><span class="n">d_model</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">dropout</span><span class="p">)</span>
-        <span class="n">feed_forward_block</span> <span class="o">=</span> <span class="n">FeedForwardBlock</span><span class="p">(</span><span class="n">d_model</span><span class="p">,</span> <span class="n">d_ff</span><span class="p">,</span> <span class="n">dropout</span><span class="p">)</span>
-        <span class="n">decoder_block</span> <span class="o">=</span> <span class="n">DecoderStack</span><span class="p">(</span><span class="n">decoder_self_attention_block</span><span class="p">,</span>
-                                     <span class="n">decoder_cross_attention_block</span><span class="p">,</span>
-                                     <span class="n">feed_forward_block</span><span class="p">,</span>
-                                     <span class="n">dropout</span><span class="p">)</span>
-        <span class="n">decoder_blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">decoder_block</span><span class="p">)</span>
-
-    <span class="c1"># Create the encoder and decoder</span>
-    <span class="n">encoder</span> <span class="o">=</span> <span class="n">Encoder</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">(</span><span class="n">encoder_blocks</span><span class="p">))</span>
-    <span class="n">decoder</span> <span class="o">=</span> <span class="n">Decoder</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">(</span><span class="n">decoder_blocks</span><span class="p">))</span>
-
-    <span class="c1"># Create the projection layer</span>
-    <span class="n">projection_layer</span> <span class="o">=</span> <span class="n">ProjectionLayer</span><span class="p">(</span><span class="n">d_model</span><span class="p">,</span> <span class="n">tgt_vocab_size</span><span class="p">)</span>
-
-    <span class="c1"># Create the transformer</span>
-    <span class="n">transformer</span> <span class="o">=</span> <span class="n">Transformer</span><span class="p">(</span>
-        <span class="n">encoder</span><span class="p">,</span> <span class="n">decoder</span><span class="p">,</span> <span class="n">src_embed</span><span class="p">,</span> <span class="n">tgt_embed</span><span class="p">,</span> <span class="n">src_pos</span><span class="p">,</span> <span class="n">tgt_pos</span><span class="p">,</span> <span class="n">projection_layer</span><span class="p">)</span>
-
-    <span class="c1"># Initialize the parameters</span>
-    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">transformer</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
-        <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">xavier_uniform_</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">transformer</span></div>
-
-
-
-<div class="viewcode-block" id="get_transformer_model">
-<a class="viewcode-back" href="../../../_autosummary/mt_transformer.model.transformer_model.get_transformer_model.html#mt_transformer.model.transformer_model.get_transformer_model">[docs]</a>
-<span class="k">def</span> <span class="nf">get_transformer_model</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">vocab_src_len</span><span class="p">,</span> <span class="n">vocab_tgt_len</span><span class="p">):</span>
-
-    <span class="n">model</span> <span class="o">=</span> <span class="n">create_transformer</span><span class="p">(</span><span class="n">vocab_src_len</span><span class="p">,</span> <span class="n">vocab_tgt_len</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">DATA</span><span class="p">[</span><span class="s2">&quot;seq_len&quot;</span><span class="p">],</span> <span class="n">config</span><span class="o">.</span><span class="n">DATA</span><span class="p">[</span><span class="s1">&#39;seq_len&#39;</span><span class="p">],</span>
-                               <span class="n">d_model</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">MODEL</span><span class="p">[</span><span class="s1">&#39;d_model&#39;</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">model</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__layer_normalization</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div>
 
 
 
@@ -628,23 +560,36 @@ document.write(`
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">config</span><span class="p">:</span> <span class="n">Config</span><span class="p">,</span>
+                 <span class="n">src_vocab_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                 <span class="n">tgt_vocab_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
                  <span class="n">num_stacks</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span>
                  <span class="n">h</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
-                 <span class="n">dropout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+                 <span class="n">dropout_prob</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
                  <span class="n">d_ff</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2048</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">__src_seq_length</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;seq_len&quot;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__tgt_seq_length</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;seq_len&quot;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__d_model</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;d_model&#39;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__num_stacks</span> <span class="o">=</span> <span class="n">num_stacks</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__h</span> <span class="o">=</span> <span class="n">h</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__dropout</span> <span class="o">=</span> <span class="n">dropout</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__d_ff</span> <span class="o">=</span> <span class="n">d_ff</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__transformer_model</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">d_model</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">MODEL</span><span class="p">[</span><span class="s2">&quot;d_model&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__src_seq_length</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">DATA</span><span class="p">[</span><span class="s2">&quot;seq_len&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__tgt_seq_length</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">DATA</span><span class="p">[</span><span class="s2">&quot;seq_len&quot;</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">create_transformer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Create the embedding layers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__src_embed</span> <span class="o">=</span> <span class="n">TokenEmbeddings</span><span class="p">(</span><span class="n">d_model</span><span class="p">,</span> <span class="n">src_vocab_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__tgt_embed</span> <span class="o">=</span> <span class="n">TokenEmbeddings</span><span class="p">(</span><span class="n">d_model</span><span class="p">,</span> <span class="n">tgt_vocab_size</span><span class="p">)</span>
 
+        <span class="c1"># Create the positional encoding layers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__src_pos</span> <span class="o">=</span> <span class="n">PositionalEncoding</span><span class="p">(</span><span class="n">d_model</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__src_seq_length</span><span class="p">,</span>
+                                            <span class="n">dropout_prob</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__tgt_pos</span> <span class="o">=</span> <span class="n">PositionalEncoding</span><span class="p">(</span><span class="n">d_model</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tgt_seq_length</span><span class="p">,</span>
+                                            <span class="n">dropout_prob</span><span class="p">)</span>
+
+        <span class="c1"># Create the encoder and decoder</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__encoder</span> <span class="o">=</span> <span class="n">Encoder</span><span class="p">(</span><span class="n">d_model</span><span class="p">,</span> <span class="n">num_stacks</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">dropout_prob</span><span class="p">,</span> <span class="n">d_ff</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__decoder</span> <span class="o">=</span> <span class="n">Decoder</span><span class="p">(</span><span class="n">d_model</span><span class="p">,</span> <span class="n">num_stacks</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">dropout_prob</span><span class="p">,</span> <span class="n">d_ff</span><span class="p">)</span>
+
+        <span class="c1"># Create projection layer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__projection_layer</span> <span class="o">=</span> <span class="n">ProjectionLayer</span><span class="p">(</span><span class="n">d_model</span><span class="p">,</span> <span class="n">tgt_vocab_size</span><span class="p">)</span>
+
+        <span class="c1"># Initialize parameters</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__init_parameters</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">__init_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -652,7 +597,33 @@ document.write(`
         <span class="c1"># Initialize the parameters of the transformer</span>
         <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">xavier_uniform_</span><span class="p">(</span><span class="n">p</span><span class="p">)</span></div>
+                <span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">xavier_uniform_</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+               <span class="n">src</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+               <span class="n">src_mask</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="c1"># (batch, seq_len, d_model)</span>
+        <span class="n">src</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__src_embed</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
+        <span class="n">src</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__src_pos</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__encoder</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">src_mask</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">decode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+               <span class="n">encoder_output</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+               <span class="n">src_mask</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+               <span class="n">tgt</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+               <span class="n">tgt_mask</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+
+        <span class="c1"># (batch, seq_len, d_model)</span>
+        <span class="n">tgt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tgt_embed</span><span class="p">(</span><span class="n">tgt</span><span class="p">)</span>
+        <span class="n">tgt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tgt_pos</span><span class="p">(</span><span class="n">tgt</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__decoder</span><span class="p">(</span><span class="n">tgt</span><span class="p">,</span> <span class="n">encoder_output</span><span class="p">,</span> <span class="n">src_mask</span><span class="p">,</span> <span class="n">tgt_mask</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ProjectionLayer</span><span class="p">:</span>
+
+        <span class="c1"># (batch, seq_len, vocab_size)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__projection_layer</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div>
 
 </pre></div>
 

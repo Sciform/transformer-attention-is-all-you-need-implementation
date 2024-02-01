@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>mt_transformer.model.transformer_model.EncoderStackOld &#8212; Sciform MT Transformer Implementation 0.1 documentation</title>
+    <title>mt_transformer.model.transformer_model.EncoderStack &#8212; Sciform MT Transformer Implementation 0.1 documentation</title>
   
   
   
@@ -31,7 +31,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
-    <link rel="stylesheet" type="text/css" href="../_static/pydata-custom.css?v=0c3ee772" />
+    <link rel="stylesheet" type="text/css" href="../_static/pydata-custom.css?v=f85081d7" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509" />
@@ -45,10 +45,10 @@
     <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/design-tabs.js?v=36754332"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = '_autosummary/mt_transformer.model.transformer_model.EncoderStackOld';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_autosummary/mt_transformer.model.transformer_model.EncoderStack';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="mt_transformer.model.transformer_model.Transformer" href="mt_transformer.model.transformer_model.Transformer.html" />
+    <link rel="next" title="mt_transformer.model.transformer_model.TransformerModel" href="mt_transformer.model.transformer_model.TransformerModel.html" />
     <link rel="prev" title="mt_transformer.model.transformer_model.Encoder" href="mt_transformer.model.transformer_model.Encoder.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -401,13 +401,10 @@ document.write(`
 </ul>
 </li>
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="mt_transformer.model.transformer_model.html">mt_transformer.model.transformer_model</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-14"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="mt_transformer.model.transformer_model.create_transformer.html">mt_transformer.model.transformer_model.create_transformer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="mt_transformer.model.transformer_model.get_transformer_model.html">mt_transformer.model.transformer_model.get_transformer_model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="mt_transformer.model.transformer_model.Decoder.html">mt_transformer.model.transformer_model.Decoder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="mt_transformer.model.transformer_model.DecoderStack.html">mt_transformer.model.transformer_model.DecoderStack</a></li>
 <li class="toctree-l3"><a class="reference internal" href="mt_transformer.model.transformer_model.Encoder.html">mt_transformer.model.transformer_model.Encoder</a></li>
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">mt_transformer.model.transformer_model.EncoderStackOld</a></li>
-<li class="toctree-l3"><a class="reference internal" href="mt_transformer.model.transformer_model.Transformer.html">mt_transformer.model.transformer_model.Transformer</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">mt_transformer.model.transformer_model.EncoderStack</a></li>
 <li class="toctree-l3"><a class="reference internal" href="mt_transformer.model.transformer_model.TransformerModel.html">mt_transformer.model.transformer_model.TransformerModel</a></li>
 </ul>
 </li>
@@ -496,11 +493,11 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="mt-transformer-model-transformer-model-encoderstackold">
-<h1>mt_transformer.model.transformer_model.EncoderStackOld<a class="headerlink" href="#mt-transformer-model-transformer-model-encoderstackold" title="Link to this heading">#</a></h1>
+  <section id="mt-transformer-model-transformer-model-encoderstack">
+<h1>mt_transformer.model.transformer_model.EncoderStack<a class="headerlink" href="#mt-transformer-model-transformer-model-encoderstack" title="Link to this heading">#</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="mt_transformer.model.transformer_model.EncoderStackOld">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">EncoderStackOld</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self_attention_block</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feed_forward_block</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropout</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mt_transformer/model/transformer_model.html#EncoderStackOld"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mt_transformer.model.transformer_model.EncoderStackOld" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="mt_transformer.model.transformer_model.EncoderStack">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">EncoderStack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropout_prob</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_ff</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mt_transformer/model/transformer_model.html#EncoderStack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mt_transformer.model.transformer_model.EncoderStack" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <p class="rubric">Methods</p>
 <table class="autosummary longtable table autosummary">
@@ -541,7 +538,7 @@ document.write(`
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></p></td>
 <td><p>Casts all floating point parameters and buffers to <code class="docutils literal notranslate"><span class="pre">float</span></code> datatype.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#mt_transformer.model.transformer_model.EncoderStackOld.forward" title="mt_transformer.model.transformer_model.EncoderStackOld.forward"><code class="xref py py-obj docutils literal notranslate"><span class="pre">forward</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mt_transformer.model.transformer_model.EncoderStack.forward" title="mt_transformer.model.transformer_model.EncoderStack.forward"><code class="xref py py-obj docutils literal notranslate"><span class="pre">forward</span></code></a></p></td>
 <td><p><dl class="field-list simple">
 <dt class="field-odd">type x<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p></dd>
@@ -667,13 +664,14 @@ document.write(`
 </tbody>
 </table>
 <dl class="py method">
-<dt class="sig sig-object py" id="mt_transformer.model.transformer_model.EncoderStackOld.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src_mask</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mt_transformer/model/transformer_model.html#EncoderStackOld.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mt_transformer.model.transformer_model.EncoderStackOld.forward" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="mt_transformer.model.transformer_model.EncoderStack.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src_mask</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mt_transformer/model/transformer_model.html#EncoderStack.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mt_transformer.model.transformer_model.EncoderStack.forward" title="Link to this definition">#</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>x</strong> – </p></li>
-<li><p><strong>src_mask</strong> – the source mask avoids that actual tokens interact with padding token &lt;PAD&gt;</p></li>
+<li><p><strong>src_mask</strong> – the source mask avoids that actual tokens interact 
+with padding token &lt;PAD&gt;</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -708,8 +706,8 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mt_transformer.model.transformer_model.EncoderStackOld"><code class="docutils literal notranslate"><span class="pre">EncoderStackOld</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mt_transformer.model.transformer_model.EncoderStackOld.forward"><code class="docutils literal notranslate"><span class="pre">EncoderStackOld.forward()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mt_transformer.model.transformer_model.EncoderStack"><code class="docutils literal notranslate"><span class="pre">EncoderStack</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mt_transformer.model.transformer_model.EncoderStack.forward"><code class="docutils literal notranslate"><span class="pre">EncoderStack.forward()</span></code></a></li>
 </ul>
 </li>
 </ul>

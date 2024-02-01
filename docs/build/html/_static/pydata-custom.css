@@ -21,7 +21,6 @@ html {
     --pst-font-size-h6: 1.1rem;
 }
 
-
 /*More space between H1s and signatures in API reference*/
 h1 { margin-bottom: 25px; }
 

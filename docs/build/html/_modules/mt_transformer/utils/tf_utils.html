@@ -30,7 +30,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/pydata-custom.css?v=0c3ee772" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pydata-custom.css?v=f85081d7" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509" />
@@ -391,22 +391,20 @@ document.write(`
                 <article class="bd-article">
                   
   <h1>Source code for mt_transformer.utils.tf_utils</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Imports&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">logging</span>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">torch</span>
 
 
 <div class="viewcode-block" id="get_proc_device">
 <a class="viewcode-back" href="../../../_autosummary/mt_transformer.utils.tf_utils.get_proc_device.html#mt_transformer.utils.tf_utils.get_proc_device">[docs]</a>
 <span class="k">def</span> <span class="nf">get_proc_device</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    get processor type either &quot;cuda&quot; or &quot;cpu&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get processor type either &quot;cuda&quot; or &quot;cpu&quot;</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        string: device is either &quot;cuda&quot; or &quot;cpu&quot;</span>
+<span class="sd">    :return: device string is either &quot;cuda&quot; or &quot;cpu&quot;</span>
+<span class="sd">    :rtype: str</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Tf_utils: The processing unit is </span><span class="si">%s</span><span class="s2">, device&quot;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Tf_utils: The processing unit is </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">device</span></div>
 
 </pre></div>
