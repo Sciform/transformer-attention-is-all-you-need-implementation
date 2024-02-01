@@ -1,4 +1,3 @@
-"""Imports"""
 import logging
 
 import torch
@@ -23,14 +22,13 @@ class TransformerTrainer:
     """
 
     def __init__(self, config: Config) -> None:
-
         self.__config = config
 
-    def __get_initial_model_setup(self,
-                                  transformer_model: TransformerModel,
-                                  optimizer: Optimizer,
-                                  device: str) -> [int, int]:
-        """Get initial model setup
+    def __get_last_trained_epoch(self,
+                                 transformer_model: TransformerModel,
+                                 optimizer: Optimizer,
+                                 device: str) -> [int, int]:
+        """Get the last trained epoch of the model and update the optimizer
 
         :param transformer_model: transformer model
         :type transformer_model: Transformer
@@ -62,8 +60,10 @@ class TransformerTrainer:
         return start_epoch, global_step
 
     def perform_training(self):
+        """Perform model training
 
-        print("Start transformer!")
+        """
+        logging.info("Trainer: prepare transformer training!")
 
         # get Cuda-GPU if available otherwise CPU
         device = get_proc_device()
@@ -96,7 +96,7 @@ class TransformerTrainer:
                                       label_smoothing=0.1).to(device)
 
         # load saved model if available
-        start_epoch, global_step = self.__get_initial_model_setup(
+        start_epoch, global_step = self.__get_last_trained_epoch(
             transformer_model, optimizer, device)
 
         # get validator
@@ -108,15 +108,17 @@ class TransformerTrainer:
         ###
         # Perform training
         ###
-
-        print("Perform training")
+        logging.info("Trainer: start transformer training!")
         for epoch in range(start_epoch, self.__config.MODEL['num_epochs']):
+
+            logging.info("Trainer: start transformer training of epoch %s!",
+                         epoch)
 
             torch.cuda.empty_cache()
             transformer_model.train()
 
             batch_iterator = tqdm(train_dataloader,
-                                  desc=f"Processing Epoch {epoch:02d}")
+                                  desc=f"Processing epoch {epoch:02d}")
 
             for batch in batch_iterator:
                 # (b, seq_len)
@@ -128,30 +130,29 @@ class TransformerTrainer:
                 # (B, 1, seq_len, seq_len)
                 decoder_mask = batch['decoder_mask'].to(device)
 
-                # Run the tensors through the encoder, decoder and the projection layer
-                # (B, seq_len, d_model)
+                # Encode the source data (B, seq_len, d_model)
                 encoder_output = transformer_model.encode(
                     encoder_input, encoder_mask)
-                # (B, seq_len, d_model)
+                # Decode the encoded source (B, seq_len, d_model)
                 decoder_output = transformer_model.decode(
                     encoder_output, encoder_mask, decoder_input, decoder_mask)
-                # (B, seq_len, vocab_size)
-                proj_output = transformer_model.project(decoder_output)
+                # Create transformer output (B, seq_len, vocab_size)
+                model_output = transformer_model.project(decoder_output)
 
-                # Compare the output with the label
-                label = batch['label'].to(device)  # (B, seq_len)
+                # Compare the output with the label (B, seq_len)
+                label = batch['label'].to(device)
 
                 # Compute the loss using a simple cross entropy (input, target)
                 # pylint: disable=not-callable
-                loss = ce_loss(proj_output.view(-1, tokenizer_tgt.get_vocab_size()),
+                loss = ce_loss(model_output.view(-1, tokenizer_tgt.get_vocab_size()),
                                label.view(-1))
                 batch_iterator.set_postfix({"loss": f"{loss.item():6.3f}"})
 
-                # Log the loss
+                # Log the loss in Tensorboard
                 writer.add_scalar('train loss', loss.item(), global_step)
                 writer.flush()
 
-                # backpropagate the loss
+                # Backpropagate the loss
                 loss.backward()
 
                 # update the weights
