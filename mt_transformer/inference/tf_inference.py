@@ -7,7 +7,7 @@ import torch
 from tokenizers import Tokenizer
 
 from mt_transformer.data_handler.data_loader import create_tokenizers_dataloaders
-from mt_transformer.model.transformer_model import TransformerModel, get_transformer_model
+from mt_transformer.model.transformer_model import TransformerModel
 from mt_transformer.trainer.transformer_validator import TransformerValidator
 from mt_transformer.utils.tf_utils import get_proc_device
 
@@ -27,7 +27,7 @@ class TfInference:
             create_tokenizers_dataloaders(self.__config)
 
         # create transformer model
-        transformer_model = get_transformer_model(
+        transformer_model = TransformerModel(
             self.__config,
             tokenizer_src.get_vocab_size(),
             tokenizer_tgt.get_vocab_size()).to(device)
@@ -46,8 +46,8 @@ class TfInference:
         logging.info('TfInference: perform validation')
         transformer_val = TransformerValidator()
         transformer_val.perform_validation(
-            transformer_model, val_dataloader, tokenizer_src,
-            tokenizer_tgt, self.__config.DATA['seq_len'], device,
+            transformer_model, val_dataloader, tokenizer_tgt,
+            self.__config.DATA['seq_len'], device,
             lambda msg: print(msg), 0, None, num_examples=10)
 
         logging.info('TfInference: perform translation')

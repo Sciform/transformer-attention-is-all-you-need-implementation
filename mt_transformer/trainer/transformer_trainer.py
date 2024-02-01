@@ -9,7 +9,7 @@ from tqdm import tqdm
 
 from mt_transformer.config.project_config import Config
 from mt_transformer.data_handler.data_loader import create_tokenizers_dataloaders
-from mt_transformer.model.transformer_model import Transformer, get_transformer_model
+from mt_transformer.model.transformer_model import TransformerModel
 from mt_transformer.trainer.transformer_validator import TransformerValidator
 from mt_transformer.utils.tf_utils import get_proc_device
 
@@ -27,7 +27,7 @@ class TransformerTrainer:
         self.__config = config
 
     def __get_initial_model_setup(self,
-                                  transformer_model: Transformer,
+                                  transformer_model: TransformerModel,
                                   optimizer: Optimizer,
                                   device: str) -> [int, int]:
         """Get initial model setup
@@ -81,7 +81,7 @@ class TransformerTrainer:
         ###
 
         # create transformer model
-        transformer_model = get_transformer_model(
+        transformer_model = TransformerModel(
             self.__config, tokenizer_src.get_vocab_size(),
             tokenizer_tgt.get_vocab_size()).to(device)
 
@@ -162,8 +162,8 @@ class TransformerTrainer:
 
             # perform validation at the end of every epoch
             trans_val.perform_validation(
-                transformer_model, val_dataloader, tokenizer_src,
-                tokenizer_tgt, self.__config.DATA['seq_len'], device,
+                transformer_model, val_dataloader, tokenizer_tgt,
+                self.__config.DATA['seq_len'], device,
                 lambda msg: batch_iterator.write(msg), global_step, writer)
 
             # save the model at the end of every epoch

@@ -14,7 +14,6 @@ class TransformerValidator:
     def perform_validation(self,
                            model,
                            validation_ds,
-                           tokenizer_src,
                            tokenizer_tgt,
                            max_len,
                            device,
