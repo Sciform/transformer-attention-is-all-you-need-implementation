@@ -74,7 +74,8 @@ class DecoderStack(nn.Module):
         x = self.residual_connections[0](x,
                                          lambda x: self.self_attention_block(x, x, x, tgt_mask))
         x = self.residual_connections[1](x,
-                                         lambda x: self.cross_attention_block(x, encoder_output, encoder_output, src_mask))
+                                         lambda x: self.cross_attention_block(x, encoder_output,
+                                                                              encoder_output, src_mask))
         x = self.residual_connections[2](x, self.feed_forward_block)
         return x
 
