@@ -8,7 +8,7 @@ from tokenizers.models import WordLevel
 from tokenizers.pre_tokenizers import Whitespace
 from tokenizers.trainers import WordLevelTrainer
 
-from mt_transformer.config.project_config import Config
+from sci_tf.config.project_config import Config
 
 
 def get_all_text_sequences_from_dataset_in_language(

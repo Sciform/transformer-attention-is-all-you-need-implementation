@@ -3,7 +3,7 @@ import os
 import torch
 import torchmetrics.text as tmtext
 
-from mt_transformer.model.greedy_decoder import GreedyDecoder
+from sci_tf.model.greedy_decoder import GreedyDecoder
 
 
 class TransformerValidator:

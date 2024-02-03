@@ -4,7 +4,7 @@ import torch
 from tokenizers import Tokenizer
 from datasets import Dataset as HfDataSet
 
-from mt_transformer.data_handler.masks import causal_mask
+from sci_tf.data_handler.masks import causal_mask
 
 
 class TwoLanguagesDataset(torch.utils.data.Dataset):

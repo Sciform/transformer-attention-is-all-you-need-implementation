@@ -1,6 +1,6 @@
 import torch
 
-from mt_transformer.data_handler.masks import causal_mask
+from sci_tf.data_handler.masks import causal_mask
 
 
 class GreedyDecoder:

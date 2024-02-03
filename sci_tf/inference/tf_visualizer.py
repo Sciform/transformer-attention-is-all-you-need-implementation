@@ -2,11 +2,11 @@ import pandas as pd
 import altair
 import torch
 
-from mt_transformer.config.project_config import Config
-from mt_transformer.data_handler.data_loader import create_tokenizers_dataloaders
-from mt_transformer.model.greedy_decoder import GreedyDecoder
-from mt_transformer.model.transformer_model import TransformerModel
-from mt_transformer.utils.tf_utils import get_proc_device
+from sci_tf.config.project_config import Config
+from sci_tf.data_handler.data_loader import create_tokenizers_dataloaders
+from sci_tf.model.greedy_decoder import GreedyDecoder
+from sci_tf.model.transformer_model import TransformerModel
+from sci_tf.utils.tf_utils import get_proc_device
 
 
 class TfVisualizer:

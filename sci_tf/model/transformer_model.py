@@ -1,12 +1,12 @@
 from typing import Any
 import torch
 import torch.nn as nn
-from mt_transformer.config.project_config import Config
+from sci_tf.config.project_config import Config
 
-from mt_transformer.model.layers import MultiHeadAttention, ResidualConnection
-from mt_transformer.model.layers import LayerNormalization, FeedForwardBlock
-from mt_transformer.model.layers import TokenEmbeddings, PositionalEncoding
-from mt_transformer.model.layers import ProjectionLayer
+from sci_tf.model.layers import MultiHeadAttention, ResidualConnection
+from sci_tf.model.layers import LayerNormalization, FeedForwardBlock
+from sci_tf.model.layers import TokenEmbeddings, PositionalEncoding
+from sci_tf.model.layers import ProjectionLayer
 
 
 class EncoderStack(nn.Module):

@@ -1,9 +1,9 @@
 from setuptools import setup
 
 setup(
-    name='mt_transformer',
-    version='0.1.0',
-    packages=['mt_transformer'],
+    name='sci_tf',
+    version='0.5.0',
+    packages=['sci_tf'],
     url='',
     license='MIT',
     author='Ursula Maria Mayer, Sciform GmbH',

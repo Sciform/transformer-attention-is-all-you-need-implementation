@@ -6,10 +6,10 @@ import torch
 # from Huggingface
 from tokenizers import Tokenizer
 
-from mt_transformer.data_handler.data_loader import create_tokenizers_dataloaders
-from mt_transformer.model.transformer_model import TransformerModel
-from mt_transformer.trainer.transformer_validator import TransformerValidator
-from mt_transformer.utils.tf_utils import get_proc_device
+from sci_tf.data_handler.data_loader import create_tokenizers_dataloaders
+from sci_tf.model.transformer_model import TransformerModel
+from sci_tf.trainer.transformer_validator import TransformerValidator
+from sci_tf.utils.tf_utils import get_proc_device
 
 
 class TfInference:

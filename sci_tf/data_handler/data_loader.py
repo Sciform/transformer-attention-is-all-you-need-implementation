@@ -6,9 +6,9 @@ from tokenizers import Tokenizer
 # pytorch
 from torch.utils.data import DataLoader, random_split
 
-from mt_transformer.config.project_config import Config
-from mt_transformer.data_handler.data_tokenizer import get_or_create_tokenizer
-from mt_transformer.data_handler.two_language_data_set import TwoLanguagesDataset
+from sci_tf.config.project_config import Config
+from sci_tf.data_handler.data_tokenizer import get_or_create_tokenizer
+from sci_tf.data_handler.two_language_data_set import TwoLanguagesDataset
 
 
 def get_raw_data_opus_books(config: Config) -> Dataset:
