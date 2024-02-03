@@ -35,7 +35,7 @@ with us to find out how we can support you!
   link: "transformer/index.md" 
 - header: "{fab}`python;pst-color-primary` Code Reference"
   content: "Check out the code documentation!"
-  link: "_autosummary/mt_transformer"
+  link: "_autosummary/sci_tf.rst"
 - header: "{fas}`lightbulb;pst-color-primary` Sciform GmbH"
   content: "Contact us to learn more about our consulting services!"
   link: "https://www.sciform.com"
