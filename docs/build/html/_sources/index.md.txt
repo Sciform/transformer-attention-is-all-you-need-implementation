@@ -56,5 +56,5 @@ Transformer <transformer/index.md>
 ```{toctree}
 :hidden:
 
-Code Reference <_autosummary/mt_transformer>
+Code Reference <_autosummary/sci_tf>
 ```
