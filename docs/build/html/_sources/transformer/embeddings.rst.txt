@@ -6,6 +6,10 @@ The Embeddings Layer
 What are embeddings ?
 ---------------------------------
 
+Embeddings are vector representations of input tokens that capture their 
+semantic meaning. Since Transformers do not process raw text, 
+each token (word, subword, or character) 
+is mapped to a dense numerical vector before being processed by the model.
 
 
 My take on scaling the embeddings

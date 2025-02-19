@@ -671,8 +671,8 @@ embeddings (= features) for every token in a fixed size dictionary.</p>
 <dd><p>Compute embedding layer</p>
 <p>For every token in a token sequence of a batch of token sequences 
 <span class="math notranslate nohighlight">\(x\)</span>, embeddings of dimension <span class="math notranslate nohighlight">\(d_{   ext{model}}\)</span> 
-are learned.
-A map <span class="math notranslate nohighlight">\(x\)</span> with dim(num_batch, sequence_length) to embeddings tensor with 
+are learned. A map <span class="math notranslate nohighlight">\(x\)</span> with dim(num_batch, sequence_length) 
+to embeddings tensor with 
 dim(num_batch, sequence_length, d_model) is performed.</p>
 <p>In the original paper, the embedding tensor is multiplied by 
 <span class="math notranslate nohighlight">\(\sqrt{d_{        ext{model}}}\)</span> to scale the embeddings, but the reason for 

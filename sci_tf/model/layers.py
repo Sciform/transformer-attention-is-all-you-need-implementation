@@ -30,8 +30,8 @@ class TokenEmbeddings(nn.Module):
 
         For every token in a token sequence of a batch of token sequences 
         :math:`x`, embeddings of dimension :math:`d_{\text{model}}` 
-        are learned.
-        A map :math:`x` with dim(num_batch, sequence_length) to embeddings tensor with 
+        are learned. A map :math:`x` with dim(num_batch, sequence_length) 
+        to embeddings tensor with 
         dim(num_batch, sequence_length, d_model) is performed.
         
         In the original paper, the embedding tensor is multiplied by 
