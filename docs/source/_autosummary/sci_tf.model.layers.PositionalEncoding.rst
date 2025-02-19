@@ -1,4 +1,4 @@
-sci\_tf.model.layers.PositionalEncoding
+﻿sci\_tf.model.layers.PositionalEncoding
 =======================================
 
 .. currentmodule:: sci_tf.model.layers
@@ -37,6 +37,7 @@ sci\_tf.model.layers.PositionalEncoding
       ~PositionalEncoding.ipu
       ~PositionalEncoding.load_state_dict
       ~PositionalEncoding.modules
+      ~PositionalEncoding.mtia
       ~PositionalEncoding.named_buffers
       ~PositionalEncoding.named_children
       ~PositionalEncoding.named_modules
@@ -49,11 +50,14 @@ sci\_tf.model.layers.PositionalEncoding
       ~PositionalEncoding.register_full_backward_hook
       ~PositionalEncoding.register_full_backward_pre_hook
       ~PositionalEncoding.register_load_state_dict_post_hook
+      ~PositionalEncoding.register_load_state_dict_pre_hook
       ~PositionalEncoding.register_module
       ~PositionalEncoding.register_parameter
+      ~PositionalEncoding.register_state_dict_post_hook
       ~PositionalEncoding.register_state_dict_pre_hook
       ~PositionalEncoding.requires_grad_
       ~PositionalEncoding.set_extra_state
+      ~PositionalEncoding.set_submodule
       ~PositionalEncoding.share_memory
       ~PositionalEncoding.state_dict
       ~PositionalEncoding.to

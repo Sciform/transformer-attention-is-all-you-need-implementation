@@ -1,4 +1,4 @@
-sci\_tf.model.layers.FeedForwardBlock
+﻿sci\_tf.model.layers.FeedForwardBlock
 =====================================
 
 .. currentmodule:: sci_tf.model.layers
@@ -37,6 +37,7 @@ sci\_tf.model.layers.FeedForwardBlock
       ~FeedForwardBlock.ipu
       ~FeedForwardBlock.load_state_dict
       ~FeedForwardBlock.modules
+      ~FeedForwardBlock.mtia
       ~FeedForwardBlock.named_buffers
       ~FeedForwardBlock.named_children
       ~FeedForwardBlock.named_modules
@@ -49,11 +50,14 @@ sci\_tf.model.layers.FeedForwardBlock
       ~FeedForwardBlock.register_full_backward_hook
       ~FeedForwardBlock.register_full_backward_pre_hook
       ~FeedForwardBlock.register_load_state_dict_post_hook
+      ~FeedForwardBlock.register_load_state_dict_pre_hook
       ~FeedForwardBlock.register_module
       ~FeedForwardBlock.register_parameter
+      ~FeedForwardBlock.register_state_dict_post_hook
       ~FeedForwardBlock.register_state_dict_pre_hook
       ~FeedForwardBlock.requires_grad_
       ~FeedForwardBlock.set_extra_state
+      ~FeedForwardBlock.set_submodule
       ~FeedForwardBlock.share_memory
       ~FeedForwardBlock.state_dict
       ~FeedForwardBlock.to

@@ -1,4 +1,4 @@
-sci\_tf.model.layers.ProjectionLayer
+﻿sci\_tf.model.layers.ProjectionLayer
 ====================================
 
 .. currentmodule:: sci_tf.model.layers
@@ -37,6 +37,7 @@ sci\_tf.model.layers.ProjectionLayer
       ~ProjectionLayer.ipu
       ~ProjectionLayer.load_state_dict
       ~ProjectionLayer.modules
+      ~ProjectionLayer.mtia
       ~ProjectionLayer.named_buffers
       ~ProjectionLayer.named_children
       ~ProjectionLayer.named_modules
@@ -49,11 +50,14 @@ sci\_tf.model.layers.ProjectionLayer
       ~ProjectionLayer.register_full_backward_hook
       ~ProjectionLayer.register_full_backward_pre_hook
       ~ProjectionLayer.register_load_state_dict_post_hook
+      ~ProjectionLayer.register_load_state_dict_pre_hook
       ~ProjectionLayer.register_module
       ~ProjectionLayer.register_parameter
+      ~ProjectionLayer.register_state_dict_post_hook
       ~ProjectionLayer.register_state_dict_pre_hook
       ~ProjectionLayer.requires_grad_
       ~ProjectionLayer.set_extra_state
+      ~ProjectionLayer.set_submodule
       ~ProjectionLayer.share_memory
       ~ProjectionLayer.state_dict
       ~ProjectionLayer.to

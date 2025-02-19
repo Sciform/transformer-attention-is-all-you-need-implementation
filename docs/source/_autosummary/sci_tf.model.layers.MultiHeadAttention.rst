@@ -1,4 +1,4 @@
-sci\_tf.model.layers.MultiHeadAttention
+﻿sci\_tf.model.layers.MultiHeadAttention
 =======================================
 
 .. currentmodule:: sci_tf.model.layers
@@ -37,6 +37,7 @@ sci\_tf.model.layers.MultiHeadAttention
       ~MultiHeadAttention.ipu
       ~MultiHeadAttention.load_state_dict
       ~MultiHeadAttention.modules
+      ~MultiHeadAttention.mtia
       ~MultiHeadAttention.named_buffers
       ~MultiHeadAttention.named_children
       ~MultiHeadAttention.named_modules
@@ -49,11 +50,14 @@ sci\_tf.model.layers.MultiHeadAttention
       ~MultiHeadAttention.register_full_backward_hook
       ~MultiHeadAttention.register_full_backward_pre_hook
       ~MultiHeadAttention.register_load_state_dict_post_hook
+      ~MultiHeadAttention.register_load_state_dict_pre_hook
       ~MultiHeadAttention.register_module
       ~MultiHeadAttention.register_parameter
+      ~MultiHeadAttention.register_state_dict_post_hook
       ~MultiHeadAttention.register_state_dict_pre_hook
       ~MultiHeadAttention.requires_grad_
       ~MultiHeadAttention.set_extra_state
+      ~MultiHeadAttention.set_submodule
       ~MultiHeadAttention.share_memory
       ~MultiHeadAttention.state_dict
       ~MultiHeadAttention.to

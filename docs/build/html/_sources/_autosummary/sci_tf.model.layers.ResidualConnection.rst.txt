@@ -1,4 +1,4 @@
-sci\_tf.model.layers.ResidualConnection
+﻿sci\_tf.model.layers.ResidualConnection
 =======================================
 
 .. currentmodule:: sci_tf.model.layers
@@ -37,6 +37,7 @@ sci\_tf.model.layers.ResidualConnection
       ~ResidualConnection.ipu
       ~ResidualConnection.load_state_dict
       ~ResidualConnection.modules
+      ~ResidualConnection.mtia
       ~ResidualConnection.named_buffers
       ~ResidualConnection.named_children
       ~ResidualConnection.named_modules
@@ -49,11 +50,14 @@ sci\_tf.model.layers.ResidualConnection
       ~ResidualConnection.register_full_backward_hook
       ~ResidualConnection.register_full_backward_pre_hook
       ~ResidualConnection.register_load_state_dict_post_hook
+      ~ResidualConnection.register_load_state_dict_pre_hook
       ~ResidualConnection.register_module
       ~ResidualConnection.register_parameter
+      ~ResidualConnection.register_state_dict_post_hook
       ~ResidualConnection.register_state_dict_pre_hook
       ~ResidualConnection.requires_grad_
       ~ResidualConnection.set_extra_state
+      ~ResidualConnection.set_submodule
       ~ResidualConnection.share_memory
       ~ResidualConnection.state_dict
       ~ResidualConnection.to

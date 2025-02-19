@@ -26,6 +26,6 @@ sci\_tf.inference
    :template: custom-module-template.rst
    :recursive:
 
-   sci_tf.inference.tf_inference
-   sci_tf.inference.tf_visualizer
+   tf_inference
+   tf_visualizer
 

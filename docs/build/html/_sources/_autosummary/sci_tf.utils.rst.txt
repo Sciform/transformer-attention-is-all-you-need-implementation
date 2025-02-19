@@ -26,5 +26,5 @@ sci\_tf.utils
    :template: custom-module-template.rst
    :recursive:
 
-   sci_tf.utils.tf_utils
+   tf_utils
 

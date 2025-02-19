@@ -1,4 +1,4 @@
-sci\_tf.model.layers.TokenEmbeddings
+﻿sci\_tf.model.layers.TokenEmbeddings
 ====================================
 
 .. currentmodule:: sci_tf.model.layers
@@ -37,6 +37,7 @@ sci\_tf.model.layers.TokenEmbeddings
       ~TokenEmbeddings.ipu
       ~TokenEmbeddings.load_state_dict
       ~TokenEmbeddings.modules
+      ~TokenEmbeddings.mtia
       ~TokenEmbeddings.named_buffers
       ~TokenEmbeddings.named_children
       ~TokenEmbeddings.named_modules
@@ -49,11 +50,14 @@ sci\_tf.model.layers.TokenEmbeddings
       ~TokenEmbeddings.register_full_backward_hook
       ~TokenEmbeddings.register_full_backward_pre_hook
       ~TokenEmbeddings.register_load_state_dict_post_hook
+      ~TokenEmbeddings.register_load_state_dict_pre_hook
       ~TokenEmbeddings.register_module
       ~TokenEmbeddings.register_parameter
+      ~TokenEmbeddings.register_state_dict_post_hook
       ~TokenEmbeddings.register_state_dict_pre_hook
       ~TokenEmbeddings.requires_grad_
       ~TokenEmbeddings.set_extra_state
+      ~TokenEmbeddings.set_submodule
       ~TokenEmbeddings.share_memory
       ~TokenEmbeddings.state_dict
       ~TokenEmbeddings.to

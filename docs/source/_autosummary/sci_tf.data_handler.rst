@@ -26,8 +26,8 @@ sci\_tf.data\_handler
    :template: custom-module-template.rst
    :recursive:
 
-   sci_tf.data_handler.data_loader
-   sci_tf.data_handler.data_tokenizer
-   sci_tf.data_handler.masks
-   sci_tf.data_handler.two_language_data_set
+   data_loader
+   data_tokenizer
+   masks
+   two_language_data_set
 

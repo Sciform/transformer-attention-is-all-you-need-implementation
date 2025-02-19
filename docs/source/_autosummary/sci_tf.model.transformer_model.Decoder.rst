@@ -1,4 +1,4 @@
-sci\_tf.model.transformer\_model.Decoder
+﻿sci\_tf.model.transformer\_model.Decoder
 ========================================
 
 .. currentmodule:: sci_tf.model.transformer_model
@@ -37,6 +37,7 @@ sci\_tf.model.transformer\_model.Decoder
       ~Decoder.ipu
       ~Decoder.load_state_dict
       ~Decoder.modules
+      ~Decoder.mtia
       ~Decoder.named_buffers
       ~Decoder.named_children
       ~Decoder.named_modules
@@ -49,11 +50,14 @@ sci\_tf.model.transformer\_model.Decoder
       ~Decoder.register_full_backward_hook
       ~Decoder.register_full_backward_pre_hook
       ~Decoder.register_load_state_dict_post_hook
+      ~Decoder.register_load_state_dict_pre_hook
       ~Decoder.register_module
       ~Decoder.register_parameter
+      ~Decoder.register_state_dict_post_hook
       ~Decoder.register_state_dict_pre_hook
       ~Decoder.requires_grad_
       ~Decoder.set_extra_state
+      ~Decoder.set_submodule
       ~Decoder.share_memory
       ~Decoder.state_dict
       ~Decoder.to

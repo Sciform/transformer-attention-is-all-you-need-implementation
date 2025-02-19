@@ -26,6 +26,6 @@ sci\_tf.trainer
    :template: custom-module-template.rst
    :recursive:
 
-   sci_tf.trainer.transformer_trainer
-   sci_tf.trainer.transformer_validator
+   transformer_trainer
+   transformer_validator
 

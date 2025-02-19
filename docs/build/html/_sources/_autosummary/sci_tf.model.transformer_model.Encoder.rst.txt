@@ -1,4 +1,4 @@
-sci\_tf.model.transformer\_model.Encoder
+﻿sci\_tf.model.transformer\_model.Encoder
 ========================================
 
 .. currentmodule:: sci_tf.model.transformer_model
@@ -37,6 +37,7 @@ sci\_tf.model.transformer\_model.Encoder
       ~Encoder.ipu
       ~Encoder.load_state_dict
       ~Encoder.modules
+      ~Encoder.mtia
       ~Encoder.named_buffers
       ~Encoder.named_children
       ~Encoder.named_modules
@@ -49,11 +50,14 @@ sci\_tf.model.transformer\_model.Encoder
       ~Encoder.register_full_backward_hook
       ~Encoder.register_full_backward_pre_hook
       ~Encoder.register_load_state_dict_post_hook
+      ~Encoder.register_load_state_dict_pre_hook
       ~Encoder.register_module
       ~Encoder.register_parameter
+      ~Encoder.register_state_dict_post_hook
       ~Encoder.register_state_dict_pre_hook
       ~Encoder.requires_grad_
       ~Encoder.set_extra_state
+      ~Encoder.set_submodule
       ~Encoder.share_memory
       ~Encoder.state_dict
       ~Encoder.to

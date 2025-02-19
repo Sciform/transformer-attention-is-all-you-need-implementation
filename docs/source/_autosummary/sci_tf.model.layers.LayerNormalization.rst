@@ -1,4 +1,4 @@
-sci\_tf.model.layers.LayerNormalization
+﻿sci\_tf.model.layers.LayerNormalization
 =======================================
 
 .. currentmodule:: sci_tf.model.layers
@@ -37,6 +37,7 @@ sci\_tf.model.layers.LayerNormalization
       ~LayerNormalization.ipu
       ~LayerNormalization.load_state_dict
       ~LayerNormalization.modules
+      ~LayerNormalization.mtia
       ~LayerNormalization.named_buffers
       ~LayerNormalization.named_children
       ~LayerNormalization.named_modules
@@ -49,11 +50,14 @@ sci\_tf.model.layers.LayerNormalization
       ~LayerNormalization.register_full_backward_hook
       ~LayerNormalization.register_full_backward_pre_hook
       ~LayerNormalization.register_load_state_dict_post_hook
+      ~LayerNormalization.register_load_state_dict_pre_hook
       ~LayerNormalization.register_module
       ~LayerNormalization.register_parameter
+      ~LayerNormalization.register_state_dict_post_hook
       ~LayerNormalization.register_state_dict_pre_hook
       ~LayerNormalization.requires_grad_
       ~LayerNormalization.set_extra_state
+      ~LayerNormalization.set_submodule
       ~LayerNormalization.share_memory
       ~LayerNormalization.state_dict
       ~LayerNormalization.to

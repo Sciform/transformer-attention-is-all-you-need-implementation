@@ -1,4 +1,4 @@
-sci\_tf.model.transformer\_model.TransformerModel
+﻿sci\_tf.model.transformer\_model.TransformerModel
 =================================================
 
 .. currentmodule:: sci_tf.model.transformer_model
@@ -39,6 +39,7 @@ sci\_tf.model.transformer\_model.TransformerModel
       ~TransformerModel.ipu
       ~TransformerModel.load_state_dict
       ~TransformerModel.modules
+      ~TransformerModel.mtia
       ~TransformerModel.named_buffers
       ~TransformerModel.named_children
       ~TransformerModel.named_modules
@@ -52,11 +53,14 @@ sci\_tf.model.transformer\_model.TransformerModel
       ~TransformerModel.register_full_backward_hook
       ~TransformerModel.register_full_backward_pre_hook
       ~TransformerModel.register_load_state_dict_post_hook
+      ~TransformerModel.register_load_state_dict_pre_hook
       ~TransformerModel.register_module
       ~TransformerModel.register_parameter
+      ~TransformerModel.register_state_dict_post_hook
       ~TransformerModel.register_state_dict_pre_hook
       ~TransformerModel.requires_grad_
       ~TransformerModel.set_extra_state
+      ~TransformerModel.set_submodule
       ~TransformerModel.share_memory
       ~TransformerModel.state_dict
       ~TransformerModel.to

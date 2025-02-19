@@ -26,10 +26,10 @@
    :template: custom-module-template.rst
    :recursive:
 
-   sci_tf.config
-   sci_tf.data_handler
-   sci_tf.inference
-   sci_tf.model
-   sci_tf.trainer
-   sci_tf.utils
+   config
+   data_handler
+   inference
+   model
+   trainer
+   utils
 

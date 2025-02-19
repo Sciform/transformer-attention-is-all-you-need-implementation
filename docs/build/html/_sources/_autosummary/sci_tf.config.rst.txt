@@ -26,5 +26,5 @@ sci\_tf.config
    :template: custom-module-template.rst
    :recursive:
 
-   sci_tf.config.project_config
+   project_config
 
