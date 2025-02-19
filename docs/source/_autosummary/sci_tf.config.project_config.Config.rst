@@ -1,4 +1,4 @@
-sci\_tf.config.project\_config.Config
+﻿sci\_tf.config.project\_config.Config
 =====================================
 
 .. currentmodule:: sci_tf.config.project_config
@@ -6,8 +6,8 @@ sci\_tf.config.project\_config.Config
 .. autoclass:: Config
    :members:
    :show-inheritance:
-   :no-inherited-members:
    :special-members: __call__, __add__, __mul__
+   :no-inherited-members:
 
    
    

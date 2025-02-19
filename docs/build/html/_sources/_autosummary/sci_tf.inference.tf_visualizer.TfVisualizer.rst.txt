@@ -1,4 +1,4 @@
-sci\_tf.inference.tf\_visualizer.TfVisualizer
+﻿sci\_tf.inference.tf\_visualizer.TfVisualizer
 =============================================
 
 .. currentmodule:: sci_tf.inference.tf_visualizer
@@ -6,8 +6,8 @@ sci\_tf.inference.tf\_visualizer.TfVisualizer
 .. autoclass:: TfVisualizer
    :members:
    :show-inheritance:
-   :no-inherited-members:
    :special-members: __call__, __add__, __mul__
+   :no-inherited-members:
 
    
    

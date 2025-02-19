@@ -1,4 +1,4 @@
-sci\_tf.trainer.transformer\_trainer.TransformerTrainer
+﻿sci\_tf.trainer.transformer\_trainer.TransformerTrainer
 =======================================================
 
 .. currentmodule:: sci_tf.trainer.transformer_trainer
@@ -6,8 +6,8 @@ sci\_tf.trainer.transformer\_trainer.TransformerTrainer
 .. autoclass:: TransformerTrainer
    :members:
    :show-inheritance:
-   :no-inherited-members:
    :special-members: __call__, __add__, __mul__
+   :no-inherited-members:
 
    
    

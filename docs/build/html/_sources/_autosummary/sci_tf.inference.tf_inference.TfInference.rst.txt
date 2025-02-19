@@ -1,4 +1,4 @@
-sci\_tf.inference.tf\_inference.TfInference
+﻿sci\_tf.inference.tf\_inference.TfInference
 ===========================================
 
 .. currentmodule:: sci_tf.inference.tf_inference
@@ -6,8 +6,8 @@ sci\_tf.inference.tf\_inference.TfInference
 .. autoclass:: TfInference
    :members:
    :show-inheritance:
-   :no-inherited-members:
    :special-members: __call__, __add__, __mul__
+   :no-inherited-members:
 
    
    
