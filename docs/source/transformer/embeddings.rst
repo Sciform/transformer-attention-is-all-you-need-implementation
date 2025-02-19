@@ -29,7 +29,7 @@ this scaling is not explicitly explained.
 Some discussions on the topic can be found on 
 `Data Science Stack Exchange <https://datascience.stackexchange.com/questions/87906/transformer-model-why-are-word-embeddings-scaled-before-adding-positional-encod>`_ 
 and other related sources such as 
-`Tensor2tensor Issues <https://github.com/tensorflow/tensor2tensor/issues/1718>`, 
+`Tensor2tensor Issues <https://github.com/tensorflow/tensor2tensor/issues/1718>`_ , 
 where various considerations have been proposed 
 regarding the purpose of this scaling factor.
 
