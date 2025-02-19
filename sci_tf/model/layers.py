@@ -35,7 +35,11 @@ class TokenEmbeddings(nn.Module):
         The embedding tensor is multiply by sqrt(d_model) to scale the embeddings.
         The original paper does not explain why the scaling is applied.
         https://datascience.stackexchange.com/questions/87906/transformer-model-why-are-word-embeddings-scaled-before-adding-positional-encod
-        #TODO Should be sqrt(sqrt(d_model))
+        
+        It seems that originally the embedding matrix was initialized by a Gaussian 
+        distribution with mean 0 and variance "d_model" (\mathcal{N}(0,\sqrt(d_model))). 
+        Therefore the scaling factor sqrt(d_model) is applied to scale the embeddings 
+        to something closer between -1 and 1, such as the positional encodings.
 
         :param x: batch of token sequences (tensor with dim(num_batch, sequence_length)) 
             for source and target text
