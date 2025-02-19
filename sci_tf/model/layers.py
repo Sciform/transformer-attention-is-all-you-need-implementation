@@ -46,7 +46,7 @@ class TokenEmbeddings(nn.Module):
         
         It seems that the embedding matrix was originally initialized using a Gaussian 
         distribution with mean 0 and variance :math:`\frac{1}{d_{\text{model}}}`, i.e., 
-        :math:`\mathcal{N}(0, fract{1}{d_{\text{model}}})`. 
+        :math:`\mathcal{N}(0, \frac{1}{d_{\text{model}}})`. 
         Therefore, the scaling factor :math:`\sqrt{d_{\text{model}}}` was applied to 
         bring the embeddings into a range closer to :math:`[-1,1]`, similar to the 
         positional encodings. The embedding layer from PyTorch is already initialized
