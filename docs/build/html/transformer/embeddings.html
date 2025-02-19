@@ -413,8 +413,8 @@ Some discussions on the topic can be found on
 and other related sources, where various considerations have been proposed
 regarding the purpose of this scaling factor.</p>
 <p>It seems that the embedding matrix was originally initialized using a Gaussian
-distribution with mean 0 and variance <span class="math notranslate nohighlight">\(d_{\text{model}}\)</span>, i.e.,
-<span class="math notranslate nohighlight">\(\mathcal{N}(0, \sqrt{d_{\text{model}}})\)</span>.
+distribution with mean 0 and variance <span class="math notranslate nohighlight">\(\frac{1}{d_{\text{model}}}\)</span>, i.e.,
+<span class="math notranslate nohighlight">\(\mathcal{N}(0, fract{1}{d_{\text{model}}})\)</span>.
 Therefore, the scaling factor <span class="math notranslate nohighlight">\(\sqrt{d_{\text{model}}}\)</span> was applied to
 bring the embeddings into a range closer to <span class="math notranslate nohighlight">\([-1,1]\)</span>, similar to the
 positional encodings.</p>

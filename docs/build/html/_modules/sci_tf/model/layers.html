@@ -379,7 +379,7 @@
 <div class="viewcode-block" id="TokenEmbeddings">
 <a class="viewcode-back" href="../../../_autosummary/sci_tf.model.layers.TokenEmbeddings.html#sci_tf.model.layers.TokenEmbeddings">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">TokenEmbeddings</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; The token embeddings layer module holds a tensor that learns &quot;d_model&quot; </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The token embeddings layer module holds a tensor that learns &quot;d_model&quot; </span>
 <span class="sd">    embeddings (= features) for every token in a fixed size dictionary.</span>
 
 <span class="sd">    :param d_model: number of features per token</span>
@@ -418,8 +418,8 @@
 <span class="sd">        regarding the purpose of this scaling factor.</span>
 <span class="sd">        </span>
 <span class="sd">        It seems that the embedding matrix was originally initialized using a Gaussian </span>
-<span class="sd">        distribution with mean 0 and variance :math:`d_{\text{model}}`, i.e., </span>
-<span class="sd">        :math:`\mathcal{N}(0, \sqrt{d_{\text{model}}})`. </span>
+<span class="sd">        distribution with mean 0 and variance :math:`\frac{1}{d_{\text{model}}}`, i.e., </span>
+<span class="sd">        :math:`\mathcal{N}(0, fract{1}{d_{\text{model}}})`. </span>
 <span class="sd">        Therefore, the scaling factor :math:`\sqrt{d_{\text{model}}}` was applied to </span>
 <span class="sd">        bring the embeddings into a range closer to :math:`[-1,1]`, similar to the </span>
 <span class="sd">        positional encodings. The embedding layer from PyTorch is already initialized</span>

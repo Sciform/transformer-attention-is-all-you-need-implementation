@@ -531,7 +531,7 @@ embeddings (= features) for every token in a fixed size dictionary.</p>
 <td><p>Casts all floating point parameters and buffers to <code class="docutils literal notranslate"><span class="pre">float</span></code> datatype.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#sci_tf.model.layers.TokenEmbeddings.forward" title="sci_tf.model.layers.TokenEmbeddings.forward"><code class="xref py py-obj docutils literal notranslate"><span class="pre">forward</span></code></a></p></td>
-<td><p>Compute embedding layer</p></td>
+<td><p>Compute embedding layer :rtype: <span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_buffer</span></code></p></td>
 <td><p>Return the buffer given by <code class="docutils literal notranslate"><span class="pre">target</span></code> if it exists, otherwise throw an error.</p></td>
@@ -668,8 +668,10 @@ embeddings (= features) for every token in a fixed size dictionary.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="sci_tf.model.layers.TokenEmbeddings.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sci_tf/model/layers.html#TokenEmbeddings.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sci_tf.model.layers.TokenEmbeddings.forward" title="Link to this definition">#</a></dt>
-<dd><p>Compute embedding layer</p>
-<p>For every token in a token sequence of a batch of token sequences 
+<dd><p>Compute embedding layer
+:rtype: <span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span></p>
+<blockquote>
+<div><p>For every token in a token sequence of a batch of token sequences 
 <span class="math notranslate nohighlight">\(x\)</span>, embeddings of dimension <span class="math notranslate nohighlight">\(d_{   ext{model}}\)</span> 
 are learned. A map <span class="math notranslate nohighlight">\(x\)</span> with dim(num_batch, sequence_length) 
 to embeddings tensor with 
@@ -682,25 +684,18 @@ Some discussions on the topic can be found on
 and other related sources, where various considerations have been proposed 
 regarding the purpose of this scaling factor.</p>
 <p>It seems that the embedding matrix was originally initialized using a Gaussian 
-distribution with mean 0 and variance <span class="math notranslate nohighlight">\(d_{        ext{model}}\)</span>, i.e., 
-<span class="math notranslate nohighlight">\(\mathcal{N}(0, \sqrt{d_{ ext{model}}})\)</span>. 
+distribution with mean 0 and variance :math:<a href="#id1"><span class="problematic" id="id2">`</span></a></p>
+</div></blockquote>
+<dl class="simple">
+<dt>rac{1}{d_{        ext{model}}}`, i.e., </dt><dd><p><span class="math notranslate nohighlight">\(\mathcal{N}(0, fract{1}{d_{      ext{model}}})\)</span>. 
 Therefore, the scaling factor <span class="math notranslate nohighlight">\(\sqrt{d_{  ext{model}}}\)</span> was applied to 
 bring the embeddings into a range closer to <span class="math notranslate nohighlight">\([-1,1]\)</span>, similar to the 
 positional encodings. The embedding layer from PyTorch is already initialized
 with the normal distribution <span class="math notranslate nohighlight">\(\mathcal{N}(0, 1)\)</span>, 
 so the scaling factor is not necessary.</p>
+</dd>
+</dl>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>x</strong> (<em>Any</em>) – batch of token sequences (tensor with dim(num_batch, sequence_length)) 
-for source and target text</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>embedding layer with learned “d_model” embeddings for every 
-token in the dictionary</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Any</p>
-</dd>
 </dl>
 </dd></dl>
 
