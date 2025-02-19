@@ -48,6 +48,8 @@
     <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/design-tabs.js?v=36754332"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_autosummary/sci_tf.model.layers.TokenEmbeddings';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -667,17 +669,26 @@ embeddings (= features) for every token in a fixed size dictionary.</p>
 <dt class="sig sig-object py" id="sci_tf.model.layers.TokenEmbeddings.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sci_tf/model/layers.html#TokenEmbeddings.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sci_tf.model.layers.TokenEmbeddings.forward" title="Link to this definition">#</a></dt>
 <dd><p>Compute embedding layer</p>
-<p>For every token in a token sequence of a batch of token sequences x 
-“d_model” embeddings are learned.
-A map x with dim(num_batch, sequence_length) to embeddings tensor with 
-dim(num_batch, sequence_length, d_model) is performed.
-The embedding tensor is multiply by sqrt(d_model) to scale the embeddings.
-The original paper does not explain why the scaling is applied.
-<a class="reference external" href="https://datascience.stackexchange.com/questions/87906/transformer-model-why-are-word-embeddings-scaled-before-adding-positional-encod">https://datascience.stackexchange.com/questions/87906/transformer-model-why-are-word-embeddings-scaled-before-adding-positional-encod</a></p>
-<p>It seems that originally the embedding matrix was initialized by a Gaussian 
-distribution with mean 0 and variance “d_model” (mathcal{N}(0,sqrt(d_model))). 
-Therefore the scaling factor sqrt(d_model) is applied to scale the embeddings 
-to something closer between -1 and 1, such as the positional encodings.</p>
+<p>For every token in a token sequence of a batch of token sequences 
+<span class="math notranslate nohighlight">\(x\)</span>, embeddings of dimension <span class="math notranslate nohighlight">\(d_{   ext{model}}\)</span> 
+are learned.
+A map <span class="math notranslate nohighlight">\(x\)</span> with dim(num_batch, sequence_length) to embeddings tensor with 
+dim(num_batch, sequence_length, d_model) is performed.</p>
+<p>In the original paper, the embedding tensor is multiplied by 
+<span class="math notranslate nohighlight">\(\sqrt{d_{        ext{model}}}\)</span> to scale the embeddings, but the reason for 
+this scaling is not explicitly explained.
+Some discussions on the topic can be found on 
+<a class="reference external" href="https://datascience.stackexchange.com/questions/87906/transformer-model-why-are-word-embeddings-scaled-before-adding-positional-encod">Data Science Stack Exchange</a> 
+and other related sources, where various considerations have been proposed 
+regarding the purpose of this scaling factor.</p>
+<p>It seems that the embedding matrix was originally initialized using a Gaussian 
+distribution with mean 0 and variance <span class="math notranslate nohighlight">\(d_{        ext{model}}\)</span>, i.e., 
+<span class="math notranslate nohighlight">\(\mathcal{N}(0, \sqrt{d_{ ext{model}}})\)</span>. 
+Therefore, the scaling factor <span class="math notranslate nohighlight">\(\sqrt{d_{  ext{model}}}\)</span> was applied to 
+bring the embeddings into a range closer to <span class="math notranslate nohighlight">\([-1,1]\)</span>, similar to the 
+positional encodings. The embedding layer from PyTorch is already initialized
+with the normal distribution <span class="math notranslate nohighlight">\(\mathcal{N}(0, 1)\)</span>, 
+so the scaling factor is not necessary.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>x</strong> (<em>Any</em>) – batch of token sequences (tensor with dim(num_batch, sequence_length)) 

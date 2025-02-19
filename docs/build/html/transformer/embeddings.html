@@ -399,10 +399,24 @@
 mention a scaling of the embedding by <span class="math notranslate nohighlight">\(\sqrt{d_{model}},\)</span>
 where <span class="math notranslate nohighlight">\(d_{model}\)</span> refers to the number of features for each token.
 However, neither in the paper nor in</p>
-<div class="math notranslate nohighlight">
-\[\frac{ \sum_{t=0}^{N}f(t,k) }{N}\]</div>
-<p>Or if you want to write inline you can use this:</p>
-<p><span class="math notranslate nohighlight">\(\frac{ \sum_{t=0}^{N}f(t,k) }{N}\)</span></p>
+<p>In the original paper by Vaswani, the embedding tensor is multiplied by
+<span class="math notranslate nohighlight">\(\sqrt{d_{\text{model}}}\)</span> to scale the embeddings,
+where <span class="math notranslate nohighlight">\(d_{\text{model}}\)</span> is the number of features for each token.</p>
+<p>However, the reason for
+this scaling is not explicitly explained.
+Some discussions on the topic can be found on
+<a class="reference external" href="https://datascience.stackexchange.com/questions/87906/transformer-model-why-are-word-embeddings-scaled-before-adding-positional-encod">Data Science Stack Exchange</a>
+and other related sources, where various considerations have been proposed
+regarding the purpose of this scaling factor.</p>
+<p>It seems that the embedding matrix was originally initialized using a Gaussian
+distribution with mean 0 and variance <span class="math notranslate nohighlight">\(d_{\text{model}}\)</span>, i.e.,
+<span class="math notranslate nohighlight">\(\mathcal{N}(0, \sqrt{d_{\text{model}}})\)</span>.
+Therefore, the scaling factor <span class="math notranslate nohighlight">\(\sqrt{d_{\text{model}}}\)</span> was applied to
+bring the embeddings into a range closer to <span class="math notranslate nohighlight">\([-1,1]\)</span>, similar to the
+positional encodings.</p>
+<p>The embedding layer from PyTorch is already initialized
+with the normal distribution <span class="math notranslate nohighlight">\(\mathcal{N}(0, 1)\)</span>,
+so the scaling factor is not necessary.</p>
 </section>
 </section>
 

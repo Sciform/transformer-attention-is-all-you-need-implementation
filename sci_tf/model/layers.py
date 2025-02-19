@@ -6,7 +6,7 @@ import torch.nn as nn
 
 
 class TokenEmbeddings(nn.Module):
-    """The token embeddings layer module holds a tensor that learns "d_model" 
+    """ The token embeddings layer module holds a tensor that learns "d_model" 
     embeddings (= features) for every token in a fixed size dictionary.
 
     :param d_model: number of features per token
@@ -26,20 +26,30 @@ class TokenEmbeddings(nn.Module):
         self.__embedding = nn.Embedding(dictionary_size, d_model)
 
     def forward(self, x: Any) -> Any:
-        """Compute embedding layer
+        """ Compute embedding layer
 
-        For every token in a token sequence of a batch of token sequences x 
-        "d_model" embeddings are learned.
-        A map x with dim(num_batch, sequence_length) to embeddings tensor with 
+        For every token in a token sequence of a batch of token sequences 
+        :math:`x`, embeddings of dimension :math:`d_{\text{model}}` 
+        are learned.
+        A map :math:`x` with dim(num_batch, sequence_length) to embeddings tensor with 
         dim(num_batch, sequence_length, d_model) is performed.
-        The embedding tensor is multiply by sqrt(d_model) to scale the embeddings.
-        The original paper does not explain why the scaling is applied.
-        https://datascience.stackexchange.com/questions/87906/transformer-model-why-are-word-embeddings-scaled-before-adding-positional-encod
         
-        It seems that originally the embedding matrix was initialized by a Gaussian 
-        distribution with mean 0 and variance "d_model" (\mathcal{N}(0,\sqrt(d_model))). 
-        Therefore the scaling factor sqrt(d_model) is applied to scale the embeddings 
-        to something closer between -1 and 1, such as the positional encodings.
+        In the original paper, the embedding tensor is multiplied by 
+        :math:`\sqrt{d_{\text{model}}}` to scale the embeddings, but the reason for 
+        this scaling is not explicitly explained.
+        Some discussions on the topic can be found on 
+        `Data Science Stack Exchange <https://datascience.stackexchange.com/questions/87906/transformer-model-why-are-word-embeddings-scaled-before-adding-positional-encod>`_ 
+        and other related sources, where various considerations have been proposed 
+        regarding the purpose of this scaling factor.
+        
+        It seems that the embedding matrix was originally initialized using a Gaussian 
+        distribution with mean 0 and variance :math:`d_{\text{model}}`, i.e., 
+        :math:`\mathcal{N}(0, \sqrt{d_{\text{model}}})`. 
+        Therefore, the scaling factor :math:`\sqrt{d_{\text{model}}}` was applied to 
+        bring the embeddings into a range closer to :math:`[-1,1]`, similar to the 
+        positional encodings. The embedding layer from PyTorch is already initialized
+        with the normal distribution :math:`\mathcal{N}(0, 1)`, 
+        so the scaling factor is not necessary.
 
         :param x: batch of token sequences (tensor with dim(num_batch, sequence_length)) 
             for source and target text
@@ -54,7 +64,7 @@ class TokenEmbeddings(nn.Module):
 
 
 class PositionalEncoding(nn.Module):
-    """The positional encoding layer module holds a tensor with precomputed 
+    """ The positional encoding layer module holds a tensor with precomputed 
     positional values for every token in a sequence.
 
     :param d_model: number of features per token
@@ -102,7 +112,7 @@ class PositionalEncoding(nn.Module):
         self.register_buffer('positional_encoding', positional_encoding)
 
     def forward(self, x: Any) -> Any:
-        """Forwards the positional encodings
+        """ Forwards the positional encodings
 
         Adds the positional encoding to the previous encoding tensor, which 
         usually contains the input encoding. The shape of the positional 
@@ -125,7 +135,7 @@ class PositionalEncoding(nn.Module):
 
 
 class MultiHeadAttention(nn.Module):
-    """Layer module for multi-head attention
+    """ Layer module for multi-head attention
 
     :param d_model: number of embedding features
     :type d_model: int
