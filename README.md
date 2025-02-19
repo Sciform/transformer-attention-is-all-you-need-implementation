@@ -6,7 +6,7 @@ Implementation of the transformer model form the NeuRIPS-paper 2017
 Documentation:
 https://transformer-attention-is-all-you-need-implementation.readthedocs.io/en/latest/
 
-Pytorch currently only works with Python 3.11.x or lower.
+Pytorch currently only works with Python 3.12.x or lower.
 
 
 
